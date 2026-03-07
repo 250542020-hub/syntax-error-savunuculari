@@ -181,3 +181,73 @@ Proje Ekibi               	Projenin planlanması ve uygulanmasından sorumludur
 Akıllı Tarım Yönetim Sistemi, IoT sensörleri ve yapay zeka teknolojilerini bir araya getirerek tarım verilerinin daha verimli şekilde analiz edilmesini sağlamayı amaçlamaktadır. Bu sistem sayesinde çiftçiler çevresel verileri daha kolay takip edebilecek ve tarım süreçlerini daha verimli şekilde yönetebilecektir.
 
 
+---
+
+
+## Geliştirme Ortamı Kurulumu (Ceren Çam)
+
+## Geliştirme Ortamı
+Akıllı Tarım Yönetim Sistemi projesinin geliştirme sürecinde kullanılacak yazılım araçları ve bağımlılıklar belirlenmiş ve geliştirme ortamı yapılandırılmıştır. Bu ortam, ekip üyelerinin aynı teknolojileri kullanarak proje üzerinde çalışabilmesini sağlar.
+
+## Kullanılan Geliştirme Araçları
+
+## 1. IDE (Kod Geliştirme Ortamı)
+Projenin geliştirilmesi için Visual Studio Code (VS Code) kullanılacaktır.
+VS Code;
+- Python geliştirme desteği sunar
+- Git ile entegre çalışabilir
+- Django projeleri için uygun bir geliştirme ortamı sağlar
+
+## 2. Programlama Dili
+Projenin geliştirilmesinde ana programlama dili olarak Python 3.10+ kullanılacaktır.
+Python;
+- sensör verilerinin işlenmesi
+- yapay zeka modellerinin geliştirilmesi
+- backend servislerinin oluşturulması
+gibi işlemler için kullanılacaktır.
+
+## 3. Backend Framework
+Web tabanlı yönetim paneli ve API geliştirme süreçleri için Django frameworkü kullanılacaktır.
+API geliştirme sürecinde ayrıca Django REST Framework (DRF) kullanılacaktır.
+
+## 4. Yapay Zeka ve Veri Analizi Kütüphaneleri
+Sensörlerden elde edilen verilerin analiz edilmesi için TensorFlow kullanılacaktır.
+Veri işleme ve analiz süreçlerinde aşağıdaki Python kütüphaneleri kullanılacaktır:
+- NumPy
+- Pandas
+Bu kütüphaneler sensör verilerinin işlenmesi ve analiz edilmesi için kullanılacaktır.
+
+## 5. Veritabanı Sistemi
+Projenin veri depolama sistemi olarak PostgreSQL veritabanı kullanılacaktır.
+PostgreSQL;
+- sensör verilerinin saklanması
+- kullanıcı bilgilerinin tutulması
+- analiz sonuçlarının depolanması
+için kullanılacaktır.
+
+## 6. IoT İletişim Protokolü
+Tarım alanında bulunan sensörler ile sistem arasındaki veri iletişimi için MQTT protokolü kullanılacaktır.
+MQTT;
+- düşük enerji tüketimi
+- hızlı veri iletimi
+- IoT cihazları ile uyumlu yapı
+gibi avantajlar sağlar.
+
+## 7. Versiyon Kontrol Sistemi
+Projenin kaynak kodlarının yönetilmesi için Git ve GitHub kullanılmaktadır.
+Git;
+- ekip üyelerinin aynı proje üzerinde birlikte çalışmasını sağlar
+- yapılan değişikliklerin takip edilmesini sağlar
+- proje sürümlerinin kontrol edilmesine yardımcı olur
+Proje deposu GitHub üzerinde oluşturulmuş ve ekip üyeleri projeye dahil edilmiştir.
+
+## 8. AI Destekli Geliştirme Araçları
+Proje geliştirme sürecinde bazı modüllerin oluşturulması ve prototip geliştirme aşamalarında Antigravity AI aracı kullanılacaktır.
+Antigravity;
+- proje modüllerinin hızlı şekilde oluşturulması
+- prototip geliştirme süreçlerinin hızlandırılması
+- yazılım geliştirme sürecinin desteklenmesi
+amacıyla kullanılmaktadır.
+
+## Sonuç
+Belirlenen geliştirme ortamı sayesinde ekip üyeleri aynı araçları kullanarak proje üzerinde çalışabilir. Bu ortam, yazılım geliştirme sürecinin düzenli ilerlemesini ve ekip içi iş birliğinin sağlanmasını kolaylaştırır.

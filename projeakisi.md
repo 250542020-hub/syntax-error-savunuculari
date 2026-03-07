@@ -78,7 +78,7 @@ MVT (Model-View-Template): Django frameworkü backend geliştirilmesinde bu mima
 📊 Mimari Diyagram
 
 
-(architecture.png dosyasını GitHub repo kök dizinine yükleyin)
+![Akıllı Tarım Mimari Diyagramı](architecture.png)
 
 ✅ Sonuç
 

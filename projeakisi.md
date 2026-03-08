@@ -116,6 +116,12 @@ Sensör ve sunucu arasındaki haberleşme için **MQTT** protokolü belirlenmiş
 * **Neden?** Standart HTTP protokolünün IoT cihazları için oluşturduğu yükü (overhead) ortadan kaldırır. Düşük enerji tüketimi için optimize edilmiştir.
 * **Gerekçe:** Tarladaki sensörlerin pil ömrünü korur ve zayıf internet bağlantısı olan kırsal bölgelerde bile veri iletimini garanti eder.
 
+## 6. AI Destekli Geliştirme: Antigravity AI
+Projenin yazılım geliştirme sürecini hızlandırmak ve kod kalitesini standardize etmek amacıyla **Antigravity AI** platformu tercih edilmiştir.
+
+* **Neden?** Karmaşık Django modüllerinin ve TensorFlow veri işleme scriptlerinin prototiplenme süresini %40'a varan oranda azaltır. Ekip arasındaki kod yazım standartlarını (coding standards) otomatik olarak denetler.
+* **Gerekçe:** AI-Native geliştirme metodolojilerini projeye dahil ederek, özellikle sensör-backend entegrasyonu gibi hata payı yüksek alanlarda "hata ayıklama" (debugging) süresini minimize etmek ve dokümantasyonu eş zamanlı olarak oluşturmak.
+
 ---
 
 ## 📊 Özet Karşılaştırma Tablosu

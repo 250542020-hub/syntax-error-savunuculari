@@ -261,6 +261,17 @@ Antigravity;
 
 amacıyla kullanılmaktadır.
 
+## 9. Container / Deployment Aracı
+
+Projenin farklı sistemlerde çalıştırılabilmesi ve taşınabilirliğinin sağlanması için Docker kullanılacaktır.
+
+Docker;
+    • uygulamanın farklı işletim sistemlerinde çalışması
+    • proje ortamını ekip üyeleri arasında standartlaştırması
+    • ileride deployment süreçlerini kolaylaştırması
+    
+amacıyla kullanılacaktır.
+
 ## Sonuç
 Belirlenen geliştirme ortamı sayesinde ekip üyeleri aynı araçları kullanarak proje üzerinde çalışabilir. Bu ortam, yazılım geliştirme sürecinin düzenli ilerlemesini ve ekip içi iş birliğinin sağlanmasını kolaylaştırır.
 

@@ -34,7 +34,7 @@ Sistem, tarım alanından toplanan verileri analiz ederek çiftçilere doğru ka
 
 ---
 
-#🏗️ Proje Mimari Tasarımı (Ahmet Enes Altun)
+# 🏗️ Proje Mimari Tasarımı (Ahmet Enes Altun)
 📝 Genel Mimari
 
 Akıllı Tarım Yönetim Sistemi, tarım alanına yerleştirilen IoT sensörlerinden veri toplayan, bu verileri analiz eden ve kullanıcıya web veya mobil uygulama üzerinden sunan bir sistemdir.

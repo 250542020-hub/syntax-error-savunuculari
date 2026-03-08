@@ -268,26 +268,36 @@ Belirlenen geliştirme ortamı sayesinde ekip üyeleri aynı araçları kullanar
 ---
 
 
+## 📋 Gereksinim Toplama ve Analizi (Sami Yusuf Yıldız)
 
-
-📋 Gereksinim Toplama ve Analizi (Sami Yusuf Yıldız)
 Yazılım projelerinde gereksinim toplama ve analiz aşaması, sistemin doğru şekilde tasarlanması ve geliştirilmesi için en önemli adımlardan biridir. Bu aşamada sistemin hangi ihtiyaçlara çözüm üreteceği, kullanıcıların sistemden beklentileri ve sistemin yerine getirmesi gereken işlevler detaylı bir şekilde incelenmiştir. Projenin bu bölümünde Akıllı Tarım Yönetim Sistemi için gerekli olan fonksiyonel ve fonksiyonel olmayan gereksinimler belirlenmiş ve analiz edilmiştir.
+
 Gereksinim toplama sürecinde tarım sektöründeki temel ihtiyaçlar araştırılmış, özellikle çiftçilerin tarımsal verileri daha verimli kullanabilmesi için gerekli olan sistem özellikleri değerlendirilmiştir. IoT sensörlerinden elde edilen verilerin analiz edilmesi, saklanması ve kullanıcıya anlamlı bilgiler halinde sunulması projenin temel gereksinimleri arasında yer almaktadır. Ayrıca sistemin hem web hem de mobil platformlar üzerinden erişilebilir olması hedeflenmiştir.
-Fonksiyonel Gereksinimler
+
+## Fonksiyonel Gereksinimler
+
 Fonksiyonel gereksinimler, sistemin kullanıcılar için yerine getirmesi gereken temel işlevleri ifade eder. Proje kapsamında belirlenen başlıca fonksiyonel gereksinimler şunlardır:
-Tarım alanlarına yerleştirilen IoT sensörleri aracılığıyla sıcaklık, nem ve toprak verilerinin toplanması
-Sensörlerden elde edilen verilerin sistem sunucusuna gönderilmesi
-Toplanan verilerin PostgreSQL veritabanında güvenli şekilde saklanması
-Yapay zeka algoritmaları kullanılarak sensör verilerinin analiz edilmesi
-Analiz sonuçlarının kullanıcıya web paneli veya mobil uygulama aracılığıyla sunulması
-Kullanıcıların sisteme güvenli bir şekilde giriş yapabilmesi ve kendi verilerini görüntüleyebilmesi
-Fonksiyonel Olmayan Gereksinimler
+
+- Tarım alanlarına yerleştirilen IoT sensörleri aracılığıyla sıcaklık, nem ve toprak verilerinin toplanması
+- Sensörlerden elde edilen verilerin sistem sunucusuna gönderilmesi
+- Toplanan verilerin PostgreSQL veritabanında güvenli şekilde saklanması
+- Yapay zeka algoritmaları kullanılarak sensör verilerinin analiz edilmesi
+- Analiz sonuçlarının kullanıcıya web paneli veya mobil uygulama aracılığıyla sunulması
+- Kullanıcıların sisteme güvenli bir şekilde giriş yapabilmesi ve kendi verilerini görüntüleyebilmesi
+
+## Fonksiyonel Olmayan Gereksinimler
+
 Fonksiyonel olmayan gereksinimler, sistemin performans, güvenlik ve kullanılabilirlik gibi özelliklerini tanımlar. Proje kapsamında belirlenen başlıca fonksiyonel olmayan gereksinimler şunlardır:
-Sistem sensör verilerini hızlı ve güvenilir bir şekilde işleyebilmelidir
-Kullanıcı ve sensör verileri güvenli bir veritabanında saklanmalıdır
-Sistem farklı cihazlar ve platformlar üzerinden erişilebilir olmalıdır
-Sistem modüler bir yapıda tasarlanmalı ve ileride geliştirilebilir olmalıdır
-Veri aktarımı sırasında veri bütünlüğü korunmalıdır
-Sonuç
+
+- Sistem sensör verilerini hızlı ve güvenilir bir şekilde işleyebilmelidir
+- Kullanıcı ve sensör verileri güvenli bir veritabanında saklanmalıdır
+- Sistem farklı cihazlar ve platformlar üzerinden erişilebilir olmalıdır
+- Sistem modüler bir yapıda tasarlanmalı ve ileride geliştirilebilir olmalıdır
+- Veri aktarımı sırasında veri bütünlüğü korunmalıdır
+
+## Sonuç
+
 Gereksinim toplama ve analiz süreci sayesinde sistemin gerçekleştirmesi gereken işlevler ve teknik ihtiyaçlar net bir şekilde belirlenmiştir. Bu aşama, projenin sonraki geliştirme süreçleri için sağlam bir temel oluşturmuş ve sistem mimarisinin daha planlı bir şekilde tasarlanmasına katkı sağlamıştır. Doğru bir gereksinim analizi yapılması, projenin hedeflerine ulaşması ve kullanıcı ihtiyaçlarının karşılanması açısından büyük önem taşımaktadır.
 
+
+---

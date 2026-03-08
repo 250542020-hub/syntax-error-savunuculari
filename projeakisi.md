@@ -184,7 +184,7 @@ Akıllı Tarım Yönetim Sistemi, IoT sensörleri ve yapay zeka teknolojilerini 
 ---
 
 
-# Geliştirme Ortamı Kurulumu (Ceren Çam)
+# ⚙️ Geliştirme Ortamı Kurulumu (Ceren Çam)
 
 ## Geliştirme Ortamı
 Akıllı Tarım Yönetim Sistemi projesinin geliştirme sürecinde kullanılacak yazılım araçları ve bağımlılıklar belirlenmiş ve geliştirme ortamı yapılandırılmıştır. Bu ortam, ekip üyelerinin aynı teknolojileri kullanarak proje üzerinde çalışabilmesini sağlar.

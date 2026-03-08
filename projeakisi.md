@@ -266,9 +266,9 @@ amacıyla kullanılmaktadır.
 Projenin farklı sistemlerde çalıştırılabilmesi ve taşınabilirliğinin sağlanması için Docker kullanılacaktır.
 
 Docker;
-    • uygulamanın farklı işletim sistemlerinde çalışması
-    • proje ortamını ekip üyeleri arasında standartlaştırması
-    • ileride deployment süreçlerini kolaylaştırması
+- uygulamanın farklı işletim sistemlerinde çalışması
+- proje ortamını ekip üyeleri arasında standartlaştırması
+- ileride deployment süreçlerini kolaylaştırması
     
 amacıyla kullanılacaktır.
 

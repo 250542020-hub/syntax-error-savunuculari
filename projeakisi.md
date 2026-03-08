@@ -141,41 +141,41 @@ Toplanan veriler merkezi bir sistemde saklanır ve yapay zeka destekli analizler
 ## 2. Projenin Amacı
 Bu projenin amacı, tarım alanlarında kullanılan sensörlerden elde edilen verileri dijital ortamda analiz ederek çiftçilere karar destek sistemi sunmaktır.
 ## Projenin temel hedefleri şunlardır:
-Tarımsal verilerin otomatik olarak toplanması
-Verilerin güvenli şekilde saklanması
-Yapay zeka algoritmaları ile analiz edilmesi
-Kullanıcıların web veya mobil arayüz üzerinden verilere erişebilmesi
-Tarımsal verimliliğin artırılması
+* Tarımsal verilerin otomatik olarak toplanması
+* Verilerin güvenli şekilde saklanması
+* Yapay zeka algoritmaları ile analiz edilmesi
+* Kullanıcıların web veya mobil arayüz üzerinden verilere erişebilmesi
+* Tarımsal verimliliğin artırılması
 
 ## 3. Kullanılan Teknolojiler
 ## Projenin geliştirilmesinde aşağıdaki teknolojiler kullanılacaktır:
-Python: Sistem geliştirme ve veri işleme süreçlerinde ana programlama dili olarak kullanılacaktır.
-TensorFlow: Sensörlerden gelen verilerin analiz edilmesi ve tahmin modellerinin oluşturulması için kullanılacaktır.
-IoT Sensörleri: Tarım alanından sıcaklık, nem ve diğer çevresel verileri toplamak için kullanılacaktır.
-Django: Web tabanlı API ve yönetim panelinin geliştirilmesi için kullanılacaktır.
-PostgreSQL: Sensör verilerinin güvenli ve düzenli şekilde saklanması için veritabanı sistemi olarak kullanılacaktır.
+* Python: Sistem geliştirme ve veri işleme süreçlerinde ana programlama dili olarak kullanılacaktır.
+* TensorFlow: Sensörlerden gelen verilerin analiz edilmesi ve tahmin modellerinin oluşturulması için kullanılacaktır.
+* IoT Sensörleri: Tarım alanından sıcaklık, nem ve diğer çevresel verileri toplamak için kullanılacaktır.
+* Django: Web tabanlı API ve yönetim panelinin geliştirilmesi için kullanılacaktır.
+* PostgreSQL: Sensör verilerinin güvenli ve düzenli şekilde saklanması için veritabanı sistemi olarak kullanılacaktır.
 
 ## 4. Proje Kapsamı
 ## Kapsama Dahil Olan Özellikler
-IoT sensörlerinden veri toplanması
-Sensör verilerinin API aracılığıyla sisteme gönderilmesi
-Verilerin PostgreSQL veritabanında saklanması
-Python ve TensorFlow kullanılarak veri analizi yapılması
-Django tabanlı web arayüzü üzerinden verilerin görüntülenmesi
-Kullanıcıların sisteme giriş yapabilmesi
-Sistem yöneticisinin verileri yönetebilmesi
+* IoT sensörlerinden veri toplanması
+* Sensör verilerinin API aracılığıyla sisteme gönderilmesi
+* Verilerin PostgreSQL veritabanında saklanması
+* Python ve TensorFlow kullanılarak veri analizi yapılması
+* Django tabanlı web arayüzü üzerinden verilerin görüntülenmesi
+* Kullanıcıların sisteme giriş yapabilmesi
+* Sistem yöneticisinin verileri yönetebilmesi
 
 ## Kapsama Dahil Olmayan Özellikler
-Sensör donanımının fiziksel üretimi
-Tarım makinelerinin otomatik kontrol edilmesi
-Ticari ölçekli büyük tarım işletmeleri için özel modüller
+* Sensör donanımının fiziksel üretimi
+* Tarım makinelerinin otomatik kontrol edilmesi
+* Ticari ölçekli büyük tarım işletmeleri için özel modüller
 
 ## 5. Proje Paydaşları
-Paydaş                     Açıklama
-Çiftçiler	                 Sistemi kullanarak tarım verilerini takip eder
-Sistem                     Yöneticisi	Sistemi yönetir ve kontrol eder
-Yazılım Geliştiriciler	   Sistemin geliştirilmesini sağlar
-Proje Ekibi               	Projenin planlanması ve uygulanmasından sorumludur
+Paydaş                          Açıklama
+* Çiftçiler	        |         Sistemi kullanarak tarım verilerini takip eder
+* Sistem            |         Yöneticisi	Sistemi yönetir ve kontrol eder
+* Yazılım Geliştiriciler	|   Sistemin geliştirilmesini sağlar
+* Proje Ekibi            |   	Projenin planlanması ve uygulanmasından sorumludur
 
 ## 6. Sonuç
 Akıllı Tarım Yönetim Sistemi, IoT sensörleri ve yapay zeka teknolojilerini bir araya getirerek tarım verilerinin daha verimli şekilde analiz edilmesini sağlamayı amaçlamaktadır. Bu sistem sayesinde çiftçiler çevresel verileri daha kolay takip edebilecek ve tarım süreçlerini daha verimli şekilde yönetebilecektir.

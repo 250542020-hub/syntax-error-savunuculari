@@ -167,7 +167,7 @@ Bu projenin amacı, tarım alanlarında kullanılan sensörlerden elde edilen ve
 
 ## Kapsama Dahil Olmayan Özellikler
 * Sensör donanımının fiziksel üretimi
-* Tarım makinelerinin otomatik kontrol edilmesi
+* Ağır tarım makinelerinin doğrudan kontrol edilmesi
 * Ticari ölçekli büyük tarım işletmeleri için özel modüller
 
 ## 5. Proje Paydaşları

@@ -131,14 +131,14 @@ Sensör ve sunucu arasındaki haberleşme için **MQTT** protokolü belirlenmiş
 ---
 
 
-# Proje Kapsam Belgesi (Hayat Ay)
-## 1. Proje Tanımı:
+## 📋 Proje Kapsam Belgesi (Hayat Ay)
+##  1. Proje Tanımı:
 Akıllı Tarım Yönetim Sistemi, tarım alanlarından IoT sensörleri aracılığıyla toplanan verileri analiz ederek
 çiftçilere daha verimli ve sürdürülebilir tarım yönetimi sunmayı amaçlayan bir yazılım sistemidir. Sistem,
 çevresel verileri toplayarak analiz eder ve kullanıcıya web veya mobil arayüz üzerinden anlamlı bilgiler sağlar.
 Toplanan veriler merkezi bir sistemde saklanır ve yapay zeka destekli analizler ile değerlendirilir. Böylece kullanıcılar tarım faaliyetlerini daha bilinçli ve verimli şekilde yönetebilir.
 
-## 2. Projenin Amacı
+##  2. Projenin Amacı
 Bu projenin amacı, tarım alanlarında kullanılan sensörlerden elde edilen verileri dijital ortamda analiz ederek çiftçilere karar destek sistemi sunmaktır.
 ## Projenin temel hedefleri şunlardır:
 * Tarımsal verilerin otomatik olarak toplanması
@@ -156,7 +156,7 @@ Bu projenin amacı, tarım alanlarında kullanılan sensörlerden elde edilen ve
 * PostgreSQL: Sensör verilerinin güvenli ve düzenli şekilde saklanması için veritabanı sistemi olarak kullanılacaktır.
 
 ## 4. Proje Kapsamı
-## Kapsama Dahil Olan Özellikler
+## ✅ Kapsama Dahil Olan Özellikler
 * IoT sensörlerinden veri toplanması
 * Sensör verilerinin API aracılığıyla sisteme gönderilmesi
 * Verilerin PostgreSQL veritabanında saklanması
@@ -165,7 +165,7 @@ Bu projenin amacı, tarım alanlarında kullanılan sensörlerden elde edilen ve
 * Kullanıcıların sisteme giriş yapabilmesi
 * Sistem yöneticisinin verileri yönetebilmesi
 
-## Kapsama Dahil Olmayan Özellikler
+## ❌ Kapsama Dahil Olmayan Özellikler
 * Sensör donanımının fiziksel üretimi
 * Ağır tarım makinelerinin doğrudan kontrol edilmesi
 * Ticari ölçekli büyük tarım işletmeleri için özel modüller

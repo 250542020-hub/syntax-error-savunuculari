@@ -131,7 +131,7 @@ Sensör ve sunucu arasındaki haberleşme için **MQTT** protokolü belirlenmiş
 ---
 
 
-## Proje Kapsam Belgesi (Hayat Ay)
+# Proje Kapsam Belgesi (Hayat Ay)
 ## 1. Proje Tanımı:
 Akıllı Tarım Yönetim Sistemi, tarım alanlarından IoT sensörleri aracılığıyla toplanan verileri analiz ederek
 çiftçilere daha verimli ve sürdürülebilir tarım yönetimi sunmayı amaçlayan bir yazılım sistemidir. Sistem,
@@ -184,7 +184,7 @@ Akıllı Tarım Yönetim Sistemi, IoT sensörleri ve yapay zeka teknolojilerini 
 ---
 
 
-## Geliştirme Ortamı Kurulumu (Ceren Çam)
+# Geliştirme Ortamı Kurulumu (Ceren Çam)
 
 ## Geliştirme Ortamı
 Akıllı Tarım Yönetim Sistemi projesinin geliştirme sürecinde kullanılacak yazılım araçları ve bağımlılıklar belirlenmiş ve geliştirme ortamı yapılandırılmıştır. Bu ortam, ekip üyelerinin aynı teknolojileri kullanarak proje üzerinde çalışabilmesini sağlar.

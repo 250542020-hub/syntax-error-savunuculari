@@ -39,9 +39,9 @@ Sistem, tarım alanından toplanan verileri analiz ederek çiftçilere doğru ka
 
 Akıllı Tarım Yönetim Sistemi, tarım alanına yerleştirilen IoT sensörlerinden veri toplayan, bu verileri analiz eden ve kullanıcıya web veya mobil uygulama üzerinden sunan bir sistemdir.
 
-- **Sistem şu şekilde çalışır:
+- ** Sistem şu şekilde çalışır:
 
-- **IoT sensörleri çevresel verileri toplar
+- ** IoT sensörleri çevresel verileri toplar
 
 - **Toplanan veriler backend API (Django) aracılığıyla sunucuya iletilir
 

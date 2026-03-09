@@ -39,41 +39,41 @@ Sistem, tarım alanından toplanan verileri analiz ederek çiftçilere doğru ka
 
 Akıllı Tarım Yönetim Sistemi, tarım alanına yerleştirilen IoT sensörlerinden veri toplayan, bu verileri analiz eden ve kullanıcıya web veya mobil uygulama üzerinden sunan bir sistemdir.
 
-Sistem şu şekilde çalışır:
+- **Sistem şu şekilde çalışır:
 
-IoT sensörleri çevresel verileri toplar
+- **IoT sensörleri çevresel verileri toplar
 
-Toplanan veriler backend API (Django) aracılığıyla sunucuya iletilir
+- **Toplanan veriler backend API (Django) aracılığıyla sunucuya iletilir
 
-Veriler PostgreSQL veritabanında saklanır
+- **Veriler PostgreSQL veritabanında saklanır
 
-TensorFlow tabanlı yapay zeka modeli verileri analiz eder
+- **TensorFlow tabanlı yapay zeka modeli verileri analiz eder
 
-Analiz sonuçları web paneli ve mobil uygulama üzerinden kullanıcıya sunulur
+- **Analiz sonuçları web paneli ve mobil uygulama üzerinden kullanıcıya sunulur
 
 🔧 Sistem Modülleri
 
-Sensör Veri Toplama Modülü
+- **Sensör Veri Toplama Modülü
 
-Veri İşleme ve Depolama Modülü
+- **Veri İşleme ve Depolama Modülü
 
-Yapay Zeka Analiz Modülü
+- **Yapay Zeka Analiz Modülü
 
-Web Yönetim Paneli
+- **Web Yönetim Paneli
 
-Mobil Uygulama
+- **Mobil Uygulama
 
 🧩 Bileşenler Arasındaki İlişki
 
-IoT Sensörleri → Django API → PostgreSQL Veritabanı → TensorFlow Analiz Motoru → Web Paneli / Mobil Uygulama
+- **IoT Sensörleri → Django API → PostgreSQL Veritabanı → TensorFlow Analiz Motoru → Web Paneli / Mobil Uygulama
 
-Sensörlerden gelen veriler backend tarafından alınır, veritabanında saklanır ve AI motoru ile analiz edilerek kullanıcılara öneriler ve otomatik kontrol sağlar.
+- **Sensörlerden gelen veriler backend tarafından alınır, veritabanında saklanır ve AI motoru ile analiz edilerek kullanıcılara öneriler ve otomatik kontrol sağlar.
 
 🏛️ Kullanılan Tasarım Desenleri
 
-Katmanlı Mimari (Layered Architecture): Veri katmanı, iş mantığı katmanı ve sunum katmanı olarak ayrılmıştır
+- **Katmanlı Mimari (Layered Architecture): Veri katmanı, iş mantığı katmanı ve sunum katmanı olarak ayrılmıştır
 
-MVT (Model-View-Template): Django frameworkü backend geliştirilmesinde bu mimari yapıyı kullanır. Model veri yapısını temsil eder, View iş mantığını yönetir ve Template kullanıcıya gösterilen arayüzü oluşturur.
+- **MVT (Model-View-Template): Django frameworkü backend geliştirilmesinde bu mimari yapıyı kullanır. Model veri yapısını temsil eder, View iş mantığını yönetir ve Template kullanıcıya gösterilen arayüzü oluşturur.
 
 📊 Mimari Diyagram
 

@@ -311,7 +311,54 @@ Fonksiyonel olmayan gereksinimler, sistemin performans, güvenlik ve kullanılab
 - Sistem farklı cihazlar ve platformlar üzerinden erişilebilir olmalıdır
 - Sistem modüler bir yapıda tasarlanmalı ve ileride geliştirilebilir olmalıdır
 - Veri aktarımı sırasında veri bütünlüğü korunmalıdır
+## 📖 User Stories
 
+### User Story 1
+**Rol:** Çiftçi  
+**İstek:** Tarlamdaki toprak nemi ve sıcaklık verilerini sistem üzerinden görmek istiyorum.  
+**Sebep:** Böylece bitkilerimin mevcut durumunu takip edebilirim.
+
+---
+
+### User Story 2
+**Rol:** Çiftçi  
+**İstek:** Sensörlerden gelen verilerin yapay zeka tarafından analiz edilmesini istiyorum.  
+**Sebep:** Böylece sulama ve gübreleme zamanlarını daha doğru planlayabilirim.
+
+---
+
+### User Story 3
+**Rol:** Çiftçi  
+**İstek:** Mobil uygulama üzerinden tarlamdaki verileri anlık olarak görüntülemek istiyorum.  
+**Sebep:** Böylece bulunduğum yerden bağımsız olarak tarım alanımı kontrol edebilirim.
+
+---
+
+### User Story 4
+**Rol:** Kullanıcı  
+**İstek:** Sisteme güvenli bir şekilde giriş yapmak istiyorum.  
+**Sebep:** Böylece yalnızca bana ait tarım verilerine erişebilirim.
+
+---
+
+### User Story 5
+**Rol:** Çiftçi  
+**İstek:** Sistemden analiz sonuçlarına göre öneriler almak istiyorum.  
+**Sebep:** Böylece su, gübre ve ilaç kullanımını daha verimli şekilde yönetebilirim.
+
+---
+
+### User Story 6
+**Rol:** Yönetici  
+**İstek:** Sensör verilerinin veritabanında güvenli şekilde saklanmasını istiyorum.  
+**Sebep:** Böylece geçmiş verileri inceleyebilir ve analiz yapabilirim.
+
+---
+
+### User Story 7
+**Rol:** Kullanıcı  
+**İstek:** Sisteme hem web hem de mobil cihazlardan erişebilmek istiyorum.  
+**Sebep:** Böylece istediğim yerden sistem verilerine ulaşabilirim.
 ## Sonuç
 
 Gereksinim toplama ve analiz süreci sayesinde sistemin gerçekleştirmesi gereken işlevler ve teknik ihtiyaçlar net bir şekilde belirlenmiştir. Bu aşama, projenin sonraki geliştirme süreçleri için sağlam bir temel oluşturmuş ve sistem mimarisinin daha planlı bir şekilde tasarlanmasına katkı sağlamıştır. Doğru bir gereksinim analizi yapılması, projenin hedeflerine ulaşması ve kullanıcı ihtiyaçlarının karşılanması açısından büyük önem taşımaktadır.

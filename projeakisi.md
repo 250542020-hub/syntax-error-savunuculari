@@ -169,74 +169,63 @@ Tarım alanlarında bulunan sensörlerin düşük enerji tüketimi ile veri gön
 
 ---
 
-# 📋 Proje Kapsam Belgesi (Hayat Ay)
+## 📊 Özet Karşılaştırma Tablosu
 
-## 1. Proje Tanımı
+| Bileşen | Seçilen Araç | En Büyük Avantajı |
+| :--- | :--- | :--- |
+| **Dil** | Python 3.10+ | Ekosistem birliği (AI + Web + Scripting) |
+| **Veri Analizi** | Pandas / NumPy | Sensör verilerini temizleme ve işleme hızı |
+| **Haberleşme** | MQTT / WebSockets | Gerçek zamanlı veri akışı ve düşük enerji tüketimi |
+| **Deployment** | Docker | Ortam bağımsız, hızlı ve hatasız kurulum |
 
-Akıllı Tarım Yönetim Sistemi, tarım alanlarından IoT sensörleri aracılığıyla toplanan verileri analiz ederek çiftçilere daha verimli ve sürdürülebilir tarım yönetimi sunmayı amaçlayan bir yazılım sistemidir.
+## 📋 Proje Kapsam Belgesi (Hayat Ay)
+##  1. Proje Tanımı:
+Akıllı Tarım Yönetim Sistemi, tarım alanlarından IoT sensörleri aracılığıyla toplanan verileri analiz ederek
+çiftçilere daha verimli ve sürdürülebilir tarım yönetimi sunmayı amaçlayan bir yazılım sistemidir. Sistem,
+çevresel verileri toplayarak analiz eder ve kullanıcıya web veya mobil arayüz üzerinden anlamlı bilgiler sağlar.
+Toplanan veriler merkezi bir sistemde saklanır ve yapay zeka destekli analizler ile değerlendirilir. Böylece kullanıcılar tarım faaliyetlerini daha bilinçli ve verimli şekilde yönetebilir.
 
-Sistem çevresel verileri toplar, analiz eder ve kullanıcıya web veya mobil arayüz üzerinden anlamlı bilgiler sunar.
-
----
-
-## 2. Projenin Amacı
-
-Bu projenin amacı tarım alanlarında kullanılan sensörlerden elde edilen verileri dijital ortamda analiz ederek çiftçilere bir **karar destek sistemi** sunmaktır.
-
-### Temel hedefler
-
-- Tarımsal verilerin otomatik olarak toplanması  
-- Verilerin güvenli şekilde saklanması  
-- Yapay zeka algoritmaları ile analiz edilmesi  
-- Kullanıcıların web veya mobil arayüz üzerinden verilere erişebilmesi  
-- Tarımsal verimliliğin artırılması  
-
----
+##  2. Projenin Amacı
+Bu projenin amacı, tarım alanlarında kullanılan sensörlerden elde edilen verileri dijital ortamda analiz ederek çiftçilere karar destek sistemi sunmaktır.
+## Projenin temel hedefleri şunlardır:
+* Tarımsal verilerin otomatik olarak toplanması
+* Verilerin güvenli şekilde saklanması
+* Yapay zeka algoritmaları ile analiz edilmesi
+* Kullanıcıların web veya mobil arayüz üzerinden verilere erişebilmesi
+* Tarımsal verimliliğin artırılması
 
 ## 3. Kullanılan Teknolojiler
-
-- Python  
-- TensorFlow  
-- IoT Sensörleri  
-- Django  
-- PostgreSQL  
-
----
+## Projenin geliştirilmesinde aşağıdaki teknolojiler kullanılacaktır:
+* Python: Sistem geliştirme ve veri işleme süreçlerinde ana programlama dili olarak kullanılacaktır.
+* TensorFlow: Sensörlerden gelen verilerin analiz edilmesi ve tahmin modellerinin oluşturulması için kullanılacaktır.
+* IoT Sensörleri: Tarım alanından sıcaklık, nem ve diğer çevresel verileri toplamak için kullanılacaktır.
+* Django: Web tabanlı API ve yönetim panelinin geliştirilmesi için kullanılacaktır.
+* PostgreSQL: Sensör verilerinin güvenli ve düzenli şekilde saklanması için veritabanı sistemi olarak kullanılacaktır.
 
 ## 4. Proje Kapsamı
+## ✅ Kapsama Dahil Olan Özellikler
+* IoT sensörlerinden veri toplanması
+* Sensör verilerinin API aracılığıyla sisteme gönderilmesi
+* Verilerin PostgreSQL veritabanında saklanması
+* Python ve TensorFlow kullanılarak veri analizi yapılması
+* Django tabanlı web arayüzü üzerinden verilerin görüntülenmesi
+* Kullanıcıların sisteme giriş yapabilmesi
+* Sistem yöneticisinin verileri yönetebilmesi
 
-### ✅ Kapsama Dahil Olan Özellikler
-
-- IoT sensörlerinden veri toplanması  
-- Sensör verilerinin API aracılığıyla sisteme gönderilmesi  
-- Verilerin PostgreSQL veritabanında saklanması  
-- Python ve TensorFlow kullanılarak veri analizi yapılması  
-- Django tabanlı web arayüzü üzerinden verilerin görüntülenmesi  
-- Kullanıcıların sisteme giriş yapabilmesi  
-- Sistem yöneticisinin verileri yönetebilmesi  
-
-### ❌ Kapsama Dahil Olmayan Özellikler
-
-- Sensör donanımının fiziksel üretimi  
-- Ağır tarım makinelerinin doğrudan kontrol edilmesi  
-- Ticari ölçekli büyük tarım işletmeleri için özel modüller  
-
----
+## ❌ Kapsama Dahil Olmayan Özellikler
+* Sensör donanımının fiziksel üretimi
+* Ağır tarım makinelerinin doğrudan kontrol edilmesi
+* Ticari ölçekli büyük tarım işletmeleri için özel modüller
 
 ## 5. Proje Paydaşları
-
-| Paydaş | Açıklama |
-|------|------|
-| Çiftçiler | Sistemi kullanarak tarım verilerini takip eder |
-| Sistem Yöneticisi | Sistemi yönetir ve kontrol eder |
-| Yazılım Geliştiriciler | Sistemin geliştirilmesini sağlar |
-| Proje Ekibi | Projenin planlanması ve uygulanmasından sorumludur |
-
----
+Paydaş                          Açıklama
+* Çiftçiler	        |         Sistemi kullanarak tarım verilerini takip eder
+* Sistem            |         Yöneticisi	Sistemi yönetir ve kontrol eder
+* Yazılım Geliştiriciler	|   Sistemin geliştirilmesini sağlar
+* Proje Ekibi            |   	Projenin planlanması ve uygulanmasından sorumludur
 
 ## 6. Sonuç
-
-Akıllı Tarım Yönetim Sistemi, IoT sensörleri ve yapay zeka teknolojilerini bir araya getirerek tarım verilerinin daha verimli şekilde analiz edilmesini sağlamayı amaçlamaktadır.
+Akıllı Tarım Yönetim Sistemi, IoT sensörleri ve yapay zeka teknolojilerini bir araya getirerek tarım verilerinin daha verimli şekilde analiz edilmesini sağlamayı amaçlamaktadır. Bu sistem sayesinde çiftçiler çevresel verileri daha kolay takip edebilecek ve tarım süreçlerini daha verimli şekilde yönetebilecektir.
 
 ---
 
@@ -333,63 +322,83 @@ Belirlenen geliştirme ortamı sayesinde ekip üyeleri aynı araçları kullanar
 
 ---
 
-# 📋 Gereksinim Toplama ve Analizi (Sami Yusuf Yıldız)
+## 📋 Gereksinim Toplama ve Analizi (Sami Yusuf Yıldız)
+
+Yazılım projelerinde gereksinim toplama ve analiz aşaması, sistemin doğru şekilde tasarlanması ve geliştirilmesi için en önemli adımlardan biridir. Bu aşamada sistemin hangi ihtiyaçlara çözüm üreteceği, kullanıcıların sistemden beklentileri ve sistemin yerine getirmesi gereken işlevler detaylı bir şekilde incelenmiştir. Projenin bu bölümünde Akıllı Tarım Yönetim Sistemi için gerekli olan fonksiyonel ve fonksiyonel olmayan gereksinimler belirlenmiş ve analiz edilmiştir.
+
+Gereksinim toplama sürecinde tarım sektöründeki temel ihtiyaçlar araştırılmış, özellikle çiftçilerin tarımsal verileri daha verimli kullanabilmesi için gerekli olan sistem özellikleri değerlendirilmiştir. IoT sensörlerinden elde edilen verilerin analiz edilmesi, saklanması ve kullanıcıya anlamlı bilgiler halinde sunulması projenin temel gereksinimleri arasında yer almaktadır. Ayrıca sistemin hem web hem de mobil platformlar üzerinden erişilebilir olması hedeflenmiştir.
 
 ## Fonksiyonel Gereksinimler
 
-- IoT sensörleri aracılığıyla sıcaklık, nem ve toprak verilerinin toplanması  
-- Sensör verilerinin sunucuya gönderilmesi  
-- Verilerin PostgreSQL veritabanında saklanması  
-- Yapay zeka ile veri analizi yapılması  
-- Sonuçların web veya mobil uygulamada gösterilmesi  
-- Kullanıcıların sisteme giriş yapabilmesi  
+Fonksiyonel gereksinimler, sistemin kullanıcılar için yerine getirmesi gereken temel işlevleri ifade eder. Proje kapsamında belirlenen başlıca fonksiyonel gereksinimler şunlardır:
 
----
+- Tarım alanlarına yerleştirilen IoT sensörleri aracılığıyla sıcaklık, nem ve toprak verilerinin toplanması
+- Sensörlerden elde edilen verilerin sistem sunucusuna gönderilmesi
+- Toplanan verilerin PostgreSQL veritabanında güvenli şekilde saklanması
+- Yapay zeka algoritmaları kullanılarak sensör verilerinin analiz edilmesi
+- Analiz sonuçlarının kullanıcıya web paneli veya mobil uygulama aracılığıyla sunulması
+- Kullanıcıların sisteme güvenli bir şekilde giriş yapabilmesi ve kendi verilerini görüntüleyebilmesi
 
 ## Fonksiyonel Olmayan Gereksinimler
 
-- Sistem hızlı veri işleyebilmelidir  
-- Veriler güvenli şekilde saklanmalıdır  
-- Sistem farklı cihazlardan erişilebilir olmalıdır  
-- Sistem modüler ve geliştirilebilir olmalıdır  
-- Veri aktarımında veri bütünlüğü korunmalıdır  
+Fonksiyonel olmayan gereksinimler, sistemin performans, güvenlik ve kullanılabilirlik gibi özelliklerini tanımlar. Proje kapsamında belirlenen başlıca fonksiyonel olmayan gereksinimler şunlardır:
 
----
-
+- Sistem sensör verilerini hızlı ve güvenilir bir şekilde işleyebilmelidir
+- Kullanıcı ve sensör verileri güvenli bir veritabanında saklanmalıdır
+- Sistem farklı cihazlar ve platformlar üzerinden erişilebilir olmalıdır
+- Sistem modüler bir yapıda tasarlanmalı ve ileride geliştirilebilir olmalıdır
+- Veri aktarımı sırasında veri bütünlüğü korunmalıdır
 ## 📖 User Stories
 
-**User Story 1**
-
-Rol: Çiftçi  
-İstek: Tarlamdaki toprak nemi ve sıcaklık verilerini görmek istiyorum  
-Sebep: Bitkilerimin durumunu takip edebilmek  
-
----
-
-**User Story 2**
-
-Rol: Çiftçi  
-İstek: Sensör verilerinin yapay zeka tarafından analiz edilmesini istiyorum  
-Sebep: Sulama ve gübreleme zamanlarını doğru planlamak  
+### User Story 1
+**Rol:** Çiftçi  
+**İstek:** Tarlamdaki toprak nemi ve sıcaklık verilerini sistem üzerinden görmek istiyorum.  
+**Sebep:** Böylece bitkilerimin mevcut durumunu takip edebilirim.
 
 ---
 
-**User Story 3**
-
-Rol: Çiftçi  
-İstek: Mobil uygulama üzerinden verileri görmek istiyorum  
-Sebep: Tarlamı uzaktan kontrol etmek  
-
----
-
-**User Story 4**
-
-Rol: Kullanıcı  
-İstek: Sisteme güvenli şekilde giriş yapmak  
-Sebep: Kendi verilerime erişebilmek  
+### User Story 2
+**Rol:** Çiftçi  
+**İstek:** Sensörlerden gelen verilerin yapay zeka tarafından analiz edilmesini istiyorum.  
+**Sebep:** Böylece sulama ve gübreleme zamanlarını daha doğru planlayabilirim.
 
 ---
 
+### User Story 3
+**Rol:** Çiftçi  
+**İstek:** Mobil uygulama üzerinden tarlamdaki verileri anlık olarak görüntülemek istiyorum.  
+**Sebep:** Böylece bulunduğum yerden bağımsız olarak tarım alanımı kontrol edebilirim.
+
+---
+
+### User Story 4
+**Rol:** Kullanıcı  
+**İstek:** Sisteme güvenli bir şekilde giriş yapmak istiyorum.  
+**Sebep:** Böylece yalnızca bana ait tarım verilerine erişebilirim.
+
+---
+
+### User Story 5
+**Rol:** Çiftçi  
+**İstek:** Sistemden analiz sonuçlarına göre öneriler almak istiyorum.  
+**Sebep:** Böylece su, gübre ve ilaç kullanımını daha verimli şekilde yönetebilirim.
+
+---
+
+### User Story 6
+**Rol:** Yönetici  
+**İstek:** Sensör verilerinin veritabanında güvenli şekilde saklanmasını istiyorum.  
+**Sebep:** Böylece geçmiş verileri inceleyebilir ve analiz yapabilirim.
+
+---
+
+### User Story 7
+**Rol:** Kullanıcı  
+**İstek:** Sisteme hem web hem de mobil cihazlardan erişebilmek istiyorum.  
+**Sebep:** Böylece istediğim yerden sistem verilerine ulaşabilirim.
 ## Sonuç
 
-Gereksinim analizi sayesinde sistemin teknik ihtiyaçları net şekilde belirlenmiştir. Bu aşama projenin doğru planlanması ve geliştirilmesi için güçlü bir temel oluşturmuştur.
+Gereksinim toplama ve analiz süreci sayesinde sistemin gerçekleştirmesi gereken işlevler ve teknik ihtiyaçlar net bir şekilde belirlenmiştir. Bu aşama, projenin sonraki geliştirme süreçleri için sağlam bir temel oluşturmuş ve sistem mimarisinin daha planlı bir şekilde tasarlanmasına katkı sağlamıştır. Doğru bir gereksinim analizi yapılması, projenin hedeflerine ulaşması ve kullanıcı ihtiyaçlarının karşılanması açısından büyük önem taşımaktadır.
+
+
+---

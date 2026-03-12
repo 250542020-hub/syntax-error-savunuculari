@@ -240,7 +240,7 @@ Akıllı Tarım Yönetim Sistemi, IoT sensörleri ve yapay zeka teknolojilerini 
 
 ---
 
- ⚙️ Geliştirme Ortamı Kurulumu (Ceren Çam)
+## ⚙️ Geliştirme Ortamı Kurulumu (Ceren Çam)
 
 ## Geliştirme Ortamı
 Akıllı Tarım Yönetim Sistemi projesinin geliştirme sürecinde kullanılacak yazılım araçları ve bağımlılıklar belirlenmiş ve geliştirme ortamı yapılandırılmıştır. Bu ortam, ekip üyelerinin aynı teknolojileri kullanarak proje üzerinde çalışabilmesini sağlar.
@@ -322,15 +322,19 @@ amacıyla kullanılmaktadır.
 Projenin farklı sistemlerde çalıştırılabilmesi ve taşınabilirliğinin sağlanması için Docker kullanılacaktır.
 
 Docker;
+    • uygulamanın farklı işletim sistemlerinde çalışması
+    • proje ortamını ekip üyeleri arasında standartlaştırması
+    • ileride deployment süreçlerini kolaylaştırması
 - uygulamanın farklı işletim sistemlerinde çalışması
 - proje ortamını ekip üyeleri arasında standartlaştırması
 - ileride deployment süreçlerini kolaylaştırması
-    
+
 amacıyla kullanılacaktır.
 
 ## Sonuç
 Belirlenen geliştirme ortamı sayesinde ekip üyeleri aynı araçları kullanarak proje üzerinde çalışabilir. Bu ortam, yazılım geliştirme sürecinin düzenli ilerlemesini ve ekip içi iş birliğinin sağlanmasını kolaylaştırır.
 
+---
 
 # 📋 Gereksinim Toplama ve Analizi (Sami Yusuf Yıldız)
 

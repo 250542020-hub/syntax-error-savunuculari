@@ -453,11 +453,10 @@ Gereksinim toplama ve analiz süreci sayesinde sistemin gerçekleştirmesi gerek
  ## Senaryo 1 – Sensör Verilerini Görüntüleme
 - Aktör: Çiftçi
 -Adımlar:
-
-1-Kullanıcı sisteme giriş yapar.
-2-Sistem kullanıcı bilgilerini doğrular.
-3-IoT sensörlerinden gelen veriler veritabanından alınır.
-4-Veriler kullanıcı arayüzünde gösterilir.
+-Kullanıcı sisteme giriş yapar.
+-Sistem kullanıcı bilgilerini doğrular.
+-IoT sensörlerinden gelen veriler veritabanından alınır.
+-Veriler kullanıcı arayüzünde gösterilir.
 
 -Sonuç:
 Kullanıcı tarlasındaki güncel durumu görüntüler.
@@ -465,7 +464,6 @@ Kullanıcı tarlasındaki güncel durumu görüntüler.
 ## Senaryo 2 – Yapay Zeka ile Veri Analizi
 -Aktör: Sistem
 -Adımlar:
-
 -Sensörlerden veri toplanır.
 -Veriler sistemde işlenir.
 -Python ve TensorFlow kullanılarak analiz yapılır.
@@ -477,7 +475,6 @@ Sistem tarımsal kararlar için analiz sonuçları üretir.
 ## Senaryo 3 – Mobil Erişim
 -Aktör: Çiftçi
 -Adımlar:
-
 -Kullanıcı mobil uygulamayı açar.
 -Kullanıcı sisteme giriş yapar.
 -Sensör verileri görüntülenir.
@@ -488,7 +485,6 @@ Kullanıcı bulunduğu yerden bağımsız olarak sisteme erişir.
 ## Senaryo 4 – Güvenli Giriş
 -Aktör: Kullanıcı
 -Adımlar:
-
 -Kullanıcı kullanıcı adı ve şifre girer.
 -Sistem kimlik doğrulaması yapar.
 -Kullanıcı sisteme giriş yapar.
@@ -499,7 +495,6 @@ Yetkili erişim sağlanır.
 ## Senaryo 5 – Öneri Sistemi
 -Aktör: Sistem
 -Adımlar:
-
 -Sensör verileri analiz edilir.
 -Sistem sulama veya gübreleme önerileri oluşturur.
 -Kullanıcıya öneriler gösterilir.

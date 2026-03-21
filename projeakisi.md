@@ -406,30 +406,30 @@ Gereksinim toplama ve analiz süreci sayesinde sistemin gerçekleştirmesi gerek
 
 ## 📄  Detaylı Gereksinim Belgesi (Hayat Ay)
 
- ## 1. Kullanıcı Hikayeleri
+ ## 👤 1. Kullanıcı Hikayeleri
  ## User Story 1
 
- ** Rol: Çiftçi
-*İstek: Tarlamdaki toprak nemi ve sıcaklık verilerini sistem üzerinden görmek istiyorum.
-*Sebep: Böylece bitkilerimin mevcut durumunu takip edebilirim.
+- Rol: Çiftçi
+- İstek: Tarlamdaki toprak nemi ve sıcaklık verilerini sistem üzerinden görmek istiyorum.
+- Sebep: Böylece bitkilerimin mevcut durumunu takip edebilirim.
 
 ## User Story 2
 
-*Rol: Çiftçi
-*İstek: Sensörlerden gelen verilerin yapay zeka tarafından analiz edilmesini istiyorum.
-*Sebep: Böylece sulama ve gübreleme zamanlarını daha doğru planlayabilirim.
+- Rol: Çiftçi
+- İstek: Sensörlerden gelen verilerin yapay zeka tarafından analiz edilmesini istiyorum.
+- Sebep: Böylece sulama ve gübreleme zamanlarını daha doğru planlayabilirim.
 
 ## User Story 3
 
-*Rol: Çiftçi
-*İstek: Mobil uygulama üzerinden tarlamdaki verileri anlık olarak görüntülemek istiyorum.
-*Sebep: Böylece bulunduğum yerden bağımsız olarak tarım alanımı kontrol edebilirim.
+- Rol: Çiftçi
+- İstek: Mobil uygulama üzerinden tarlamdaki verileri anlık olarak görüntülemek istiyorum.
+- Sebep: Böylece bulunduğum yerden bağımsız olarak tarım alanımı kontrol edebilirim.
 
 ## User Story 4
 
-*Rol: Kullanıcı
-*İstek: Sisteme güvenli bir şekilde giriş yapmak istiyorum.
-*Sebep: Böylece yalnızca bana ait tarım verilerine erişebilirim.
+- Rol: Kullanıcı
+- İstek: Sisteme güvenli bir şekilde giriş yapmak istiyorum.
+- Sebep: Böylece yalnızca bana ait tarım verilerine erişebilirim.
 
 ## User Story 5
 
@@ -439,12 +439,133 @@ Gereksinim toplama ve analiz süreci sayesinde sistemin gerçekleştirmesi gerek
 
 ## User Story 6
 
-*Rol: Yönetici
-*İstek: Sensör verilerinin veritabanında güvenli şekilde saklanmasını istiyorum.
-*Sebep: Böylece geçmiş verileri inceleyebilir ve analiz yapabilirim.
+- Rol: Yönetici
+- İstek: Sensör verilerinin veritabanında güvenli şekilde saklanmasını istiyorum.
+- Sebep: Böylece geçmiş verileri inceleyebilir ve analiz yapabilirim.
 
 ## User Story 7
 
-*Rol: Kullanıcı
-*İstek: Sisteme hem web hem de mobil cihazlardan erişebilmek istiyorum.
-*Sebep: Böylece istediğim yerden sistem verilerine ulaşabilirim.
+- Rol: Kullanıcı
+- İstek: Sisteme hem web hem de mobil cihazlardan erişebilmek istiyorum.
+- Sebep: Böylece istediğim yerden sistem verilerine ulaşabilirim.
+
+## 🎬 2.Kullanım Senaryoları (Use Case)
+ ## Senaryo 1 – Sensör Verilerini Görüntüleme
+- Aktör: Çiftçi
+-Adımlar:
+
+1-Kullanıcı sisteme giriş yapar.
+2-Sistem kullanıcı bilgilerini doğrular.
+3-IoT sensörlerinden gelen veriler veritabanından alınır.
+4-Veriler kullanıcı arayüzünde gösterilir.
+
+-Sonuç:
+Kullanıcı tarlasındaki güncel durumu görüntüler.
+
+## Senaryo 2 – Yapay Zeka ile Veri Analizi
+-Aktör: Sistem
+-Adımlar:
+
+1-Sensörlerden veri toplanır.
+2-Veriler sistemde işlenir.
+3-Python ve TensorFlow kullanılarak analiz yapılır.
+4-Analiz sonuçları veritabanına kaydedilir.
+
+-Sonuç:
+Sistem tarımsal kararlar için analiz sonuçları üretir.
+
+## Senaryo 3 – Mobil Erişim
+-Aktör: Çiftçi
+-Adımlar:
+
+1-Kullanıcı mobil uygulamayı açar.
+2-Kullanıcı sisteme giriş yapar.
+3-Sensör verileri görüntülenir.
+
+-Sonuç:
+Kullanıcı bulunduğu yerden bağımsız olarak sisteme erişir.
+
+## Senaryo 4 – Güvenli Giriş
+-Aktör: Kullanıcı
+-Adımlar:
+
+1-Kullanıcı kullanıcı adı ve şifre girer.
+2-Sistem kimlik doğrulaması yapar.
+3-Kullanıcı sisteme giriş yapar.
+
+-Sonuç:
+Yetkili erişim sağlanır.
+
+## Senaryo 5 – Öneri Sistemi
+-Aktör: Sistem
+-Adımlar:
+
+1-Sensör verileri analiz edilir.
+2-Sistem sulama veya gübreleme önerileri oluşturur.
+3-Kullanıcıya öneriler gösterilir.
+
+-Sonuç:
+Kullanıcı doğru tarım kararları alır.
+
+## Senaryo 6 – Veri Yönetimi (EKLE BUNU)
+-Aktör: Yönetici
+-Adımlar:
+1- Yönetici sisteme giriş yapar
+2- Sistem veritabanına erişim sağlar
+3- Yönetici sensör verilerini görüntüler veya kontrol eder
+4- Gerekirse veri düzenleme veya silme işlemi yapar
+
+-Sonuç:
+Veriler güvenli ve düzenli şekilde yönetilir
+
+
+## 3. Fonksiyonel Gereksinimler
+
+-IoT sensörlerinden veri toplamalıdır.
+-Toplanan verileri PostgreSQL veritabanında saklamalıdır.
+-Python ile veri işleme yapmalıdır.
+-TensorFlow ile veri analizi gerçekleştirmelidir.
+-Django framework kullanılarak web arayüzü sunmalıdır.
+-Kullanıcı giriş ve kimlik doğrulama sistemi içermelidir.
+-Mobil ve web platformlarını desteklemelidir.
+-Kullanıcıya analiz sonuçlarını göstermelidir.
+-Kullanıcıya öneri sistemi sunmalıdır.
+
+## 4. Fonksiyonel Olmayan Gereksinimler
+-Sistem güvenli olmalıdır.
+-Sistem hızlı çalışmalıdır.
+-Sistem kullanıcı dostu bir arayüze sahip olmalıdır.
+-Sistem farklı cihazlarda sorunsuz çalışmalıdır.
+-Sistem yüksek veri doğruluğu sağlamalıdır.
+-Sistem ölçeklenebilir olmalıdır.
+
+## 👥5. Paydaşlar
+-Çiftçiler (Sistemin ana kullanıcıları)
+-Sistem yöneticileri
+-Yazılım geliştirme ekibi
+-Proje yöneticisi
+
+## 6. Paydaş Onayı ve Önceliklendirme
+
+-Toplanan gereksinimler proje paydaşları ile paylaşılmış ve değerlendirilmiştir. Yapılan toplantılar ve değerlendirmeler sonucunda gereksinimler onaylanmış ve önceliklendirilmiştir.
+
+## Yüksek Öncelik:
+-Sensör verilerinin toplanması
+-Sensör verilerinin görüntülenmesi
+-Yapay zeka ile veri analizi
+-Güvenli kullanıcı girişi
+-Veri güvenliği
+
+## Orta Öncelik:
+-Mobil uygulama erişimi
+-Öneri sistemi
+-Kullanıcı deneyimi
+
+## Düşük Öncelik:
+-Ek raporlama özellikleri
+-Gelişmiş analiz araçları
+
+Bu önceliklendirme, sistem geliştirme sürecinin planlanmasında kullanılacaktır.
+
+## 7. Sonuç
+-Bu gereksinim belgesi, Akıllı Tarım Yönetim Sistemi için kullanıcı ihtiyaçlarını, sistem gereksinimlerini ve kullanım senaryolarını detaylı şekilde tanımlamaktadır. Bu belge proje geliştirme sürecinde referans doküman olarak kullanılacaktır.

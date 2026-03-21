@@ -502,7 +502,7 @@ Yetkili erişim sağlanır.
 - Sonuç:
 Kullanıcı doğru tarım kararları alır.
 
-## Senaryo 6 – Veri Yönetimi (EKLE BUNU)
+## Senaryo 6 – Veri Yönetimi 
 - Aktör: Yönetici
 - Adımlar:
 - Yönetici sisteme giriş yapar

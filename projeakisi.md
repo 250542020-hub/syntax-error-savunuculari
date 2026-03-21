@@ -466,10 +466,10 @@ Kullanıcı tarlasındaki güncel durumu görüntüler.
 -Aktör: Sistem
 -Adımlar:
 
-1-Sensörlerden veri toplanır.
-2-Veriler sistemde işlenir.
-3-Python ve TensorFlow kullanılarak analiz yapılır.
-4-Analiz sonuçları veritabanına kaydedilir.
+-Sensörlerden veri toplanır.
+-Veriler sistemde işlenir.
+-Python ve TensorFlow kullanılarak analiz yapılır.
+-Analiz sonuçları veritabanına kaydedilir.
 
 -Sonuç:
 Sistem tarımsal kararlar için analiz sonuçları üretir.
@@ -478,9 +478,9 @@ Sistem tarımsal kararlar için analiz sonuçları üretir.
 -Aktör: Çiftçi
 -Adımlar:
 
-1-Kullanıcı mobil uygulamayı açar.
-2-Kullanıcı sisteme giriş yapar.
-3-Sensör verileri görüntülenir.
+-Kullanıcı mobil uygulamayı açar.
+-Kullanıcı sisteme giriş yapar.
+-Sensör verileri görüntülenir.
 
 -Sonuç:
 Kullanıcı bulunduğu yerden bağımsız olarak sisteme erişir.
@@ -489,9 +489,9 @@ Kullanıcı bulunduğu yerden bağımsız olarak sisteme erişir.
 -Aktör: Kullanıcı
 -Adımlar:
 
-1-Kullanıcı kullanıcı adı ve şifre girer.
-2-Sistem kimlik doğrulaması yapar.
-3-Kullanıcı sisteme giriş yapar.
+-Kullanıcı kullanıcı adı ve şifre girer.
+-Sistem kimlik doğrulaması yapar.
+-Kullanıcı sisteme giriş yapar.
 
 -Sonuç:
 Yetkili erişim sağlanır.
@@ -500,9 +500,9 @@ Yetkili erişim sağlanır.
 -Aktör: Sistem
 -Adımlar:
 
-1-Sensör verileri analiz edilir.
-2-Sistem sulama veya gübreleme önerileri oluşturur.
-3-Kullanıcıya öneriler gösterilir.
+-Sensör verileri analiz edilir.
+-Sistem sulama veya gübreleme önerileri oluşturur.
+-Kullanıcıya öneriler gösterilir.
 
 -Sonuç:
 Kullanıcı doğru tarım kararları alır.
@@ -510,10 +510,10 @@ Kullanıcı doğru tarım kararları alır.
 ## Senaryo 6 – Veri Yönetimi (EKLE BUNU)
 -Aktör: Yönetici
 -Adımlar:
-1- Yönetici sisteme giriş yapar
-2- Sistem veritabanına erişim sağlar
-3- Yönetici sensör verilerini görüntüler veya kontrol eder
-4- Gerekirse veri düzenleme veya silme işlemi yapar
+- Yönetici sisteme giriş yapar
+- Sistem veritabanına erişim sağlar
+- Yönetici sensör verilerini görüntüler veya kontrol eder
+- Gerekirse veri düzenleme veya silme işlemi yapar
 
 -Sonuç:
 Veriler güvenli ve düzenli şekilde yönetilir

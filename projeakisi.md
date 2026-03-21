@@ -462,49 +462,49 @@ Gereksinim toplama ve analiz süreci sayesinde sistemin gerçekleştirmesi gerek
 Kullanıcı tarlasındaki güncel durumu görüntüler.
 
 ## Senaryo 2 – Yapay Zeka ile Veri Analizi
--Aktör: Sistem
--Adımlar:
--Sensörlerden veri toplanır.
--Veriler sistemde işlenir.
--Python ve TensorFlow kullanılarak analiz yapılır.
--Analiz sonuçları veritabanına kaydedilir.
+- Aktör: Sistem
+- Adımlar:
+- Sensörlerden veri toplanır.
+- Veriler sistemde işlenir.
+- Python ve TensorFlow kullanılarak analiz yapılır.
+- Analiz sonuçları veritabanına kaydedilir.
 
--Sonuç:
+- Sonuç:
 Sistem tarımsal kararlar için analiz sonuçları üretir.
 
 ## Senaryo 3 – Mobil Erişim
--Aktör: Çiftçi
--Adımlar:
--Kullanıcı mobil uygulamayı açar.
--Kullanıcı sisteme giriş yapar.
--Sensör verileri görüntülenir.
+- Aktör: Çiftçi
+- Adımlar:
+- Kullanıcı mobil uygulamayı açar.
+- Kullanıcı sisteme giriş yapar.
+- Sensör verileri görüntülenir.
 
--Sonuç:
+- Sonuç:
 Kullanıcı bulunduğu yerden bağımsız olarak sisteme erişir.
 
 ## Senaryo 4 – Güvenli Giriş
--Aktör: Kullanıcı
--Adımlar:
--Kullanıcı kullanıcı adı ve şifre girer.
--Sistem kimlik doğrulaması yapar.
--Kullanıcı sisteme giriş yapar.
+- Aktör: Kullanıcı
+- Adımlar:
+- Kullanıcı kullanıcı adı ve şifre girer.
+- Sistem kimlik doğrulaması yapar.
+- Kullanıcı sisteme giriş yapar.
 
--Sonuç:
+- Sonuç:
 Yetkili erişim sağlanır.
 
 ## Senaryo 5 – Öneri Sistemi
--Aktör: Sistem
--Adımlar:
--Sensör verileri analiz edilir.
--Sistem sulama veya gübreleme önerileri oluşturur.
--Kullanıcıya öneriler gösterilir.
+- Aktör: Sistem
+- Adımlar:
+- Sensör verileri analiz edilir.
+- Sistem sulama veya gübreleme önerileri oluşturur.
+- Kullanıcıya öneriler gösterilir.
 
--Sonuç:
+- Sonuç:
 Kullanıcı doğru tarım kararları alır.
 
 ## Senaryo 6 – Veri Yönetimi (EKLE BUNU)
--Aktör: Yönetici
--Adımlar:
+- Aktör: Yönetici
+- Adımlar:
 - Yönetici sisteme giriş yapar
 - Sistem veritabanına erişim sağlar
 - Yönetici sensör verilerini görüntüler veya kontrol eder
@@ -516,51 +516,51 @@ Veriler güvenli ve düzenli şekilde yönetilir
 
 ## 3. Fonksiyonel Gereksinimler
 
--IoT sensörlerinden veri toplamalıdır.
--Toplanan verileri PostgreSQL veritabanında saklamalıdır.
--Python ile veri işleme yapmalıdır.
--TensorFlow ile veri analizi gerçekleştirmelidir.
--Django framework kullanılarak web arayüzü sunmalıdır.
--Kullanıcı giriş ve kimlik doğrulama sistemi içermelidir.
--Mobil ve web platformlarını desteklemelidir.
--Kullanıcıya analiz sonuçlarını göstermelidir.
--Kullanıcıya öneri sistemi sunmalıdır.
+- IoT sensörlerinden veri toplamalıdır.
+- Toplanan verileri PostgreSQL veritabanında saklamalıdır.
+- Python ile veri işleme yapmalıdır.
+- TensorFlow ile veri analizi gerçekleştirmelidir.
+- Django framework kullanılarak web arayüzü sunmalıdır.
+- Kullanıcı giriş ve kimlik doğrulama sistemi içermelidir.
+- Mobil ve web platformlarını desteklemelidir.
+- Kullanıcıya analiz sonuçlarını göstermelidir.
+- Kullanıcıya öneri sistemi sunmalıdır.
 
 ## 4. Fonksiyonel Olmayan Gereksinimler
--Sistem güvenli olmalıdır.
--Sistem hızlı çalışmalıdır.
--Sistem kullanıcı dostu bir arayüze sahip olmalıdır.
--Sistem farklı cihazlarda sorunsuz çalışmalıdır.
--Sistem yüksek veri doğruluğu sağlamalıdır.
--Sistem ölçeklenebilir olmalıdır.
+- Sistem güvenli olmalıdır.
+- Sistem hızlı çalışmalıdır.
+- Sistem kullanıcı dostu bir arayüze sahip olmalıdır.
+- Sistem farklı cihazlarda sorunsuz çalışmalıdır.
+- Sistem yüksek veri doğruluğu sağlamalıdır.
+- Sistem ölçeklenebilir olmalıdır.
 
 ## 👥5. Paydaşlar
--Çiftçiler (Sistemin ana kullanıcıları)
--Sistem yöneticileri
--Yazılım geliştirme ekibi
--Proje yöneticisi
+- Çiftçiler (Sistemin ana kullanıcıları)
+- Sistem yöneticileri
+- Yazılım geliştirme ekibi
+- Proje yöneticisi
 
 ## 6. Paydaş Onayı ve Önceliklendirme
 
--Toplanan gereksinimler proje paydaşları ile paylaşılmış ve değerlendirilmiştir. Yapılan toplantılar ve değerlendirmeler sonucunda gereksinimler onaylanmış ve önceliklendirilmiştir.
+- Toplanan gereksinimler proje paydaşları ile paylaşılmış ve değerlendirilmiştir. Yapılan toplantılar ve değerlendirmeler sonucunda gereksinimler onaylanmış ve önceliklendirilmiştir.
 
 ## Yüksek Öncelik:
--Sensör verilerinin toplanması
--Sensör verilerinin görüntülenmesi
--Yapay zeka ile veri analizi
--Güvenli kullanıcı girişi
--Veri güvenliği
+- Sensör verilerinin toplanması
+- Sensör verilerinin görüntülenmesi
+- Yapay zeka ile veri analizi
+- Güvenli kullanıcı girişi
+- Veri güvenliği
 
 ## Orta Öncelik:
--Mobil uygulama erişimi
--Öneri sistemi
--Kullanıcı deneyimi
+- Mobil uygulama erişimi
+- Öneri sistemi
+- Kullanıcı deneyimi
 
 ## Düşük Öncelik:
--Ek raporlama özellikleri
--Gelişmiş analiz araçları
+- Ek raporlama özellikleri
+- Gelişmiş analiz araçları
 
 Bu önceliklendirme, sistem geliştirme sürecinin planlanmasında kullanılacaktır.
 
 ## 7. Sonuç
--Bu gereksinim belgesi, Akıllı Tarım Yönetim Sistemi için kullanıcı ihtiyaçlarını, sistem gereksinimlerini ve kullanım senaryolarını detaylı şekilde tanımlamaktadır. Bu belge proje geliştirme sürecinde referans doküman olarak kullanılacaktır.
+- Bu gereksinim belgesi, Akıllı Tarım Yönetim Sistemi için kullanıcı ihtiyaçlarını, sistem gereksinimlerini ve kullanım senaryolarını detaylı şekilde tanımlamaktadır. Bu belge proje geliştirme sürecinde referans doküman olarak kullanılacaktır.

@@ -433,9 +433,9 @@ Gereksinim toplama ve analiz süreci sayesinde sistemin gerçekleştirmesi gerek
 
 ## User Story 5
 
-*Rol: Çiftçi
-*İstek: Sistemden analiz sonuçlarına göre öneriler almak istiyorum.
-*Sebep: Böylece su, gübre ve ilaç kullanımını daha verimli şekilde yönetebilirim.
+- Rol: Çiftçi
+- İstek: Sistemden analiz sonuçlarına göre öneriler almak istiyorum.
+- Sebep: Böylece su, gübre ve ilaç kullanımını daha verimli şekilde yönetebilirim.
 
 ## User Story 6
 

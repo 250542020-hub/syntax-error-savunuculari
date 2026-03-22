@@ -564,3 +564,96 @@ Bu önceliklendirme, sistem geliştirme sürecinin planlanmasında kullanılacak
 
 ## 7. Sonuç
 - Bu gereksinim belgesi, Akıllı Tarım Yönetim Sistemi için kullanıcı ihtiyaçlarını, sistem gereksinimlerini ve kullanım senaryolarını detaylı şekilde tanımlamaktadır. Bu belge proje geliştirme sürecinde referans doküman olarak kullanılacaktır.
+
+---
+
+## 🏗️ Detaylı Mimari Tasarım (Ceren Çam)
+
+## Genel Bakış
+
+Bu bölümde, Akıllı Tarım Yönetim Sistemi'nin genel mimarisi daha detaylı şekilde ele alınmış ve sistem bileşenleri arasındaki ilişkiler teknik olarak açıklanmıştır.
+
+Bu tasarım, sistemin ölçeklenebilir, sürdürülebilir ve modüler bir yapıda geliştirilmesini hedeflemektedir.
+
+## Katmanlı Mimari Yapı
+
+Sistem, üç ana katmandan oluşmaktadır:
+
+### 1. Veri Katmanı (Data Layer)
+- PostgreSQL veritabanı kullanılmaktadır  
+- Sensör verileri, kullanıcı bilgileri ve analiz sonuçları burada saklanır  
+- Veriler düzenli ve güvenli şekilde depolanır  
+
+### 2. İş Mantığı Katmanı (Business Logic Layer)
+- Django ve Django REST Framework kullanılarak geliştirilir  
+- API servisleri bu katmanda yer alır  
+- Sensör verileri işlenir ve yapay zeka modeline gönderilir  
+- TensorFlow ile analiz işlemleri gerçekleştirilir  
+
+### 3. Sunum Katmanı (Presentation Layer)
+- Web arayüzü ve mobil uygulama bu katmanda yer alır  
+- Kullanıcılar verileri görüntüler ve sistemle etkileşime geçer  
+- Kullanıcı dostu arayüzler sayesinde sistem kolay kullanılabilir  
+
+## Veri Akışı
+
+Sistem içerisindeki veri akışı aşağıdaki gibidir:
+
+IoT Sensörleri → MQTT Broker → Django API → PostgreSQL → TensorFlow → Django API → Web / Mobil Arayüz
+
+- Sensörler veriyi toplar  
+- MQTT ile sunucuya iletilir  
+- Django API veriyi alır ve veritabanına kaydeder  
+- Yapay zeka modeli veriyi analiz eder  
+- Sonuçlar kullanıcıya sunulur  
+
+## Bileşenler Arası İletişim
+
+Sistem bileşenleri arasında iletişim aşağıdaki şekilde sağlanmaktadır:
+
+- IoT sensörleri, MQTT protokolü ile veri gönderir  
+- MQTT Broker, veriyi backend sistemine iletir  
+- Django API, gelen verileri işler ve veritabanına kaydeder  
+- TensorFlow modeli, verileri analiz ederek sonuç üretir  
+- Web ve mobil uygulamalar, API üzerinden bu verilere erişir  
+
+## Sistem Bileşenleri Detayı
+
+### Sensör Katmanı
+- Tarım alanından veri toplar  
+- Sıcaklık, nem ve toprak bilgilerini üretir  
+
+### API Katmanı
+- Sensörlerden gelen verileri karşılar  
+- Verileri işler ve saklar  
+- Mobil ve web uygulamalarına veri sağlar  
+
+### Yapay Zeka Katmanı
+- TensorFlow ile geliştirilmiştir  
+- Sensör verilerini analiz eder  
+- Kullanıcıya öneriler üretir  
+
+### Kullanıcı Arayüzü
+- Web paneli ve mobil uygulamadan oluşur  
+- Kullanıcılar verileri görüntüler ve takip eder  
+
+## Mimari Yaklaşım
+
+Sistem tasarımında katmanlı mimari yapısı benimsenmiştir. Bu sayede:
+
+- Sistem modüler hale gelir  
+- Bakım ve geliştirme kolaylaşır  
+- Farklı bileşenler bağımsız şekilde geliştirilebilir  
+
+## Mimari Diyagram
+
+![Akıllı Tarım Mimari Diyagramı](architecture.png)
+
+Diyagram, sistem bileşenleri arasındaki veri akışını görsel olarak temsil etmektedir.
+
+## Sonuç
+
+Detaylı mimari tasarım sayesinde sistemin tüm bileşenleri ve veri akışı net bir şekilde tanımlanmıştır. Bu yapı, sistemin sürdürülebilir ve ölçeklenebilir bir şekilde geliştirilmesine olanak sağlar.
+
+---
+

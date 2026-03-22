@@ -647,7 +647,7 @@ Sistem tasarımında katmanlı mimari yapısı benimsenmiştir. Bu sayede:
 
 ## Mimari Diyagram
 
-![Akıllı Tarım Mimari Diyagramı](architecture.png)
+![Detaylı Mimari Diyagram](architecture_detailed.png)
 
 Diyagram, sistem bileşenleri arasındaki veri akışını görsel olarak temsil etmektedir.
 

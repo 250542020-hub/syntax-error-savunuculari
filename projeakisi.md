@@ -657,12 +657,28 @@ Detaylı mimari tasarım sayesinde sistemin tüm bileşenleri ve veri akışı n
 
 ---
 
-### 🚀 Teknik Uygulama ve API Tasarımı (Ebubekir Yılmaz)
-Projenin temel backend yapısı kurulmuş ve simülasyon ortamı hazırlanmıştır.
+# 🛠️ Teknik Uygulama ve API Tasarımı (Ebubekir Yılmaz)
 
-| Metot | Endpoint | İşlev |
-| :--- | :--- | :--- |
-| **POST** | `/api/sensor-data/` | Sensörden gelen anlık verileri kaydeder ve "Akıllı Karar" (Sulama vb.) üretir. |
-| **GET** | `/admin/` | Veritabanındaki tüm geçmiş sensör verilerini listeleyen yönetim paneli. |
+Projenin backend altyapısı ve sensör veri akışını simüle eden merkezi API sistemi kurulmuştur. Bu yapı, fiziksel donanım aşamasına kadar sistemin tüm fonksiyonlarını test etmeye olanak sağlar.
 
-**Simülasyon Ortamı:** Fiziksel sensörler sisteme entegre edilene kadar, tarladaki veri akışını (sıcaklık, nem) gerçek zamanlı üreten `simulator.py` scripti geliştirilmiştir. Sistem, %30 nemin altında otomatik olarak sulama kararı vermektedir.
+## 📡 1. API Endpoint Tasarımı
+Sistem bileşenleri (IoT, Web, Mobil) arasındaki iletişim RESTful standartlarına uygun olarak tasarlanmıştır.
+
+| Metot | Endpoint | Açıklama | Yetki |
+| :--- | :--- | :--- | :--- |
+| **POST** | `/api/sensor-data/` | Sensörden gelen anlık verileri (sıcaklık, nem vb.) kaydeder ve karar üretir. | IoT Device |
+| **GET** | `/admin/` | Veritabanındaki tüm geçmiş sensör verilerini ve sistem kararlarını listeleyen panel. | Yönetici |
+
+## 🚜 2. Akıllı Tarım Simülasyonu (Simulation Environment)
+Hocanın talebi doğrultusunda, fiziksel sensörlerin (ESP32/Arduino) yerini alan bir `simulator.py` modülü geliştirilmiştir.
+
+* **Çalışma Mantığı:** Gerçek bir tarladaki çevresel değişimleri simüle ederek rastgele ancak fiziksel limitler dahilinde veri üretir.
+* **Karar Mekanizması:** Sistem, gelen toprak nemi verisini anlık analiz eder. Nem **%30'un** altına düştüğünde otomatik olarak "SULAMA SİSTEMİ BAŞLATILDI" komutunu üretir.
+
+## ⚙️ 3. Kurulum ve Çalıştırma Talimatları
+Projeyi yerel ortamda ayağa kaldırmak için aşağıdaki adımlar izlenmelidir:
+
+1. **Gereksinimler:** `pip install -r requirements.txt` komutuyla gerekli kütüphaneleri kurun.
+2. **Veritabanı:** `python manage.py migrate` komutuyla veritabanı tablolarını oluşturun.
+3. **Sunucu:** `python manage.py runserver` ile Django sunucusunu başlatın.
+4. **Simülatör:** Yeni bir terminalde `python simulator.py` komutuyla veri akışını başlatın.

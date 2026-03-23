@@ -657,3 +657,12 @@ Detaylı mimari tasarım sayesinde sistemin tüm bileşenleri ve veri akışı n
 
 ---
 
+### 🚀 Teknik Uygulama ve API Tasarımı (Ebubekir Yılmaz)
+Projenin temel backend yapısı kurulmuş ve simülasyon ortamı hazırlanmıştır.
+
+| Metot | Endpoint | İşlev |
+| :--- | :--- | :--- |
+| **POST** | `/api/sensor-data/` | Sensörden gelen anlık verileri kaydeder ve "Akıllı Karar" (Sulama vb.) üretir. |
+| **GET** | `/admin/` | Veritabanındaki tüm geçmiş sensör verilerini listeleyen yönetim paneli. |
+
+**Simülasyon Ortamı:** Fiziksel sensörler sisteme entegre edilene kadar, tarladaki veri akışını (sıcaklık, nem) gerçek zamanlı üreten `simulator.py` scripti geliştirilmiştir. Sistem, %30 nemin altında otomatik olarak sulama kararı vermektedir.

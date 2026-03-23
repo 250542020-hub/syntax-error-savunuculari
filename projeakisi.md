@@ -669,8 +669,8 @@ Sistem bileşenleri (IoT, Web, Mobil) arasındaki iletişim RESTful standartlar�
 | **POST** | `/api/sensor-data/` | Sensörden gelen anlık verileri (sıcaklık, nem vb.) kaydeder ve karar üretir. | IoT Device |
 | **GET** | `/admin/` | Veritabanındaki tüm geçmiş sensör verilerini ve sistem kararlarını listeleyen panel. | Yönetici |
 
-## 🚜 2. Akıllı Tarım Simülasyonu (Simulation Environment)
-Hocanın talebi doğrultusunda, fiziksel sensörlerin (ESP32/Arduino) yerini alan bir `simulator.py` modülü geliştirilmiştir.
+## 🚜 2. Akıllı Tarım Simülasyonu
+Fiziksel sensörlerin (ESP32/Arduino) yerini alan bir `simulator.py` modülü geliştirilmiştir.
 
 * **Çalışma Mantığı:** Gerçek bir tarladaki çevresel değişimleri simüle ederek rastgele ancak fiziksel limitler dahilinde veri üretir.
 * **Karar Mekanizması:** Sistem, gelen toprak nemi verisini anlık analiz eder. Nem **%30'un** altına düştüğünde otomatik olarak "SULAMA SİSTEMİ BAŞLATILDI" komutunu üretir.

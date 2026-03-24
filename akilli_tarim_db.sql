@@ -27,6 +27,3 @@ CREATE TABLE olcumler (
     kayit_zamani TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- 4. Test Verisi (Sistemin çalıştığını görmek için)
-INSERT INTO tarlalar (tarla_adi, konum, sulama_esigi) VALUES ('Batman Elma Bahçesi', 'Merkez', 30.0);
-INSERT INTO sensorler (tarla_id, sensor_tipi) VALUES (1, 'Nem ve Sıcaklık');

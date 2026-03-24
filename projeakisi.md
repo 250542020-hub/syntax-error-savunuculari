@@ -689,11 +689,11 @@ Projeyi yerel ortamda ayağa kaldırmak için aşağıdaki adımlar izlenmelidir
 - Bu çalışma, "Akıllı Tarım Yönetim Sistemi" kapsamında, tarlalardan gelen anlık sensör verilerini güvenli bir şekilde depolamak, ilişkilendirmek ve analiz edilebilir hale getirmek amacıyla tasarlanmıştır
 ## 1. Veritabanı Şeması ve Tablo Tasarımı
  -  Sensör verilerinin sadece saklanması değil, anlamlandırılması için PostgreSQL üzerinde ilişkisel bir şema (Relational Schema) oluşturulmuştur.
- **Tarlalar Tablosu (tarlalar):** Sistemin en üst katmanıdır. Her tarlanın adı, konumu ve o tarlaya özel "Otomatik Sulama Eşiği" (Örn: %30 nem) bu tabloda tanımlanır.
- **Sensörler Tablosu (sensorler):** Hangi sensörün hangi tarlada bulunduğunu ve cihazın aktiflik durumunu takip eder.
- **Ölçümler Tablosu (olcumler):** Sensörlerden gelen sıcaklık, hava nemi ve toprak nemi gibi verileri saniyelik zaman damgalarıyla (Timestamp) kaydeden ana veri deposudur.
+-  **Tarlalar Tablosu (tarlalar):** Sistemin en üst katmanıdır. Her tarlanın adı, konumu ve o tarlaya özel "Otomatik Sulama Eşiği" (Örn: %30 nem) bu tabloda tanımlanır.
+ - **Sensörler Tablosu (sensorler):** Hangi sensörün hangi tarlada bulunduğunu ve cihazın aktiflik durumunu takip eder.
+-  **Ölçümler Tablosu (olcumler):** Sensörlerden gelen sıcaklık, hava nemi ve toprak nemi gibi verileri saniyelik zaman damgalarıyla (Timestamp) kaydeden ana veri deposudur.
 ## 2. Sensör Verilerinin Depolanması ve İşlenmesi
 -Tasarlanan mimari, sensör verilerini şu kriterlere göre işlemektedir.
-**Veri Hassasiyeti:** Nem ve sıcaklık değerleri DECIMAL veri tipiyle tanımlanarak yüksek hassasiyette (virgülden sonraki değerler dahil) korunur.
-**Veri İlişkilendirme:** Ölçümler tablosu, sensör ve tarla tablolarıyla "Foreign Key" (Dış Anahtar) yapıları üzerinden bağlanmıştır. Bu sayede bir ölçümün tam olarak hangi tarladan geldiği anında sorgulanabilir.
-**Performans ve Kayıt:** BIGSERIAL anahtar yapısı kullanılarak, milyonlarca sensör verisinin performans kaybı yaşanmadan depolanması garanti altına alınmıştır.
+- **Veri Hassasiyeti:** Nem ve sıcaklık değerleri DECIMAL veri tipiyle tanımlanarak yüksek hassasiyette (virgülden sonraki değerler dahil) korunur.
+- **Veri İlişkilendirme:** Ölçümler tablosu, sensör ve tarla tablolarıyla "Foreign Key" (Dış Anahtar) yapıları üzerinden bağlanmıştır. Bu sayede bir ölçümün tam olarak hangi tarladan geldiği anında sorgulanabilir.
+- **Performans ve Kayıt:** BIGSERIAL anahtar yapısı kullanılarak, milyonlarca sensör verisinin performans kaybı yaşanmadan depolanması garanti altına alınmıştır.

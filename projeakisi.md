@@ -688,7 +688,7 @@ Projeyi yerel ortamda ayağa kaldırmak için aşağıdaki adımlar izlenmelidir
 ## 🏗️ Proje Görevi: Akıllı Tarım Veritabanı Mimarisi ve Sensör Veri Yönetimi(Hayat Ay)
 - Bu çalışma, "Akıllı Tarım Yönetim Sistemi" kapsamında, tarlalardan gelen anlık sensör verilerini güvenli bir şekilde depolamak, ilişkilendirmek ve analiz edilebilir hale getirmek amacıyla tasarlanmıştır
 ## 1. Veritabanı Şeması ve Tablo Tasarımı
- -  Sensör verilerinin sadece saklanması değil, anlamlandırılması için PostgreSQL üzerinde ilişkisel bir şema (Relational Schema) oluşturulmuştur.
+   Sensör verilerinin sadece saklanması değil, anlamlandırılması için PostgreSQL üzerinde ilişkisel bir şema (Relational Schema) oluşturulmuştur.
 -  **Tarlalar Tablosu (tarlalar):** Sistemin en üst katmanıdır. Her tarlanın adı, konumu ve o tarlaya özel "Otomatik Sulama Eşiği" (Örn: %30 nem) bu tabloda tanımlanır.
  - **Sensörler Tablosu (sensorler):** Hangi sensörün hangi tarlada bulunduğunu ve cihazın aktiflik durumunu takip eder.
 -  **Ölçümler Tablosu (olcumler):** Sensörlerden gelen sıcaklık, hava nemi ve toprak nemi gibi verileri saniyelik zaman damgalarıyla (Timestamp) kaydeden ana veri deposudur.

@@ -1,0 +1,95 @@
+📱 UI/UX Wireframe Tasarımı
+Sensör tabanlı mobil uygulama için hazırlanmış temel UI/UX wireframe taslakları.
+
+🏠 Ana Sayfa (Dashboard)
+Amaç: Genel durumu hızlıca göstermek
+
+--------------------------------
+[ Logo ]        [ Profil ⚙️ ]
+
+[ Hoş Geldin, Sami 👋 ]
+
+[ Özet Kartlar ]
+----------------------------
+| Sıcaklık  | Nem          |
+| 24°C      | %60          |
+----------------------------
+| Basınç    | Işık         |
+| 1013 hPa  | 300 lux      |
+----------------------------
+
+[ Hızlı Erişim ]
+[ Sensörler ] 
+[ Ayarlar ]
+
+[ Alt Menü ]
+Home 
+Sensors 
+Settings
+--------------------------------
+📊 Sensör Verileri Sayfası
+Amaç: Detaylı veri analizi
+--------------------------------
+[ ← Geri ]   
+Sensör Verileri
+
+[ Filtre ]
+Günlük 
+Haftalık 
+Aylık
+
+[ Grafik Alanı ]
+📈 Line Chart
+
+[ Veri Listesi ]
+----------------------------
+Saat: 12:00
+Sıcaklık: 24°C
+Nem: %60
+----------------------------
+Saat: 13:00
+Sıcaklık: 25°C
+Nem: %58
+----------------------------
+
+[ Sensör Seçimi ]
+Sıcaklık 
+Nem 
+Basınç
+
+--------------------------------
+⚙️ Ayarlar Sayfası
+Amaç: Kullanıcı ayarlarını yönetmek
+--------------------------------
+[ ← Geri ]   
+Ayarlar
+
+[ Profil ]
+Ad: Sami Yusuf
+Email: example@mail.com
+
+[ Bildirimler ]
+☑ Sıcaklık uyarıları
+☑ Nem uyarıları
+
+[ Tema ]
+Açık 
+Koyu
+
+[ Güncelleme Sıklığı ]
+5 dk 
+10 dk 
+30 dk
+
+[ Çıkış Yap ]
+
+--------------------------------
+🎨 Tasarım Prensipleri
+Minimal ve sade tasarım
+Mobil uyumlu yapı
+Kolay navigasyon
+Kart tabanlı veri gösterimi
+🚀 Geliştirme Önerileri
+Figma ile görsel tasarım oluşturulabilir
+Flutter / React Native ile uygulamaya dönüştürülebilir
+Gerçek zamanlı veri için API entegrasyonu yapılabilir

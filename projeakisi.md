@@ -683,7 +683,7 @@ Projeyi yerel ortamda ayağa kaldırmak için aşağıdaki adımlar izlenmelidir
 3. **Sunucu:** `python manage.py runserver` ile Django sunucusunu başlatın.
 4. **Simülatör:** Yeni bir terminalde `python simulator.py` komutuyla veri akışını başlatın.
 
-
+---
    
 ## 🏗️ Proje Görevi: Akıllı Tarım Veritabanı Mimarisi ve Sensör Veri Yönetimi(Hayat Ay)
 - Bu çalışma, "Akıllı Tarım Yönetim Sistemi" kapsamında, tarlalardan gelen anlık sensör verilerini güvenli bir şekilde depolamak, ilişkilendirmek ve analiz edilebilir hale getirmek amacıyla tasarlanmıştır
@@ -697,3 +697,124 @@ Projeyi yerel ortamda ayağa kaldırmak için aşağıdaki adımlar izlenmelidir
 - **Veri Hassasiyeti:** Nem ve sıcaklık değerleri DECIMAL veri tipiyle tanımlanarak yüksek hassasiyette (virgülden sonraki değerler dahil) korunur.
 - **Veri İlişkilendirme:** Ölçümler tablosu, sensör ve tarla tablolarıyla "Foreign Key" (Dış Anahtar) yapıları üzerinden bağlanmıştır. Bu sayede bir ölçümün tam olarak hangi tarladan geldiği anında sorgulanabilir.
 - **Performans ve Kayıt:** BIGSERIAL anahtar yapısı kullanılarak, milyonlarca sensör verisinin performans kaybı yaşanmadan depolanması garanti altına alınmıştır.
+  
+---
+
+# 🎨 Gelişmiş GUI Tasarımı(Ahmet Enes Altun)
+
+## 📌 Amaç
+
+Akıllı Tarım Yönetim Sistemi için kullanıcı dostu ve anlaşılır bir arayüz tasarlanmıştır.  
+Bu GUI tasarımının amacı, kullanıcıların sensör verilerini kolayca görebilmesini ve sistemi rahat bir şekilde yönetebilmesini sağlamaktır.
+
+---
+
+# 🖥️ Arayüz Yapısı
+
+Sistem web tabanlı bir arayüze sahiptir. Kullanıcı sisteme giriş yaptıktan sonra dashboard ekranına ulaşır.
+
+### Sayfalar
+
+- Dashboard
+- Login
+- Sensör Verileri
+- Kullanıcı Paneli
+
+---
+
+# 🎨 Renk Paleti
+
+Tarım temasına uygun renkler seçilmiştir.
+
+| Renk | Anlamı |
+|-----|------|
+| Yeşil | Tarım ve doğa |
+| Beyaz | Temiz ve sade arayüz |
+| Gri | Arka plan |
+| Açık Yeşil | Kart ve paneller |
+
+Bu renkler kullanıcıyı yormayan ve sade bir görünüm oluşturur.
+
+---
+
+# 🔤 Font Seçimi
+
+Font olarak **Arial** seçilmiştir.
+
+### Neden Arial?
+
+- Okunması kolaydır
+- Sade görünür
+- Web arayüzlerinde yaygın kullanılır
+- Kullanıcı deneyimini artırır
+
+---
+
+# 🧭 Ana Menü Tasarımı
+
+Ana menü üst kısımda yer alır.
+
+### Menü İçeriği
+
+- Dashboard
+- Sensör Verileri
+- Login
+- Çıkış
+
+Bu menü sayesinde kullanıcı sistem içinde kolayca gezinebilir.
+
+---
+
+# 📊 Dashboard Tasarımı
+
+Dashboard sistemin ana ekranıdır.
+
+### Dashboard içinde
+
+- Toprak nemi
+- Sıcaklık
+- Hava durumu
+- Sensör verileri
+
+Kart yapısı kullanılmıştır.
+
+### Kart Yapısı
+
+- Beyaz arka plan
+- Yuvarlak köşe
+- Gölge efekti
+- Kolay okunabilir veri
+
+---
+
+# 🧩 Kullanıcı Etkileşimleri
+
+Kullanıcı sistem ile şu şekilde etkileşime girer:
+
+- Sisteme giriş yapar
+- Dashboard ekranını açar
+- Sensör verilerini görüntüler
+- Tarım verilerini takip eder
+
+Bu yapı kullanıcı deneyimini kolaylaştırır.
+
+---
+
+# 📱 Responsive Tasarım
+
+Arayüz mobil ve bilgisayar uyumlu olacak şekilde tasarlanmıştır.
+
+### Özellikler
+
+- Mobil uyumlu
+- Tablet uyumlu
+- Bilgisayar uyumlu
+- Basit ve hızlı arayüz
+
+---
+
+# ✅ Sonuç
+
+Geliştirilen GUI tasarımı sayesinde kullanıcılar Akıllı Tarım Yönetim Sistemini kolay bir şekilde kullanabilecektir.
+
+Sade ve anlaşılır tasarım, kullanıcı deneyimini artırmakta ve sistemin verimli kullanılmasını sağlamaktadır.

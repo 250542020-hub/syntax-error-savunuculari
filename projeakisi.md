@@ -820,7 +820,7 @@ Geliştirilen GUI tasarımı sayesinde kullanıcılar Akıllı Tarım Yönetim S
 Sade ve anlaşılır tasarım, kullanıcı deneyimini artırmakta ve sistemin verimli kullanılmasını sağlamaktadır.
 
 ---
-### 🧠 Yapay Zeka ve Veri Analizi Modülü (Ebubekir Yılmaz)
+# 🧠 Yapay Zeka ve Veri Analizi Modülü (Ebubekir Yılmaz)
 
 Bu hafta projenin karar destek mekanizmasını güçlendirmek amacıyla **TensorFlow** tabanlı bir analiz motoru sisteme entegre edilmiştir. Yapılan çalışmaların teknik detayları aşağıdadır:
 

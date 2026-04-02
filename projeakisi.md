@@ -818,3 +818,22 @@ Arayüz mobil ve bilgisayar uyumlu olacak şekilde tasarlanmıştır.
 Geliştirilen GUI tasarımı sayesinde kullanıcılar Akıllı Tarım Yönetim Sistemini kolay bir şekilde kullanabilecektir.
 
 Sade ve anlaşılır tasarım, kullanıcı deneyimini artırmakta ve sistemin verimli kullanılmasını sağlamaktadır.
+
+---
+### 🧠 Yapay Zeka ve Veri Analizi Modülü (Ebubekir Yılmaz)
+
+Bu hafta projenin karar destek mekanizmasını güçlendirmek amacıyla **TensorFlow** tabanlı bir analiz motoru sisteme entegre edilmiştir. Yapılan çalışmaların teknik detayları aşağıdadır:
+
+#### 1. TensorFlow Tabanlı İstatistiksel Analiz
+Sensörlerden gelen ham verilerin anlamlandırılması için geleneksel yöntemler yerine, gelecekteki derin öğrenme modellerine temel oluşturması amacıyla TensorFlow ekosistemi tercih edilmiştir.
+- **İşlenen Veriler:** Toprak nemi ve hava sıcaklığı.
+- **Hesaplamalar:** Aritmetik Ortalama ($\mu$), Medyan ve Standart Sapma ($\sigma$).
+- **Tensor Yapısı:** Veriler `tf.float32` formatındaki tensörlere dönüştürülerek yüksek performanslı işleme (GPU uyumlu) sağlanmıştır.
+
+#### 2. API Entegrasyonu ve Veri Akışı
+- `/api/analysis/` uç noktası (endpoint) üzerinden veritabanındaki son 100 verinin anlık istatistiksel raporu JSON formatında sunulmaktadır.
+- Bu yapı, web arayüzünde (Dashboard) çiftçilere tarladaki verilerin tutarlılığı hakkında bilgi vermek için kullanılacaktır.
+
+#### 3. Performans ve Doğruluk Testleri
+- Geliştirilen `test_analysis.py` modülü ile 10.000 veri üzerinde yapılan testlerde, analiz süresi ortalama **0.03 saniye** olarak ölçülmüştür.
+- Hesaplama sonuçlarının matematiksel doğruluğu test verileriyle teyit edilmiştir.

@@ -837,3 +837,59 @@ Sensörlerden gelen ham verilerin anlamlandırılması için geleneksel yönteml
 ### 3. Performans ve Doğruluk Testleri
 - Geliştirilen `test_analysis.py` modülü ile 10.000 veri üzerinde yapılan testlerde, analiz süresi ortalama **0.03 saniye** olarak ölçülmüştür.
 - Hesaplama sonuçlarının matematiksel doğruluğu test verileriyle teyit edilmiştir.
+
+---
+
+# 🖥️ Django Temel Yönetim Paneli Arayüzü (Ceren Çam)
+
+Bu hafta, sensör verilerinin görselleştirileceği ve temel yönetim işlemlerinin yapılabileceği
+web arayüzü geliştirilmiştir. Arayüz, Django framework'ü kullanılarak oluşturulmuş ve
+Bootstrap 5 ile stilize edilmiştir.
+
+## Oluşturulan Dosyalar
+
+* `dashboard/urls.py` → Dashboard URL yönlendirmeleri
+* `dashboard/views.py` → Sayfa mantığı ve veri işleme
+* `dashboard/templates/dashboard/dashboard.html` → Ana panel şablonu
+* `dashboard/templates/dashboard/sensor_listesi.html` → Sensör listesi şablonu
+* `dashboard/templates/dashboard/sensor_ekle.html` → Manuel veri ekleme şablonu
+
+## Geliştirilen Özellikler
+
+### Ana Dashboard Sayfası
+* Toplam kayıt sayısı, son sıcaklık, toprak nemi ve hava nemi özet kartları
+* Chart.js kütüphanesi ile sıcaklık ve nem grafikleri
+* Son 50 sensör verisini gösteren tablo
+* Toprak nemi %30'un altına düştüğünde otomatik ⚠️ sulama uyarısı
+
+### Filtreleme Sistemi
+* Başlangıç ve bitiş tarihine göre filtreleme
+* Cihaz ID'sine göre arama
+* Filtreleri temizleme butonu
+
+### Sensör Yönetimi
+* Kayıtlı sensörleri listeleme
+* Sensöre ait tüm verileri silme (onay ekranıyla)
+* Manuel sensör verisi ekleme formu
+
+## URL Yapısı
+
+| URL | Açıklama |
+| --- | --- |
+| `/` | Ana dashboard sayfası |
+| `/sensorler/` | Sensör listesi |
+| `/sensor-ekle/` | Manuel veri ekleme |
+| `/sensor-sil/<cihaz_id>/` | Sensör verilerini silme |
+
+## Kullanılan Teknolojiler
+
+* **Bootstrap 5** → Responsive tasarım ve stil
+* **Chart.js** → Sıcaklık ve nem grafikleri
+* **Bootstrap Icons** → Arayüz ikonları
+* **Django Template Engine** → Dinamik HTML üretimi
+
+## Sonuç
+
+Geliştirilen yönetim paneli sayesinde kullanıcılar sensör verilerini grafikler ve
+tablolar halinde görüntüleyebilmekte, tarih aralığına ve cihaz ID'sine göre
+filtreleyebilmekte ve sensör yönetimi işlemlerini gerçekleştirebilmektedir.

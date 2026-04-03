@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akıllı Tarım - Yönetim Paneli</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { background-color: #f0f7f0; }
+        .navbar { background-color: #2e7d32; }
+        .card { border-radius: 12px; border: none; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .stat-card { border-left: 5px solid #2e7d32; }
+        .table thead { background-color: #2e7d32; color: white; }
+        .btn-primary { background-color: #2e7d32; border-color: #2e7d32; }
+        .btn-primary:hover { background-color: #1b5e20; border-color: #1b5e20; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark px-4 py-3">
+    <span class="navbar-brand fw-bold fs-4">
+        <i class="bi bi-flower1"></i> Akıllı Tarım Yönetim Paneli
+    </span>
+    <div>
+        <a href="{% url 'sensor_listesi' %}" class="btn btn-outline-light btn-sm me-2">
+            <i class="bi bi-cpu"></i> Sensörler
+        </a>
+        <a href="{% url 'sensor_ekle' %}" class="btn btn-light btn-sm">
+            <i class="bi bi-plus-circle"></i> Veri Ekle
+        </a>
+    </div>
+</nav>
+
+<div class="container-fluid py-4 px-4">
+
+    <!-- Özet Kartlar -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="card stat-card p-3">
+                <div class="text-muted small">Toplam Kayıt</div>
+                <div class="fs-3 fw-bold text-success">{{ toplam }}</div>
+                <div class="text-muted small"><i class="bi bi-database"></i> Sensör verisi</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card p-3">
+                <div class="text-muted small">Son Sıcaklık</div>
+                <div class="fs-3 fw-bold text-danger">
+                    {% if son_veri %}{{ son_veri.temperature|floatformat:1 }}°C{% else %}—{% endif %}
+                </div>
+                <div class="text-muted small"><i class="bi bi-thermometer-half"></i> En son ölçüm</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card p-3">
+                <div class="text-muted small">Son Toprak Nemi</div>
+                <div class="fs-3 fw-bold text-primary">
+                    {% if son_veri %}{{ son_veri.soil_moisture|floatformat:1 }}%{% else %}—{% endif %}
+                </div>
+                <div class="text-muted small"><i class="bi bi-droplet-half"></i> En son ölçüm</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card p-3">
+                <div class="text-muted small">Son Hava Nemi</div>
+                <div class="fs-3 fw-bold text-info">
+                    {% if son_veri %}{{ son_veri.humidity|floatformat:1 }}%{% else %}—{% endif %}
+                </div>
+                <div class="text-muted small"><i class="bi bi-cloud"></i> En son ölçüm</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Grafik -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <div class="card p-3">
+                <h6 class="fw-bold mb-3"><i class="bi bi-thermometer"></i> Sıcaklık Grafiği</h6>
+                <canvas id="sicaklikGrafik" height="120"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-3">
+                <h6 class="fw-bold mb-3"><i class="bi bi-droplet"></i> Nem Grafiği</h6>
+                <canvas id="nemGrafik" height="120"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtreleme -->
+    <div class="card p-3 mb-4">
+        <h6 class="fw-bold mb-3"><i class="bi bi-funnel"></i> Filtrele</h6>
+        <form method="get" class="row g-2 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label small">Başlangıç Tarihi</label>
+                <input type="date" name="baslangic" value="{{ filtre_baslangic }}" class="form-control form-control-sm">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small">Bitiş Tarihi</label>
+                <input type="date" name="bitis" value="{{ filtre_bitis }}" class="form-control form-control-sm">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label small">Cihaz ID</label>
+                <input type="text" name="cihaz" value="{{ filtre_cihaz }}" placeholder="Örn: sensor-01" class="form-control form-control-sm">
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary btn-sm me-2">
+                    <i class="bi bi-search"></i> Filtrele
+                </button>
+                <a href="/" class="btn btn-outline-secondary btn-sm">Temizle</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Veri Tablosu -->
+    <div class="card p-3">
+        <h6 class="fw-bold mb-3"><i class="bi bi-table"></i> Sensör Verileri (Son 50 kayıt)</h6>
+        {% if veriler %}
+        <div class="table-responsive">
+            <table class="table table-hover table-sm">
+                <thead>
+                    <tr>
+                        <th>Cihaz ID</th>
+                        <th>Sıcaklık (°C)</th>
+                        <th>Hava Nemi (%)</th>
+                        <th>Toprak Nemi (%)</th>
+                        <th>Tarih & Saat</th>
+                        <th>Sulama Durumu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for veri in veriler %}
+                    <tr>
+                        <td><span class="badge bg-secondary">{{ veri.device_id }}</span></td>
+                        <td>{{ veri.temperature|floatformat:1 }}</td>
+                        <td>{{ veri.humidity|floatformat:1 }}</td>
+                        <td>
+                            {% if veri.soil_moisture < 30 %}
+                                <span class="text-danger fw-bold">{{ veri.soil_moisture|floatformat:1 }} ⚠️</span>
+                            {% else %}
+                                <span class="text-success">{{ veri.soil_moisture|floatformat:1 }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-muted small">{{ veri.timestamp|date:"d.m.Y H:i" }}</td>
+                        <td>
+                            {% if veri.soil_moisture < 30 %}
+                                <span class="badge bg-danger">Sulama Gerekli</span>
+                            {% else %}
+                                <span class="badge bg-success">Normal</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center text-muted py-5">
+            <i class="bi bi-inbox fs-1"></i>
+            <p class="mt-2">Henüz sensör verisi yok.<br>
+            <a href="{% url 'sensor_ekle' %}">Manuel veri ekle</a> veya simülatörü çalıştır.</p>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+
+<script>
+    const grafik_verisi = {{ grafik_verisi|safe }};
+    const labels = grafik_verisi.map(v => v.device_id + ' ' + v.timestamp.substring(11, 16)).reverse();
+    const sicaklik = grafik_verisi.map(v => v.temperature).reverse();
+    const toprakNem = grafik_verisi.map(v => v.soil_moisture).reverse();
+    const havanem = grafik_verisi.map(v => v.humidity).reverse();
+
+    new Chart(document.getElementById('sicaklikGrafik'), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Sıcaklık (°C)',
+                data: sicaklik,
+                borderColor: '#e53935',
+                backgroundColor: 'rgba(229,57,53,0.1)',
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: false } } }
+    });
+
+    new Chart(document.getElementById('nemGrafik'), {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Toprak Nemi (%)',
+                    data: toprakNem,
+                    borderColor: '#1565c0',
+                    backgroundColor: 'rgba(21,101,192,0.1)',
+                    tension: 0.4,
+                    fill: true
+                },
+                {
+                    label: 'Hava Nemi (%)',
+                    data: havanem,
+                    borderColor: '#00838f',
+                    backgroundColor: 'rgba(0,131,143,0.1)',
+                    tension: 0.4,
+                    fill: true
+                }
+            ]
+        },
+        options: { scales: { y: { beginAtZero: false } } }
+    });
+</script>
+
+</body>
+</html>

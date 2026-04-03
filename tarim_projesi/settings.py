@@ -15,6 +15,7 @@ INSTALLED_APPS = [
     'rest_framework',      # API desteği
     'corsheaders',         # Bağlantı izinleri
     'api',                 # Bizim uygulamamız
+    'dashboard', 
 ]
 
 MIDDLEWARE = [

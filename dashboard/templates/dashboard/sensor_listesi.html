@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sensör Listesi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body { background-color: #f0f7f0; }
+        .navbar { background-color: #2e7d32; }
+        .card { border-radius: 12px; border: none; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark px-4 py-3">
+    <span class="navbar-brand fw-bold fs-4">
+        <i class="bi bi-flower1"></i> Akıllı Tarım Yönetim Paneli
+    </span>
+    <a href="{% url 'dashboard' %}" class="btn btn-outline-light btn-sm">
+        <i class="bi bi-arrow-left"></i> Dashboard'a Dön
+    </a>
+</nav>
+
+<div class="container py-4">
+    <div class="card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="fw-bold mb-0"><i class="bi bi-cpu"></i> Kayıtlı Sensörler</h5>
+            <a href="{% url 'sensor_ekle' %}" class="btn btn-success btn-sm">
+                <i class="bi bi-plus-circle"></i> Yeni Veri Ekle
+            </a>
+        </div>
+
+        {% if cihazlar %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-success">
+                    <tr>
+                        <th>Cihaz ID</th>
+                        <th>Durum</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cihaz in cihazlar %}
+                    <tr>
+                        <td>
+                            <i class="bi bi-broadcast text-success"></i>
+                            <strong>{{ cihaz.device_id }}</strong>
+                        </td>
+                        <td><span class="badge bg-success">Aktif</span></td>
+                        <td>
+                            <form method="post" action="{% url 'sensor_sil' cihaz.device_id %}"
+                                  onsubmit="return confirm('{{ cihaz.device_id }} sensörüne ait tüm veriler silinecek. Emin misiniz?')">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <i class="bi bi-trash"></i> Sil
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center text-muted py-5">
+            <i class="bi bi-cpu fs-1"></i>
+            <p class="mt-2">Henüz kayıtlı sensör yok.<br>
+            <a href="{% url 'sensor_ekle' %}">İlk veriyi ekle</a></p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+</body>
+</html>

@@ -893,3 +893,24 @@ Bootstrap 5 ile stilize edilmiştir.
 Geliştirilen yönetim paneli sayesinde kullanıcılar sensör verilerini grafikler ve
 tablolar halinde görüntüleyebilmekte, tarih aralığına ve cihaz ID'sine göre
 filtreleyebilmekte ve sensör yönetimi işlemlerini gerçekleştirebilmektedir.
+
+
+-------
+
+## Toprak Nemi Veri Toplama Modülü(Hayat Ay )
+ ## Genel Bakış
+- Bu modül, tarla sensörlerinden gelen toprak nemi verilerini MQTT protokolü üzerinden sürekli dinler, gelen verileri bellekte biriktirir ve her 5 dakikada bir toplu olarak PostgreSQL veritabanına yazar. Toprak nemi %30'un altına düştüğünde otomatik sulama uyarısı üretir. Olası bağlantı hatalarında veri kaybını önlemek için hata yönetimi ve loglama mekanizmaları içerir.
+
+ ## Sistem Mimarisi
+- [Tarla Sensörleri]
+     -  ↓  MQTT
+ - [MQTTCollector]   → Mesajları alır ve parse eder
+     -  ↓
+ - [SensorBuffer]    → Thread-safe bellek tamponu
+      - ↓  (her 5 dakikada bir)
+  - [FlushScheduler]   → Zamanlayıcı
+   -    ↓
+- [DatabaseManager]   → PostgreSQL'e toplu yazar
+
+ ## Sonuç
+- Bu modül, tarımsal IoT sistemleri için ihtiyaç duyulan toprak nemi veri toplama sürecini eksiksiz olarak karşılamaktadır. MQTT protokolü ile kesintisiz veri alımı, thread-safe bellek tamponu ile güvenli veri yönetimi ve PostgreSQL entegrasyonu ile kalıcı depolama bir arada sağlanmıştır. Hata yönetimi ve loglama mekanizmaları sayesinde sistem, bağlantı kesintilerinde dahi veri kaybı yaşamadan çalışmaya devam edebilmektedir. Unit testler ve gerçek veritabanı bağlantısıyla çalışan entegrasyon testleri ile sistemin doğruluğu kapsamlı biçimde doğrulanmıştır. Modül, üretime hazır ve genişletilebilir bir yapıda tasarlanmıştır.

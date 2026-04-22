@@ -27,3 +27,14 @@ CREATE TABLE olcumler (
     kayit_zamani TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- 4. Toprak Nemi Ölçümleri Tablosu (sensorcollector.py tarafından kullanılır)
+CREATE TABLE toprak_nemi_olcumleri (
+    id SERIAL PRIMARY KEY,
+    sensor_id INTEGER NOT NULL,
+    toprak_nemi FLOAT NOT NULL,
+    kayit_zamani TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_toprak_nemi_sensor_zaman
+    ON toprak_nemi_olcumleri(sensor_id, kayit_zamani DESC);
+

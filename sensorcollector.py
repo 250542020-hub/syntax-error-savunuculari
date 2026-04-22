@@ -4,7 +4,7 @@ import time
 import logging
 import threading
 import unittest
-from datetime import datetime
+from datetime import datetime, timezone
 from collections import deque
 from unittest.mock import MagicMock
 
@@ -191,7 +191,7 @@ class MQTTCollector:
             record = {
                 "sensor_id":    int(payload["sensor_id"]),
                 "toprak_nemi":  float(payload["toprak_nemi"]),
-                "kayit_zamani": datetime.utcnow(),
+                "kayit_zamani": datetime.now(timezone.utc),
             }
 
             self.buffer.add(record)
@@ -382,7 +382,7 @@ class TestFlushScheduler(unittest.TestCase):
             {
                 "sensor_id":    1,
                 "toprak_nemi":  40.0,
-                "kayit_zamani": datetime.utcnow()
+                "kayit_zamani": datetime.now(timezone.utc)
             }
             for _ in range(n)
         ]
@@ -515,7 +515,7 @@ class TestEntegrasyon(unittest.TestCase):
         kayit = [{
             "sensor_id":    1,
             "toprak_nemi":  45.5,
-            "kayit_zamani": datetime.utcnow(),
+            "kayit_zamani": datetime.now(timezone.utc),
         }]
         self._insert_test(db, kayit)
         self.assertEqual(self._kayit_sayisi(), 1)
@@ -529,7 +529,7 @@ class TestEntegrasyon(unittest.TestCase):
             {
                 "sensor_id":    i % 5 + 1,
                 "toprak_nemi":  round(20.0 + i * 2.5, 1),
-                "kayit_zamani": datetime.utcnow(),
+                "kayit_zamani": datetime.now(timezone.utc),
             }
             for i in range(10)
         ]
@@ -545,7 +545,7 @@ class TestEntegrasyon(unittest.TestCase):
         kayit = [{
             "sensor_id":    3,
             "toprak_nemi":  beklenen_nem,
-            "kayit_zamani": datetime.utcnow(),
+            "kayit_zamani": datetime.now(timezone.utc),
         }]
         self._insert_test(db, kayit)
 
@@ -563,9 +563,9 @@ class TestEntegrasyon(unittest.TestCase):
         """Sulama eşiği altındaki kayıtlar sorgulanabilmeli."""
         db = self._db_manager()
         kayitlar = [
-            {"sensor_id": 1, "toprak_nemi": 22.0, "kayit_zamani": datetime.utcnow()},
-            {"sensor_id": 2, "toprak_nemi": 55.0, "kayit_zamani": datetime.utcnow()},
-            {"sensor_id": 3, "toprak_nemi": 18.5, "kayit_zamani": datetime.utcnow()},
+            {"sensor_id": 1, "toprak_nemi": 22.0, "kayit_zamani": datetime.now(timezone.utc)},
+            {"sensor_id": 2, "toprak_nemi": 55.0, "kayit_zamani": datetime.now(timezone.utc)},
+            {"sensor_id": 3, "toprak_nemi": 18.5, "kayit_zamani": datetime.now(timezone.utc)},
         ]
         self._insert_test(db, kayitlar)
 

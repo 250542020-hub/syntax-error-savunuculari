@@ -914,3 +914,88 @@ filtreleyebilmekte ve sensör yönetimi işlemlerini gerçekleştirebilmektedir.
 
  ## Sonuç
 - Bu modül, tarımsal IoT sistemleri için ihtiyaç duyulan toprak nemi veri toplama sürecini eksiksiz olarak karşılamaktadır. MQTT protokolü ile kesintisiz veri alımı, thread-safe bellek tamponu ile güvenli veri yönetimi ve PostgreSQL entegrasyonu ile kalıcı depolama bir arada sağlanmıştır. Hata yönetimi ve loglama mekanizmaları sayesinde sistem, bağlantı kesintilerinde dahi veri kaybı yaşamadan çalışmaya devam edebilmektedir. Unit testler ve gerçek veritabanı bağlantısıyla çalışan entegrasyon testleri ile sistemin doğruluğu kapsamlı biçimde doğrulanmıştır. Modül, üretime hazır ve genişletilebilir bir yapıda tasarlanmıştır.
+
+---
+
+# 🔒 API Entegrasyon Sorunları: Servis Cevaplarını Doğrulama (Ceren Çam)
+
+## Genel Bakış
+
+Bu hafta, farklı servislerden gelen API cevaplarının doğrulanması ve hatalı cevapların ele alınması amacıyla bir mekanizma geliştirilmiştir. Ayrıca sistemin tüm API olaylarını kayıt altına alabilmesi için loglama ve hata takibi sistemi projeye entegre edilmiştir.
+
+---
+
+## Eklenen Modüller
+
+### 1. Doğrulama Modülü (api/validators.py)
+
+Farklı kaynaklardan gelen API cevaplarını doğrulayan fonksiyonlar bu modülde yer almaktadır.
+
+**Sensör Verisi Doğrulama:**
+
+* Zorunlu alanların varlığı kontrol edilir (device_id, temperature, humidity, soil_moisture)
+* Her alanın veri tipi doğrulanır
+* Değerlerin geçerli fiziksel sınırlar içinde olup olmadığı kontrol edilir
+* Toprak nemi %15'in altına düştüğünde ve sıcaklık 40°C üzerine çıktığında uyarı üretilir
+
+**Hava Durumu API Doğrulama:**
+
+* Zorunlu alanların varlığı kontrol edilir (city, temperature, humidity, description)
+* Sayısal alanlar için tip ve aralık kontrolü yapılır
+
+**Genel HTTP Cevap Doğrulama:**
+
+* Gelen HTTP durum koduna göre hata veya uyarı üretilir
+* 400, 401, 403, 404, 429, 500 ve üzeri kodlar ayrı ayrı ele alınır
+
+---
+
+### 2. Hata Yönetimi Modülü (api/error_handler.py)
+
+Tüm API hatalarının merkezi bir noktadan yönetilmesi amacıyla geliştirilmiştir.
+
+* Tüm hata yanıtları tutarlı bir JSON formatında döndürülür
+* Her yanıtta hata kodu, açıklama, detaylar ve zaman damgası bulunur
+* Doğrulama hataları HTTP 422 ile yanıtlanır
+* Beklenmeyen hatalar yakalanarak güvenli bir HTTP 500 yanıtı döndürülür
+* Dış servislere ulaşılamama durumunda HTTP 503 yanıtı üretilir
+
+---
+
+### 3. Loglama Modülü (api/loglama_config.py)
+
+Sistemin tüm API olaylarını kayıt altına alabilmesi için loglama yapılandırması oluşturulmuştur.
+
+**Log Dosyaları:**
+
+* api/logs/api_genel.log → INFO ve üzeri tüm API olaylarını kaydeder
+* api/logs/api_hatalar.log → Yalnızca ERROR ve CRITICAL seviyesindeki olayları kaydeder
+
+**Özellikler:**
+
+* Dosyalar 5 MB dolduğunda otomatik olarak yenilenir, en fazla 3 yedek tutulur
+* Loglar aynı anda hem terminale hem de dosyaya yazılır
+* Django ayarlarına (settings.py) entegre edilmiştir
+
+---
+
+### 4. Test Modülü (api/test_dogrulama.py)
+
+Geliştirilen doğrulama ve hata yönetimi sistemi 17 test senaryosu ile test edilmiştir.
+
+* Geçerli sensör verisi
+* Eksik alan kontrolü
+* Aralık dışı sıcaklık ve nem değerleri
+* Yanlış veri tipi kontrolü
+* Boş device_id kontrolü
+* Düşük toprak nemi uyarı senaryosu
+* Hava durumu API doğrulama senaryoları
+* HTTP durum kodu senaryoları (200, 400, 401, 404, 429, 500)
+
+Tüm testler başarıyla geçmiştir.
+
+---
+
+## Sonuç
+
+Bu hafta geliştirilen sistem sayesinde sensörlerden ve dış servislerden gelen API cevapları doğrulanmakta, hatalı veriler sisteme girmeden önce tespit edilmektedir. Merkezi hata yönetimi ve loglama altyapısı sayesinde sistem davranışları takip edilebilir ve sorunlar hızlıca tespit edilebilir hale gelmiştir.

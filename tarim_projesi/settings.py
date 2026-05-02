@@ -1,9 +1,16 @@
 from pathlib import Path
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'django-insecure-akilli-tarim-gizli-anahtar'
+
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY',
+    'django-insecure-akilli-tarim-gizli-anahtar'
+)
+
 DEBUG = True
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -12,16 +19,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',      # API desteği
-    'corsheaders',         # Bağlantı izinleri
-    'api',                 # Bizim uygulamamız
-    'dashboard', 
+    'rest_framework',
+    'corsheaders',
+    'api',
+    'dashboard',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware', # CORS en üstte olmalı
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -48,18 +55,30 @@ TEMPLATES = [
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME':     os.environ.get('DB_NAME',     'akilli_tarim_db'),
+        'USER':     os.environ.get('DB_USER',     'postgres'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'HOST':     os.environ.get('DB_HOST',     '127.0.0.1'),
+        'PORT':     os.environ.get('DB_PORT',     '5432'),
+        'CONN_MAX_AGE': 60,
+        'CONN_HEALTH_CHECKS': True,
+        'OPTIONS': {
+            'connect_timeout': 5,
+            'keepalives':          1,
+            'keepalives_idle':    30,
+            'keepalives_interval': 5,
+            'keepalives_count':    5,
+        },
     }
 }
 
-LANGUAGE_CODE = 'tr-tr' # Türkçe yaptık
+LANGUAGE_CODE = 'tr-tr'
 TIME_ZONE = 'Europe/Istanbul'
 USE_I18N = True
 USE_TZ = True
+
 STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOW_ALL_ORIGINS = True # Simülatörün bağlanması için şart
-from api.loglama_config import LOGLAMA_AYARLARI
-LOGGING = LOGLAMA_AYARLARI

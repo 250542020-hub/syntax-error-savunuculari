@@ -1,0 +1,6 @@
+2026-04-22 17:57:25,762 [INFO] 🔄 Zorunlu flush yapılıyor...
+2026-04-22 17:57:25,767 [INFO] 🔄 Zorunlu flush yapılıyor...
+2026-04-22 17:57:25,768 [ERROR] 🔁 Yazma başarısız — kayıtlar buffer'a geri alındı.
+2026-04-22 17:57:25,768 [WARNING] ⚠️  Geçersiz mesaj atlandı → b'{ bozuk {{{' | Hata: Expecting property name enclosed in double quotes: line 1 column 3 (char 2)
+2026-04-22 17:57:25,769 [WARNING] ⚠️  SULAMA GEREKLİ! Sensör 1 → Toprak nemi: %22.3
+2026-04-22 17:57:25,770 [WARNING] ⚠️  Geçersiz mesaj atlandı → b'{"sensor_id": 1, "sicaklik": 25.0}' | Hata: 'toprak_nemi'

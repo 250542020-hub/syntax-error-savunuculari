@@ -999,3 +999,125 @@ Tüm testler başarıyla geçmiştir.
 ## Sonuç
 
 Bu hafta geliştirilen sistem sayesinde sensörlerden ve dış servislerden gelen API cevapları doğrulanmakta, hatalı veriler sisteme girmeden önce tespit edilmektedir. Merkezi hata yönetimi ve loglama altyapısı sayesinde sistem davranışları takip edilebilir ve sorunlar hızlıca tespit edilebilir hale gelmiştir.
+
+
+
+# 🔧 Veritabanı Bağlantı Hataları ve Çözümleri (Hayat Ay)
+
+## Genel Bakış
+
+Bu hafta `tarim_projesi/settings.py` ve `akilli_tarim_db.sql` dosyaları incelenerek tespit edilen veritabanı bağlantı hataları giderilmiş ve bağlantı havuzu yapılandırması iyileştirilmiştir.
+
+---
+
+## Tespit Edilen Hatalar ve Yapılan Düzeltmeler
+
+### 1. Veritabanı SQLite Olarak Bırakılmıştı
+
+Proje dokümantasyonunda PostgreSQL seçilmiş ve `requirements.txt` içinde `psycopg2-binary` kurulu olmasına rağmen `settings.py` içinde veritabanı motoru SQLite olarak tanımlıydı.
+
+**Hatalı kod:**
+```python
+'ENGINE': 'django.db.backends.sqlite3',
+'NAME': BASE_DIR / 'db.sqlite3',
+```
+
+**Düzeltme:** Veritabanı motoru PostgreSQL olarak güncellendi ve bağlantı bilgileri ortam değişkenlerinden okunacak şekilde yapılandırıldı.
+
+---
+
+### 2. Bağlantı Havuzu Tanımlanmamıştı
+
+`CONN_MAX_AGE` parametresi tanımlanmadığı için Django'nun varsayılan değeri olan `0` kullanılıyordu. Bu durum, her HTTP isteğinde PostgreSQL'e yeni bir bağlantı açılıp kapanmasına neden olmaktaydı. Birden fazla sensörün eş zamanlı veri göndermesi durumunda bağlantı tükenmesi yaşanabilirdi.
+
+**Düzeltme:** Bağlantı havuzu aşağıdaki parametrelerle yapılandırıldı:
+
+```python
+'CONN_MAX_AGE': 60,
+'CONN_HEALTH_CHECKS': True,
+'OPTIONS': {
+    'connect_timeout': 5,
+    'keepalives': 1,
+    'keepalives_idle': 30,
+    'keepalives_interval': 5,
+    'keepalives_count': 5,
+}
+```
+
+---
+
+### 3. SECRET_KEY Açıkta Bırakılmıştı
+
+Gizli anahtar doğrudan `settings.py` dosyasına yazılmış ve Git deposuna yüklenmiş durumdaydı.
+
+**Düzeltme:** Ortam değişkeninden okunacak şekilde güncellendi.
+
+---
+
+### 4. MIDDLEWARE'de Bozuk Satır
+
+`SecurityMiddleware` satırı markdown linki formatında yazılmıştı. Python bu satırı tanıyamadığından uygulama başlarken hata veriyordu.
+
+**Hatalı kod:**
+```python
+'[django.middleware.security](http://django.middleware.security).SecurityMiddleware',
+```
+
+**Düzeltme:** Düzgün string formatına dönüştürüldü.
+
+---
+
+### 5. CORS Tüm Kaynaklara Açıktı
+
+`CORS_ALLOW_ALL_ORIGINS = True` ayarı her adresten gelen isteği kabul ediyordu.
+
+**Düzeltme:** Yalnızca gerekli adreslere izin verilecek şekilde güncellendi.
+
+---
+
+### 6. ALLOWED_HOSTS Boş Bırakılmıştı
+
+`ALLOWED_HOSTS = []` olarak bırakıldığında Django production ortamında tüm istekleri reddeder.
+
+**Düzeltme:** `localhost` ve `127.0.0.1` adresleri eklendi.
+
+---
+
+### 7. api.loglama_config Import Hatası
+
+`settings.py` dosyasının en altında `api` modülünden import yapılıyordu. Ancak `settings.py` yüklenirken `api` modülü henüz tanınmadığından `ModuleNotFoundError` hatası alınıyordu.
+
+**Düzeltme:** Import satırı kaldırılarak loglama yapılandırması doğrudan `settings.py` içine yazıldı.
+
+---
+
+### 8. SQL Dosyasında FOREIGN KEY Eksikti
+
+`toprak_nemi_olcumleri` tablosundaki `sensor_id` sütununa FOREIGN KEY tanımlanmamıştı. Bu durum, var olmayan bir sensör ID'siyle kayıt eklenmesine ve veri bütünlüğünün bozulmasına neden olabilirdi.
+
+**Düzeltme:**
+```sql
+sensor_id INTEGER NOT NULL REFERENCES sensorler(id) ON DELETE CASCADE,
+```
+
+---
+
+## Özet Tablo
+
+| # | Hata | Dosya | Önem | Durum |
+|---|------|-------|------|-------|
+| 1 | SQLite kullanılıyor, PostgreSQL olmalı | settings.py | 🔴 Kritik | Düzeltildi |
+| 2 | Bağlantı havuzu tanımlanmamış | settings.py | 🔴 Kritik | Düzeltildi |
+| 3 | SECRET_KEY hardcode | settings.py | 🔴 Kritik | Düzeltildi |
+| 4 | MIDDLEWARE'de bozuk satır | settings.py | 🔴 Kritik | Düzeltildi |
+| 5 | CORS herkese açık | settings.py | 🟠 Yüksek | Düzeltildi |
+| 6 | ALLOWED_HOSTS boş | settings.py | 🟠 Yüksek | Düzeltildi |
+| 7 | api.loglama_config import hatası | settings.py | 🔴 Kritik | Düzeltildi |
+| 8 | FOREIGN KEY eksik | akilli_tarim_db.sql | 🔴 Kritik | Düzeltildi |
+
+---
+
+## Sonuç
+
+Yapılan düzeltmeler sayesinde sistem artık doğru veritabanına bağlanmakta, bağlantı havuzu ile performanslı çalışmakta ve güvenlik açıkları giderilmiş durumdadır. Tüm değişiklikler `settings.py` ve `akilli_tarim_db.sql` dosyalarına uygulanmış ve GitHub deposuna yüklenmiştir.
+

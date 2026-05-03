@@ -1,22 +1,24 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-from .models import SensorData  # Gereksiz ikinci importu sildik
+from rest_framework import status, permissions # İzinler eklendi
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+from .models import SensorData
 from .analysis import TarimAnalizMotoru
 
 class IstatistikselAnaliz(APIView):
+    # Sadece giriş yapmış kullanıcılar verileri görebilir
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request):
-        # Son 100 veriyi çekelim
         queryset = SensorData.objects.all().order_by('-timestamp')[:100]
         
         if not queryset.exists():
-            return Response({"hata": "Analiz için yeterli veri yok."}, status=404)
+            return Response({"hata": "Analiz için yeterli veri yok."}, status=status.HTTP_404_NOT_FOUND)
 
-        # Verileri listeye çevir
         nem_verileri = [obj.soil_moisture for obj in queryset]
         sicaklik_verileri = [obj.temperature for obj in queryset]
 
-        # Analiz Motorunu Çalıştır
         nem_sonuc = TarimAnalizMotoru.analiz_et(nem_verileri)
         sicaklik_sonuc = TarimAnalizMotoru.analiz_et(sicaklik_verileri)
 
@@ -26,6 +28,10 @@ class IstatistikselAnaliz(APIView):
         })
 
 class SensorDataReceiver(APIView):
+    # Veri göndermek için de yetki şart (Güvenlik önlemi)
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
     def post(self, request):
         try:
             data = request.data
@@ -37,12 +43,11 @@ class SensorDataReceiver(APIView):
             )
 
             soil_moisture = float(data.get('soil_moisture', 100))
+            action = "DURUM: Nem ideal. İşlem gerekmiyor. 🌾"
             if soil_moisture < 30:
                 action = "KRİTİK: Toprak kuru! Sulama sistemi başlatıldı. ✅"
             elif soil_moisture > 70:
                 action = "UYARI: Toprak doygun. Sulama durduruldu. 🛑"
-            else:
-                action = "DURUM: Nem ideal. İşlem gerekmiyor. 🌾"
 
             return Response({
                 "mesaj": "Veri başarıyla işlendi",
@@ -51,4 +56,4 @@ class SensorDataReceiver(APIView):
             }, status=status.HTTP_201_CREATED)
             
         except Exception as e:
-            return Response({"hata": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"hata": "Veri formatı hatalı veya eksik."}, status=status.HTTP_400_BAD_REQUEST)

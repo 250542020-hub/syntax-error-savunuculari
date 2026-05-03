@@ -103,4 +103,22 @@ LOGGING = {
         'handlers': ['console'],
         'level': 'INFO',
     },
+    
+}
+# GÜVENLİK AYARLARI
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY' # Clickjacking koruması
+
+# Token yetkilendirmesi için bunu INSTALLED_APPS'e ekle
+# 'rest_framework.authtoken', 
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
 }

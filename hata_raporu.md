@@ -1,4 +1,4 @@
-# Veritabanı Bağlantı Hataları — Tespit ve Çözüm Raporu
+# Veritabanı Bağlantı Hataları — Tespit ve Çözüm Raporu(HAYAT AY)
 
 **Proje:** Akıllı Tarım Yönetim Sistemi  
 **Ekip:** Syntax Error Savunucuları  

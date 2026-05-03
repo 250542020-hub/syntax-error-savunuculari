@@ -1,11 +1,11 @@
 # 🌱 Akıllı Tarım Yönetim Sistemi
 
-## 👥 Grup Üyeleri ve Görev Dağılımı
-- **Ahmet Enes Altun** → Proje Mimari Tasarımı  
-- **Hayat Ay** → Proje Analizi ve Kapsam Belirleme  
-- **Sami Yusuf Yıldız** → Gereksinim Toplama ve Analizi  
-- **Ebubekir Yılmaz** → Teknoloji Araştırması ve Seçimi  
-- **Ceren Çam** → Geliştirme Ortamı Kurulumu  
+## 👥 Grup Üyeleri
+- **Ahmet Enes Altun**  
+- **Hayat Ay**  
+- **Sami Yusuf Yıldız**  
+- **Ebubekir Yılmaz**  
+- **Ceren Çam** 
 
 ---
 

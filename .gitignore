@@ -1,6 +1,7 @@
-db.sqlite3
 __pycache__/
 *.pyc
-.vscode/api/logs/*.log
+*.pyo
 .vscode/
+api/logs/*.log
 db.sqlite3
+.env

@@ -167,8 +167,11 @@
 
 </div>
 
+
+{{ grafik_verisi|json_script:"grafik-verisi-json" }}
+
 <script>
-    const grafik_verisi = {{ grafik_verisi|safe }};
+    const grafik_verisi = JSON.parse(document.getElementById('grafik-verisi-json').textContent);
     const labels = grafik_verisi.map(v => v.device_id + ' ' + v.timestamp.substring(11, 16)).reverse();
     const sicaklik = grafik_verisi.map(v => v.temperature).reverse();
     const toprakNem = grafik_verisi.map(v => v.soil_moisture).reverse();

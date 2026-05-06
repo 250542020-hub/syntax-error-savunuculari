@@ -2,3 +2,5 @@ db.sqlite3
 __pycache__/
 *.pyc
 .vscode/api/logs/*.log
+.vscode/
+db.sqlite3

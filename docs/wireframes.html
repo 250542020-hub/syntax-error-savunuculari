@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>Akıllı Tarım — Wireframe Çizimleri</title>
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+        background: #fafafa;
+        margin: 0;
+        padding: 40px 20px;
+        color: #333;
+    }
+    h1 {
+        text-align: center;
+        color: #2e7d32;
+        margin-bottom: 8px;
+    }
+    .subtitle {
+        text-align: center;
+        color: #777;
+        margin-bottom: 40px;
+    }
+    .wireframe-block {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        margin: 0 auto 50px;
+        max-width: 1000px;
+        padding: 30px;
+    }
+    .wireframe-block h2 {
+        color: #2e7d32;
+        border-bottom: 2px solid #2e7d32;
+        padding-bottom: 10px;
+        margin-top: 0;
+    }
+    .wireframe-block .meta {
+        background: #f0f7f0;
+        padding: 12px 16px;
+        border-radius: 6px;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+    .wireframe-block .meta strong { color: #2e7d32; }
+    svg { width: 100%; height: auto; display: block; }
+</style>
+</head>
+<body>
+
+<h1>🌾 Akıllı Tarım Yönetim Sistemi — Wireframe Çizimleri</h1>
+<p class="subtitle">Düşük detaylı sayfa düzeni planları | Syntax Error Savunucuları</p>
+
+<!-- ======================== LOGIN ======================== -->
+<div class="wireframe-block">
+    <h2>1. Giriş Sayfası (Login)</h2>
+    <div class="meta">
+        <strong>URL:</strong> /giris/ &nbsp;|&nbsp;
+        <strong>Erişim:</strong> Anonim (auth gerekmez) &nbsp;|&nbsp;
+        <strong>Amaç:</strong> Kimlik doğrulama, sisteme giriş
+    </div>
+    <svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+        <!-- Arkaplan -->
+        <rect width="800" height="500" fill="#e8f5e9"/>
+
+        <!-- Login kart -->
+        <rect x="250" y="80" width="300" height="360" rx="12" fill="white" stroke="#999" stroke-width="2"/>
+
+        <!-- Logo alanı -->
+        <circle cx="400" cy="135" r="30" fill="none" stroke="#666" stroke-width="2" stroke-dasharray="4,4"/>
+        <text x="400" y="140" text-anchor="middle" fill="#666" font-size="11">LOGO</text>
+
+        <!-- Başlık -->
+        <rect x="290" y="180" width="220" height="22" fill="#ddd"/>
+        <text x="400" y="196" text-anchor="middle" fill="#666" font-size="12">Akıllı Tarım — Giriş</text>
+
+        <!-- Alt başlık -->
+        <rect x="310" y="210" width="180" height="12" fill="#eee"/>
+
+        <!-- Username input -->
+        <text x="280" y="260" fill="#666" font-size="11">Kullanıcı Adı</text>
+        <rect x="280" y="265" width="240" height="36" fill="white" stroke="#999"/>
+
+        <!-- Password input -->
+        <text x="280" y="320" fill="#666" font-size="11">Şifre</text>
+        <rect x="280" y="325" width="240" height="36" fill="white" stroke="#999"/>
+
+        <!-- Login button -->
+        <rect x="280" y="385" width="240" height="40" rx="6" fill="#2e7d32"/>
+        <text x="400" y="409" text-anchor="middle" fill="white" font-size="13" font-weight="bold">Giriş Yap</text>
+
+        <!-- Açıklamalar -->
+        <text x="40" y="135" fill="#999" font-size="11">① Logo + Başlık</text>
+        <text x="40" y="280" fill="#999" font-size="11">② Form alanları</text>
+        <text x="40" y="405" fill="#999" font-size="11">③ Yeşil CTA</text>
+        <line x1="100" y1="132" x2="370" y2="132" stroke="#ccc" stroke-dasharray="3,3"/>
+        <line x1="100" y1="277" x2="270" y2="282" stroke="#ccc" stroke-dasharray="3,3"/>
+        <line x1="100" y1="402" x2="270" y2="402" stroke="#ccc" stroke-dasharray="3,3"/>
+    </svg>
+</div>
+
+<!-- ======================== DASHBOARD ======================== -->
+<div class="wireframe-block">
+    <h2>2. Ana Dashboard</h2>
+    <div class="meta">
+        <strong>URL:</strong> / &nbsp;|&nbsp;
+        <strong>Erişim:</strong> Kimlik doğrulanmış kullanıcı &nbsp;|&nbsp;
+        <strong>Amaç:</strong> Anlık sensör verilerinin özet ve grafiklerini gösterme
+    </div>
+    <svg viewBox="0 0 1000 750" xmlns="http://www.w3.org/2000/svg">
+        <!-- Arkaplan -->
+        <rect width="1000" height="750" fill="#f5f5f5"/>
+
+        <!-- Üst Navbar -->
+        <rect x="0" y="0" width="1000" height="60" fill="#2e7d32"/>
+        <text x="20" y="38" fill="white" font-size="16" font-weight="bold">🌱 Akıllı Tarım</text>
+        <rect x="700" y="18" width="80" height="26" rx="4" fill="rgba(255,255,255,0.2)"/>
+        <text x="740" y="35" text-anchor="middle" fill="white" font-size="11">Sensörler</text>
+        <rect x="790" y="18" width="80" height="26" rx="4" fill="white"/>
+        <text x="830" y="35" text-anchor="middle" fill="#2e7d32" font-size="11">+ Veri Ekle</text>
+        <rect x="880" y="18" width="80" height="26" rx="4" fill="rgba(255,255,255,0.2)"/>
+        <text x="920" y="35" text-anchor="middle" fill="white" font-size="11">Çıkış</text>
+
+        <!-- 4 Stat Card -->
+        <g>
+            <rect x="20" y="80" width="225" height="100" rx="8" fill="white" stroke="#ddd"/>
+            <rect x="20" y="80" width="5" height="100" fill="#2e7d32"/>
+            <text x="40" y="105" fill="#777" font-size="11">Sıcaklık</text>
+            <text x="40" y="140" fill="#333" font-size="28" font-weight="bold">--°C</text>
+            <text x="40" y="160" fill="#999" font-size="10">son güncelleme</text>
+
+            <rect x="260" y="80" width="225" height="100" rx="8" fill="white" stroke="#ddd"/>
+            <rect x="260" y="80" width="5" height="100" fill="#2e7d32"/>
+            <text x="280" y="105" fill="#777" font-size="11">Hava Nemi</text>
+            <text x="280" y="140" fill="#333" font-size="28" font-weight="bold">--%</text>
+            <text x="280" y="160" fill="#999" font-size="10">son güncelleme</text>
+
+            <rect x="500" y="80" width="225" height="100" rx="8" fill="white" stroke="#ddd"/>
+            <rect x="500" y="80" width="5" height="100" fill="#2e7d32"/>
+            <text x="520" y="105" fill="#777" font-size="11">Toprak Nemi</text>
+            <text x="520" y="140" fill="#333" font-size="28" font-weight="bold">--%</text>
+            <text x="520" y="160" fill="#999" font-size="10">son güncelleme</text>
+
+            <rect x="740" y="80" width="225" height="100" rx="8" fill="white" stroke="#ddd"/>
+            <rect x="740" y="80" width="5" height="100" fill="#2e7d32"/>
+            <text x="760" y="105" fill="#777" font-size="11">Toplam Veri</text>
+            <text x="760" y="140" fill="#333" font-size="28" font-weight="bold">####</text>
+            <text x="760" y="160" fill="#999" font-size="10">kayıt sayısı</text>
+        </g>
+
+        <!-- Filtre Barı -->
+        <rect x="20" y="200" width="945" height="60" rx="8" fill="white" stroke="#ddd"/>
+        <text x="40" y="222" fill="#777" font-size="11">Başlangıç</text>
+        <rect x="40" y="228" width="140" height="24" fill="#fafafa" stroke="#ccc"/>
+        <text x="200" y="222" fill="#777" font-size="11">Bitiş</text>
+        <rect x="200" y="228" width="140" height="24" fill="#fafafa" stroke="#ccc"/>
+        <text x="360" y="222" fill="#777" font-size="11">Cihaz</text>
+        <rect x="360" y="228" width="180" height="24" fill="#fafafa" stroke="#ccc"/>
+        <rect x="560" y="225" width="80" height="30" rx="4" fill="#2e7d32"/>
+        <text x="600" y="244" text-anchor="middle" fill="white" font-size="11">Filtrele</text>
+        <rect x="650" y="225" width="80" height="30" rx="4" fill="white" stroke="#999"/>
+        <text x="690" y="244" text-anchor="middle" fill="#666" font-size="11">Temizle</text>
+
+        <!-- Grafik 1 -->
+        <rect x="20" y="280" width="465" height="220" rx="8" fill="white" stroke="#ddd"/>
+        <text x="40" y="305" fill="#333" font-size="13" font-weight="bold">Sıcaklık Grafiği</text>
+        <line x1="40" y1="470" x2="465" y2="470" stroke="#ccc"/>
+        <line x1="40" y1="330" x2="40" y2="470" stroke="#ccc"/>
+        <polyline points="50,440 100,420 150,400 200,380 250,395 300,370 350,360 400,355 450,345" fill="none" stroke="#2e7d32" stroke-width="2"/>
+
+        <!-- Grafik 2 -->
+        <rect x="500" y="280" width="465" height="220" rx="8" fill="white" stroke="#ddd"/>
+        <text x="520" y="305" fill="#333" font-size="13" font-weight="bold">Nem Grafiği (Hava + Toprak)</text>
+        <line x1="520" y1="470" x2="945" y2="470" stroke="#ccc"/>
+        <line x1="520" y1="330" x2="520" y2="470" stroke="#ccc"/>
+        <polyline points="530,440 580,430 630,425 680,420 730,415 780,410 830,408 880,405 930,400" fill="none" stroke="#1976d2" stroke-width="2"/>
+        <polyline points="530,460 580,455 630,450 680,440 730,435 780,425 830,420 880,415 930,410" fill="none" stroke="#8d6e63" stroke-width="2"/>
+
+        <!-- Veri Tablosu -->
+        <rect x="20" y="520" width="945" height="200" rx="8" fill="white" stroke="#ddd"/>
+        <rect x="20" y="520" width="945" height="32" fill="#2e7d32"/>
+        <text x="40" y="540" fill="white" font-size="12" font-weight="bold">Son Sensör Verileri</text>
+
+        <!-- Tablo başlıkları -->
+        <text x="40" y="572" fill="#666" font-size="10" font-weight="bold">CIHAZ ID</text>
+        <text x="200" y="572" fill="#666" font-size="10" font-weight="bold">SICAKLIK</text>
+        <text x="320" y="572" fill="#666" font-size="10" font-weight="bold">HAVA NEMİ</text>
+        <text x="450" y="572" fill="#666" font-size="10" font-weight="bold">TOPRAK NEMİ</text>
+        <text x="600" y="572" fill="#666" font-size="10" font-weight="bold">DURUM</text>
+        <text x="800" y="572" fill="#666" font-size="10" font-weight="bold">ZAMAN</text>
+        <line x1="40" y1="580" x2="945" y2="580" stroke="#ddd"/>
+
+        <!-- Tablo satırları -->
+        <g>
+            <line x1="40" y1="608" x2="945" y2="608" stroke="#f0f0f0"/>
+            <line x1="40" y1="636" x2="945" y2="636" stroke="#f0f0f0"/>
+            <line x1="40" y1="664" x2="945" y2="664" stroke="#f0f0f0"/>
+            <rect x="40" y="592" width="100" height="12" fill="#eee"/>
+            <rect x="200" y="592" width="50" height="12" fill="#eee"/>
+            <rect x="320" y="592" width="50" height="12" fill="#eee"/>
+            <rect x="450" y="592" width="50" height="12" fill="#eee"/>
+            <rect x="600" y="592" width="120" height="20" rx="10" fill="#c8e6c9"/>
+            <text x="660" y="606" text-anchor="middle" fill="#1b5e20" font-size="9">İdeal</text>
+            <rect x="800" y="592" width="100" height="12" fill="#eee"/>
+
+            <rect x="40" y="620" width="100" height="12" fill="#eee"/>
+            <rect x="600" y="620" width="120" height="20" rx="10" fill="#ffe0b2"/>
+            <text x="660" y="634" text-anchor="middle" fill="#bf360c" font-size="9">Sulama Gerekli</text>
+
+            <rect x="40" y="648" width="100" height="12" fill="#eee"/>
+            <rect x="600" y="648" width="120" height="20" rx="10" fill="#c8e6c9"/>
+            <text x="660" y="662" text-anchor="middle" fill="#1b5e20" font-size="9">İdeal</text>
+        </g>
+    </svg>
+</div>
+
+<!-- ======================== SENSÖR LİSTESİ ======================== -->
+<div class="wireframe-block">
+    <h2>3. Sensör Listesi</h2>
+    <div class="meta">
+        <strong>URL:</strong> /sensorler/ &nbsp;|&nbsp;
+        <strong>Erişim:</strong> Kimlik doğrulanmış kullanıcı &nbsp;|&nbsp;
+        <strong>Amaç:</strong> Tüm cihazların listesi, silme işlemi
+    </div>
+    <svg viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg">
+        <rect width="1000" height="500" fill="#f5f5f5"/>
+
+        <!-- Navbar -->
+        <rect x="0" y="0" width="1000" height="60" fill="#2e7d32"/>
+        <text x="20" y="38" fill="white" font-size="16" font-weight="bold">🌱 Akıllı Tarım</text>
+
+        <!-- Sayfa Başlığı + Ekle butonu -->
+        <text x="20" y="100" fill="#333" font-size="20" font-weight="bold">Sensör Listesi</text>
+        <rect x="850" y="80" width="120" height="36" rx="4" fill="#2e7d32"/>
+        <text x="910" y="103" text-anchor="middle" fill="white" font-size="12">+ Yeni Sensör</text>
+
+        <!-- Arama Barı -->
+        <rect x="20" y="135" width="950" height="44" rx="8" fill="white" stroke="#ddd"/>
+        <text x="40" y="161" fill="#aaa" font-size="11">🔍 Cihaz ID'ye göre ara...</text>
+
+        <!-- Grid Kart 1 -->
+        <rect x="20" y="200" width="305" height="130" rx="10" fill="white" stroke="#ddd"/>
+        <circle cx="60" cy="240" r="20" fill="#c8e6c9"/>
+        <text x="60" y="245" text-anchor="middle" fill="#2e7d32" font-size="14">📡</text>
+        <rect x="95" y="225" width="130" height="14" fill="#eee"/>
+        <rect x="95" y="245" width="80" height="10" fill="#f0f0f0"/>
+        <rect x="95" y="265" width="180" height="10" fill="#f0f0f0"/>
+        <rect x="40" y="290" width="120" height="26" rx="4" fill="#e8f5e9"/>
+        <text x="100" y="307" text-anchor="middle" fill="#2e7d32" font-size="10">Detay Gör</text>
+        <rect x="170" y="290" width="120" height="26" rx="4" fill="#ffebee"/>
+        <text x="230" y="307" text-anchor="middle" fill="#c62828" font-size="10">🗑️ Sil</text>
+
+        <!-- Grid Kart 2 -->
+        <rect x="345" y="200" width="305" height="130" rx="10" fill="white" stroke="#ddd"/>
+        <circle cx="385" cy="240" r="20" fill="#c8e6c9"/>
+        <text x="385" y="245" text-anchor="middle" fill="#2e7d32" font-size="14">📡</text>
+        <rect x="420" y="225" width="130" height="14" fill="#eee"/>
+        <rect x="420" y="245" width="80" height="10" fill="#f0f0f0"/>
+        <rect x="420" y="265" width="180" height="10" fill="#f0f0f0"/>
+        <rect x="365" y="290" width="120" height="26" rx="4" fill="#e8f5e9"/>
+        <text x="425" y="307" text-anchor="middle" fill="#2e7d32" font-size="10">Detay Gör</text>
+        <rect x="495" y="290" width="120" height="26" rx="4" fill="#ffebee"/>
+        <text x="555" y="307" text-anchor="middle" fill="#c62828" font-size="10">🗑️ Sil</text>
+
+        <!-- Grid Kart 3 -->
+        <rect x="670" y="200" width="305" height="130" rx="10" fill="white" stroke="#ddd"/>
+        <circle cx="710" cy="240" r="20" fill="#c8e6c9"/>
+        <text x="710" y="245" text-anchor="middle" fill="#2e7d32" font-size="14">📡</text>
+        <rect x="745" y="225" width="130" height="14" fill="#eee"/>
+        <rect x="745" y="245" width="80" height="10" fill="#f0f0f0"/>
+        <rect x="745" y="265" width="180" height="10" fill="#f0f0f0"/>
+        <rect x="690" y="290" width="120" height="26" rx="4" fill="#e8f5e9"/>
+        <text x="750" y="307" text-anchor="middle" fill="#2e7d32" font-size="10">Detay Gör</text>
+        <rect x="820" y="290" width="120" height="26" rx="4" fill="#ffebee"/>
+        <text x="880" y="307" text-anchor="middle" fill="#c62828" font-size="10">🗑️ Sil</text>
+
+        <!-- 2. satır boş kart (placeholder) -->
+        <rect x="20" y="350" width="305" height="130" rx="10" fill="white" stroke="#ddd" stroke-dasharray="6,4"/>
+        <text x="172" y="420" text-anchor="middle" fill="#bbb" font-size="11">+ daha fazla cihaz</text>
+    </svg>
+</div>
+
+<!-- ======================== SENSÖR EKLE ======================== -->
+<div class="wireframe-block">
+    <h2>4. Sensör (Manuel Veri) Ekle</h2>
+    <div class="meta">
+        <strong>URL:</strong> /sensor-ekle/ &nbsp;|&nbsp;
+        <strong>Erişim:</strong> Kimlik doğrulanmış kullanıcı &nbsp;|&nbsp;
+        <strong>Amaç:</strong> Test veya manuel ölçüm için sensör verisi girişi
+    </div>
+    <svg viewBox="0 0 1000 600" xmlns="http://www.w3.org/2000/svg">
+        <rect width="1000" height="600" fill="#f5f5f5"/>
+        <rect x="0" y="0" width="1000" height="60" fill="#2e7d32"/>
+        <text x="20" y="38" fill="white" font-size="16" font-weight="bold">🌱 Akıllı Tarım</text>
+
+        <!-- Form kartı -->
+        <rect x="200" y="100" width="600" height="470" rx="12" fill="white" stroke="#ddd"/>
+
+        <!-- Form başlığı -->
+        <text x="500" y="140" text-anchor="middle" fill="#333" font-size="18" font-weight="bold">Manuel Sensör Verisi Girişi</text>
+        <line x1="220" y1="155" x2="780" y2="155" stroke="#e0e0e0"/>
+
+        <!-- Hata uyarısı (varsa) -->
+        <rect x="230" y="170" width="540" height="32" rx="4" fill="#ffebee" stroke="#ef5350"/>
+        <text x="245" y="190" fill="#c62828" font-size="11">⚠️ Hata mesajı (validasyon)</text>
+
+        <!-- Cihaz ID -->
+        <text x="230" y="225" fill="#555" font-size="11" font-weight="bold">Cihaz ID *</text>
+        <rect x="230" y="232" width="540" height="38" rx="4" fill="#fafafa" stroke="#ccc"/>
+        <text x="240" y="256" fill="#aaa" font-size="11">örn: SENSOR_01</text>
+
+        <!-- 3 Numerik input grid -->
+        <text x="230" y="295" fill="#555" font-size="11" font-weight="bold">Sıcaklık (°C) *</text>
+        <rect x="230" y="302" width="170" height="38" rx="4" fill="#fafafa" stroke="#ccc"/>
+
+        <text x="415" y="295" fill="#555" font-size="11" font-weight="bold">Hava Nemi (%) *</text>
+        <rect x="415" y="302" width="170" height="38" rx="4" fill="#fafafa" stroke="#ccc"/>
+
+        <text x="600" y="295" fill="#555" font-size="11" font-weight="bold">Toprak Nemi (%) *</text>
+        <rect x="600" y="302" width="170" height="38" rx="4" fill="#fafafa" stroke="#ccc"/>
+
+        <!-- Aralık bilgisi -->
+        <rect x="230" y="365" width="540" height="60" rx="6" fill="#e3f2fd"/>
+        <text x="245" y="385" fill="#1565c0" font-size="11" font-weight="bold">ℹ️ Geçerli Aralıklar</text>
+        <text x="245" y="402" fill="#1565c0" font-size="10">Sıcaklık: -10 ile 60 °C</text>
+        <text x="395" y="402" fill="#1565c0" font-size="10">Hava nemi: 0 ile 100 %</text>
+        <text x="555" y="402" fill="#1565c0" font-size="10">Toprak nemi: 0 ile 100 %</text>
+
+        <!-- Butonlar -->
+        <rect x="230" y="465" width="200" height="44" rx="6" fill="white" stroke="#999"/>
+        <text x="330" y="492" text-anchor="middle" fill="#666" font-size="12">İptal</text>
+
+        <rect x="570" y="465" width="200" height="44" rx="6" fill="#2e7d32"/>
+        <text x="670" y="492" text-anchor="middle" fill="white" font-size="12" font-weight="bold">💾 Kaydet</text>
+    </svg>
+</div>
+
+<!-- Notlar -->
+<div class="wireframe-block">
+    <h2>📐 Tasarım Notları</h2>
+    <ul style="line-height: 1.8;">
+        <li><strong>Renk Paleti:</strong> Ana yeşil <code>#2e7d32</code>, koyu yeşil hover <code>#1b5e20</code>, açık yeşil arkaplan <code>#e8f5e9</code></li>
+        <li><strong>Tipografi:</strong> Sistem fontu (Bootstrap 5 default), başlıklar fw-bold</li>
+        <li><strong>Spacing:</strong> Bootstrap grid (12 kolon), kart padding 1.5rem, kartlar arası gap 1rem</li>
+        <li><strong>İkonlar:</strong> Bootstrap Icons (zaten projede yüklü)</li>
+        <li><strong>Responsive:</strong> Mobile'da stat-cardlar 2x2, desktop'ta 1x4 dizilir; grafik ve tablolar tam genişliğe geçer</li>
+        <li><strong>Erişilebilirlik:</strong> Tüm form input'larında label, butonlarda aria-label, kontrast oranları WCAG AA uyumlu</li>
+    </ul>
+</div>
+
+</body>
+</html>

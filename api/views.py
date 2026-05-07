@@ -1,54 +1,73 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .models import SensorData  # Gereksiz ikinci importu sildik
+from .models import SensorData
 from .analysis import TarimAnalizMotoru
+from .validators import sensor_verisini_dogrula
+
+# ─────────────────────────────────────────────
+# Sulama kararı tek bir yerde tanımlandı.
+# Daha önce bu mantık views.py içine gömülüydü,
+# validators.py'deki eşiklerle çakışıyordu.
+# ─────────────────────────────────────────────
+def sulama_karari_uret(soil_moisture: float) -> str:
+    if soil_moisture < 30:
+        return "KRİTİK: Toprak kuru! Sulama sistemi başlatıldı. ✅"
+    elif soil_moisture > 70:
+        return "UYARI: Toprak doygun. Sulama durduruldu. 🛑"
+    return "DURUM: Nem ideal. İşlem gerekmiyor. 🌾"
+
 
 class IstatistikselAnaliz(APIView):
     def get(self, request):
-        # Son 100 veriyi çekelim
-        queryset = SensorData.objects.all().order_by('-timestamp')[:100]
-        
+        queryset = SensorData.objects.order_by('-timestamp')[:100]
+
         if not queryset.exists():
-            return Response({"hata": "Analiz için yeterli veri yok."}, status=404)
+            return Response(
+                {"hata": "Analiz için yeterli veri yok."},
+                status=status.HTTP_404_NOT_FOUND
+            )
 
-        # Verileri listeye çevir
-        nem_verileri = [obj.soil_moisture for obj in queryset]
-        sicaklik_verileri = [obj.temperature for obj in queryset]
-
-        # Analiz Motorunu Çalıştır
-        nem_sonuc = TarimAnalizMotoru.analiz_et(nem_verileri)
-        sicaklik_sonuc = TarimAnalizMotoru.analiz_et(sicaklik_verileri)
+        nem_verileri      = [obj.soil_moisture for obj in queryset]
+        sicaklik_verileri = [obj.temperature   for obj in queryset]
 
         return Response({
-            "toprak_nemi_analizi": nem_sonuc,
-            "sicaklik_analizi": sicaklik_sonuc
+            "toprak_nemi_analizi": TarimAnalizMotoru.analiz_et(nem_verileri),
+            "sicaklik_analizi":    TarimAnalizMotoru.analiz_et(sicaklik_verileri),
         })
+
 
 class SensorDataReceiver(APIView):
     def post(self, request):
-        try:
-            data = request.data
-            new_record = SensorData.objects.create(
-                device_id=data.get('device_id'),
-                temperature=data.get('temperature'),
-                humidity=data.get('humidity'),
-                soil_moisture=data.get('soil_moisture')
+        # DÜZELTME: markdown linki kaldırıldı → request.data doğrudan kullanılıyor
+        data = request.data
+
+        # Doğrulama validators.py üzerinden yapılıyor (kod tekrarı önlendi)
+        dogrulama = sensor_verisini_dogrula(data)
+        if not dogrulama["gecerli"]:
+            return Response(
+                {"hata": "Geçersiz veri", "detaylar": dogrulama["hatalar"]},
+                status=status.HTTP_400_BAD_REQUEST
             )
 
-            soil_moisture = float(data.get('soil_moisture', 100))
-            if soil_moisture < 30:
-                action = "KRİTİK: Toprak kuru! Sulama sistemi başlatıldı. ✅"
-            elif soil_moisture > 70:
-                action = "UYARI: Toprak doygun. Sulama durduruldu. 🛑"
-            else:
-                action = "DURUM: Nem ideal. İşlem gerekmiyor. 🌾"
+        try:
+            kayit = SensorData.objects.create(
+                device_id    = data.get('device_id'),
+                temperature  = data.get('temperature'),
+                humidity     = data.get('humidity'),
+                soil_moisture= data.get('soil_moisture'),
+            )
 
             return Response({
-                "mesaj": "Veri başarıyla işlendi",
-                "karar": action,
-                "kayit_id": new_record.id
+                "mesaj":    "Veri başarıyla işlendi",
+                "karar":    sulama_karari_uret(float(data.get('soil_moisture', 100))),
+                # DÜZELTME: markdown linki kaldırıldı → kayit.id doğrudan kullanılıyor
+                "kayit_id": kayit.id,
+                "uyarilar": dogrulama["uyarilar"],
             }, status=status.HTTP_201_CREATED)
-            
+
         except Exception as e:
-            return Response({"hata": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"hata": str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )

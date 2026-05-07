@@ -1,11 +1,11 @@
 # 🌱 Akıllı Tarım Yönetim Sistemi
 
-## 👥 Grup Üyeleri ve Görev Dağılımı
-- **Ahmet Enes Altun** → Proje Mimari Tasarımı  
-- **Hayat Ay** → Proje Analizi ve Kapsam Belirleme  
-- **Sami Yusuf Yıldız** → Gereksinim Toplama ve Analizi  
-- **Ebubekir Yılmaz** → Teknoloji Araştırması ve Seçimi  
-- **Ceren Çam** → Geliştirme Ortamı Kurulumu  
+## 👥 Grup Üyeleri
+- **Ahmet Enes Altun**  
+- **Hayat Ay**  
+- **Sami Yusuf Yıldız**  
+- **Ebubekir Yılmaz**  
+- **Ceren Çam** 
 
 ---
 
@@ -319,6 +319,117 @@ amacıyla kullanılacaktır.
 
 ## Sonuç
 Belirlenen geliştirme ortamı sayesinde ekip üyeleri aynı araçları kullanarak proje üzerinde çalışabilir. Bu ortam, yazılım geliştirme sürecinin düzenli ilerlemesini ve ekip içi iş birliğinin sağlanmasını kolaylaştırır.
+
+---
+
+## 📱 Mobil Uygulama İşlevsellik Tanımı (Ceren Çam)
+
+Bu belge, Akıllı Tarım Yönetim Sistemi'nin mobil uygulama bileşeninin temel işlevlerini, kullanıcı erişim kapsamını ve genel uygulama akışını tanımlamak amacıyla hazırlanmıştır. Mobil uygulama, çiftçilerin tarla başında olmaksızın sistemlerini anlık olarak takip edebilmelerini sağlayan kritik bir bileşendir.
+
+---
+
+### Mobil Uygulamanın Amacı
+
+Mobil uygulama; IoT sensörlerinden toplanan tarım verilerini çiftçiye akıllı telefon üzerinden sunmayı, sulama ve gübreleme gibi temel tarımsal işlemlerin takibini kolaylaştırmayı ve yapay zeka destekli önerileri anlık olarak iletmeyi hedeflemektedir.
+
+---
+
+### Hedef Kullanıcılar
+
+| Kullanıcı Rolü | Açıklama |
+|---|---|
+| **Çiftçi** | Tarlasının sensör verilerini takip eder, sistem önerilerini görüntüler |
+| **Sistem Yöneticisi** | Tüm tarla ve sensör verilerini izler, gerektiğinde müdahale eder |
+
+---
+
+### Kullanıcıların Erişebileceği Bilgiler
+
+Mobil uygulama üzerinden kullanıcılar aşağıdaki verilere erişebilecektir:
+
+- **Toprak Nemi:** Anlık toprak nem yüzdesi ve tarihsel değişim grafiği
+- **Hava Sıcaklığı:** Tarla konumuna özgü sıcaklık verisi
+- **Hava Nemi:** Çevresel nem oranı
+- **Sulama Durumu:** Aktif sulama sistemi açık/kapalı bilgisi ve geçmiş sulama kayıtları
+- **Gübreleme Takibi:** Planlanan ve gerçekleşen gübreleme işlemlerinin listesi
+- **Yapay Zeka Önerileri:** TensorFlow analiz motorunun ürettiği sulama ve gübreleme tavsiyeleri
+- **Sensör Durumu:** Tarlaya bağlı sensörlerin aktiflik bilgisi
+
+---
+
+### Kullanıcıların Gerçekleştirebileceği İşlemler
+
+#### Kimlik Doğrulama
+- Kullanıcı adı ve şifre ile güvenli giriş yapma
+- Oturumu kapatma
+
+#### Tarla ve Sensör Yönetimi
+- Kayıtlı tarlalarını listeleme ve seçme
+- Seçili tarlaya ait aktif sensörleri görüntüleme
+- Sensör verilerini anlık veya geçmişe yönelik filtreleyerek inceleme
+
+#### Sulama Kontrolü
+- Otomatik sulama eşiğinin (örn: %30 toprak nemi) mevcut durumunu görüntüleme
+- Sulama sisteminin ne zaman devreye girdiğini geçmiş kayıtlardan takip etme
+
+#### Gübreleme Takibi
+- Geçmiş gübreleme işlemlerini tarihe göre listeleme
+- Yapay zeka tarafından önerilen bir sonraki gübreleme zamanını görüntüleme
+
+#### Analiz ve Raporlar
+- Son 7 günlük nem ve sıcaklık ortalamalarını kart yapısında görüntüleme
+- TensorFlow analiz motorundan gelen istatistiksel özeti (ortalama, medyan, standart sapma) okuma
+
+#### Bildirimler
+- Toprak nemi kritik seviyenin altına düştüğünde anlık uyarı alma
+- Sistem tarafından önerilen işlem bildirimleri
+
+---
+
+### Genel Uygulama Akışı
+
+Uygulama Açılışı → Giriş Ekranı (Kullanıcı adı + Şifre) → Kimlik Doğrulama (Django REST API)
+
+- Kimlik doğrulama **başarısız** ise → Hata mesajı gösterilir, kullanıcı tekrar deneyebilir
+- Kimlik doğrulama **başarılı** ise → Ana Ekran / Dashboard açılır
+
+Dashboard üzerinden erişilebilen akışlar:
+
+- Tarla Seç → Sensör Listesi → Sensör Detayı
+- Sulama Durumu → Geçmiş Kayıtlar
+- Gübreleme Takibi → Öneri Görüntüle
+- Analiz Raporu → İstatistiksel Özet
+- Bildirimler → Kritik Uyarı Detayı
+
+---
+
+### API Entegrasyonu
+
+Mobil uygulama, Django REST Framework üzerinden geliştirilen backend ile aşağıdaki uç noktalar aracılığıyla iletişim kurar:
+
+| Endpoint | Metot | İşlev |
+|---|---|---|
+| `/api/sensor-data/` | GET | Anlık sensör verilerini çeker |
+| `/api/analysis/` | GET | Son 100 verinin istatistiksel analizini getirir |
+| `/api/auth/login/` | POST | Kullanıcı girişi ve token alımı |
+
+---
+
+### Arayüz Tasarım Kararları
+
+Mobil uygulama arayüzü aşağıdaki tasarım ilkeleri benimsenerek planlanmıştır:
+
+- **Renk paleti:** Tarım temasıyla uyumlu yeşil ve beyaz tonları
+- **Font:** Arial — okunabilirlik öncelikli
+- **Kart yapısı:** Her veri türü ayrı bir kart bileşeninde gösterilir
+- **Responsive:** Farklı ekran boyutlarıyla uyumlu düzen
+- **Sade navigasyon:** Alt menü çubuğu ile Dashboard, Sensörler, Analiz ve Ayarlar sayfaları arasında geçiş
+
+---
+
+### Sonuç
+
+Bu işlevsellik tanımı belgesi, mobil uygulama geliştirme sürecine yol göstermek amacıyla hazırlanmıştır. Belirlenen işlevler, kullanıcı hikayeleri ve sistem gereksinimleriyle uyumlu olup projenin genel mimarisine entegre biçimde tasarlanmıştır. Mobil uygulama, Django REST API üzerinden veri alarak çiftçilere her yerden erişim imkânı sunacaktır.
 
 ---
 
@@ -1002,8 +1113,11 @@ Bu hafta geliştirilen sistem sayesinde sensörlerden ve dış servislerden gele
 
 
 
+<<<<<<< HEAD
 ---
 
+=======
+>>>>>>> 20a0c3a39581ee39153fef5bce63e7f204d23ab9
 # 🔧 Veritabanı Bağlantı Hataları ve Çözümleri (Hayat Ay)
 
 ## Genel Bakış
@@ -1122,3 +1236,7 @@ sensor_id INTEGER NOT NULL REFERENCES sensorler(id) ON DELETE CASCADE,
 ## Sonuç
 
 Yapılan düzeltmeler sayesinde sistem artık doğru veritabanına bağlanmakta, bağlantı havuzu ile performanslı çalışmakta ve güvenlik açıkları giderilmiş durumdadır. Tüm değişiklikler `settings.py` ve `akilli_tarim_db.sql` dosyalarına uygulanmış ve GitHub deposuna yüklenmiştir.
+<<<<<<< HEAD
+=======
+
+>>>>>>> 20a0c3a39581ee39153fef5bce63e7f204d23ab9

@@ -1240,3 +1240,84 @@ Yapılan düzeltmeler sayesinde sistem artık doğru veritabanına bağlanmakta,
 =======
 
 >>>>>>> 20a0c3a39581ee39153fef5bce63e7f204d23ab9
+
+---
+
+# 🔒 Güvenlik Denetimi, UI/UX Yenilemesi (Ebubekir Yılmaz)
+
+Bu hafta projenin güvenlik altyapısı baştan denetlenmiş, tespit edilen tüm açıklar kapatılmış ve yönetim panelinin UI/UX tasarımı için wireframe ve mockup'lar hazırlanmıştır. Yapılan çalışmaların teknik detayları aşağıdadır:
+
+## 🛡️ 1. Güvenlik Açığı Taraması (XSS ve SQL Injection Testleri)
+
+Projedeki tüm view, template ve API endpoint'leri otomatik testlerle taranmıştır. Django test framework'ü kullanılarak `api/test_guvenlik.py` dosyasında 13 ayrı güvenlik testi yazılmıştır.
+
+- **XSS Testleri:** `device_id` alanına ve URL filtre parametrelerine HTML/JS payload'i enjekte edilerek dashboard'da escape kontrolü yapılmıştır. JavaScript context'inden çıkış denemeleri (kritik XSS) ayrıca test edilmiştir.
+- **SQL Injection Testleri:** Klasik `'; DROP TABLE` payload'i, `OR 1=1` bypass denemesi, tarih filtresine injection ve API POST üzerinden injection denenmiştir. Django ORM'in parametreli sorgularıyla sistemin korumalı olduğu doğrulanmıştır.
+- **Yetkilendirme Testleri:** Anonim kullanıcının API ve dashboard'a erişim denemesi simüle edilmiştir.
+- **CSRF ve Information Disclosure Testleri:** Form'ların CSRF token kontrolü ve hata mesajlarının stack trace sızdırıp sızdırmadığı kontrol edilmiştir.
+
+Çalıştırma komutu: `python manage.py test api.test_guvenlik -v 2`
+
+## 🔧 2. Güvenlik Denetimi ve İyileştirmeler
+
+Tarama sonucunda **10 güvenlik açığı** tespit edilmiş ve hepsi kapatılmıştır:
+
+| Açık | Çözüm |
+| :--- | :--- |
+| `\|safe` filtresi ile Stored XSS | Django'nun `json_script` etiketine geçildi |
+| Dashboard view'larında auth eksikti | Tüm view'lara `@login_required` eklendi |
+| API endpoint'leri anonim erişime açıktı | `IsAuthenticated` permission + Token + Session auth |
+| Token sistemi aktif değildi | `rest_framework.authtoken` aktive edildi, migration çalıştırıldı |
+| Token alma endpoint'i yoktu | `/api/token/` endpoint'i eklendi (`obtain_auth_token`) |
+| API hata mesajları stack trace sızdırıyordu | Generic mesaja çevrildi |
+| `DEBUG=True` hardcoded'du | Ortam değişkeni ile kontrol edilebilir hale getirildi |
+| Simulator yetki kontrolünden geçemiyordu | Token destekli yeniden yazıldı |
+| Güvenlik header'ları eksikti | `X-Frame-Options`, `nosniff`, `HSTS`, secure cookie ayarları eklendi |
+| Tarih filtresine bozuk girdi view'ı çökertiyordu | `try/except` ile zarif hata yönetimi |
+
+### Kullanıcı Yetkilendirme ve Kimlik Doğrulama
+
+- **Login/Logout sistemi:** Django'nun yerleşik `auth_views.LoginView` ve `LogoutView` ile entegre edildi.
+- **Bootstrap 5 stilli giriş ekranı:** `tarim_projesi/templates/registration/login.html` olarak tasarlandı.
+- **Çift katmanlı yetkilendirme:** Web arayüzü için Session, IoT cihazlar için Token authentication.
+- **Şifre kalitesi:** En az 10 karakter, yaygın şifreler reddedilir.
+- **Session güvenliği:** HttpOnly + SameSite cookie'ler, 2 saatlik otomatik logout.
+
+### Eklenen ve Güncellenen Dosyalar
+
+- `api/test_guvenlik.py` (yeni — 13 test)
+- `api/views.py` (auth + permission düzenlemeleri)
+- `tarim_projesi/settings.py` (güvenlik ayarları)
+- `tarim_projesi/urls.py` (login/logout/token endpoint'leri)
+- `tarim_projesi/templates/registration/login.html` (yeni)
+- `dashboard/views.py` (her view'a `@login_required`)
+- `dashboard/templates/dashboard/dashboard.html` (XSS koruması — `json_script`)
+- `simulator.py` (token destekli)
+- `guvenlik_acigi_raporu.md` (detaylı denetim raporu)
+
+## 🎨 3. Web Tabanlı Yönetim Paneli UI/UX Tasarımı
+
+Mevcut dashboard, sensör listesi ve veri ekleme sayfaları için yeni bir tasarım sistemi geliştirilmiştir.
+
+### Bilgi Mimarisi
+4 temel sayfa tanımlanmıştır: **Login → Dashboard → Sensör Listesi → Manuel Veri Girişi**. Tüm sayfalar arasında navbar üzerinden gezinme mümkündür; sağ üst köşede oturum bilgisi ve çıkış butonu yer alır.
+
+### Tasarım Sistemi
+- **Renk paleti:** Mevcut yeşil tema korundu (`#2e7d32` ana, `#1b5e20` koyu, `#e8f5e9` açık)
+- **Durum göstergeleri:** Renk + ikon + metin kombinasyonu (renk körlüğü erişilebilirliği için)
+  - 🌾 İdeal (yeşil) | ⚠️ Sulama Gerekli (turuncu) | 🛑 Aşırı Doygun (kırmızı)
+- **Etkileşim:** Hover animasyonları, kart bazlı sensör listesi, kompakt filtre barı
+- **Responsive:** Mobile (2x2 grid), tablet (2 kolon), desktop (4 kolon)
+
+### Yenilenen Bileşenler
+- **Dashboard:** Stat kartlarında trend göstergesi (▲/▼), tabloda renkli durum badge'leri
+- **Sensör Listesi:** Tablo yerine kart grid yapısı, son ölçüm değerleri özet halinde
+- **Sensör Ekle:** Geçerli aralık bilgi kutusu, inline hata mesajları
+- **Login:** Gradient arkaplan, ikonlu input alanları
+
+### Teslimatlar
+- `docs/wireframes.html` — 4 sayfanın SVG wireframe çizimleri
+- `docs/mockup.html` — Tarayıcıda açılan, sayfalar arası gezilebilir tam görsel mockup
+- `docs/ui_ux_tasarim_raporu.md` — Bilgi mimarisi, kullanıcı akışları ve tasarım kararlarının dokümantasyonu
+
+---

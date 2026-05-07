@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions  # İzinler eklendi
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from .models import SensorData
 from .analysis import TarimAnalizMotoru
 from .validators import sensor_verisini_dogrula
@@ -19,6 +20,10 @@ def sulama_karari_uret(soil_moisture: float) -> str:
 
 
 class IstatistikselAnaliz(APIView):
+    # Sadece giriş yapmış kullanıcılar verileri görebilir
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
     def get(self, request):
         queryset = SensorData.objects.order_by('-timestamp')[:100]
 
@@ -38,8 +43,11 @@ class IstatistikselAnaliz(APIView):
 
 
 class SensorDataReceiver(APIView):
+    # Veri göndermek için de yetki şart (Güvenlik önlemi)
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
     def post(self, request):
-        # DÜZELTME: markdown linki kaldırıldı → request.data doğrudan kullanılıyor
         data = request.data
 
         # Doğrulama validators.py üzerinden yapılıyor (kod tekrarı önlendi)
@@ -52,22 +60,22 @@ class SensorDataReceiver(APIView):
 
         try:
             kayit = SensorData.objects.create(
-                device_id    = data.get('device_id'),
-                temperature  = data.get('temperature'),
-                humidity     = data.get('humidity'),
-                soil_moisture= data.get('soil_moisture'),
+                device_id     = data.get('device_id'),
+                temperature   = data.get('temperature'),
+                humidity      = data.get('humidity'),
+                soil_moisture = data.get('soil_moisture'),
             )
 
             return Response({
                 "mesaj":    "Veri başarıyla işlendi",
                 "karar":    sulama_karari_uret(float(data.get('soil_moisture', 100))),
-                # DÜZELTME: markdown linki kaldırıldı → kayit.id doğrudan kullanılıyor
                 "kayit_id": kayit.id,
                 "uyarilar": dogrulama["uyarilar"],
             }, status=status.HTTP_201_CREATED)
 
         except Exception as e:
+            # Generic hata mesaji - stack trace sizdirma riski yok
             return Response(
-                {"hata": str(e)},
+                {"hata": "Veri formatı hatalı veya eksik."},
                 status=status.HTTP_400_BAD_REQUEST
             )

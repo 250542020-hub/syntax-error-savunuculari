@@ -8,7 +8,7 @@ SECRET_KEY = os.environ.get(
     'django-insecure-akilli-tarim-gizli-anahtar'
 )
 
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
     'api',
     'dashboard',
@@ -41,7 +42,7 @@ ROOT_URLCONF = 'tarim_projesi.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'tarim_projesi' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -103,4 +104,58 @@ LOGGING = {
         'handlers': ['console'],
         'level': 'INFO',
     },
+    
 }
+# GÜVENLİK AYARLARI
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY' # Clickjacking koruması
+
+# Token yetkilendirmesi için bunu INSTALLED_APPS'e ekle
+# 'rest_framework.authtoken', 
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
+# ──────────────────────────────────────────────────────────
+# EK GUVENLIK AYARLARI (Gorev 2)
+# ──────────────────────────────────────────────────────────
+
+# Login / Logout yonlendirmeleri
+LOGIN_URL = '/giris/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/giris/'
+
+# Oturum (Session) guvenligi
+SESSION_COOKIE_HTTPONLY = True       # JS oturum cerezine erisemez
+SESSION_COOKIE_SAMESITE = 'Lax'      # CSRF saldirilarina karsi
+SESSION_COOKIE_AGE = 60 * 60 * 2     # 2 saat sonra otomatik logout
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# CSRF cerezi guvenligi
+CSRF_COOKIE_HTTPONLY = True
+CSRF_COOKIE_SAMESITE = 'Lax'
+
+# Production'da HTTPS zorla (DEBUG=False oldugunda otomatik aktif)
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_HSTS_SECONDS = 31536000   # 1 yil
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
+# Sifre kalitesi dogrulayicilari
+AUTH_PASSWORD_VALIDATORS = [
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+     'OPTIONS': {'min_length': 10}},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+]

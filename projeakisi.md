@@ -1321,3 +1321,56 @@ Mevcut dashboard, sensör listesi ve veri ekleme sayfaları için yeni bir tasar
 - `docs/ui_ux_tasarim_raporu.md` — Bilgi mimarisi, kullanıcı akışları ve tasarım kararlarının dokümantasyonu
 
 ---
+
+## 📚 API Dokümantasyonu ve Kullanıcı Kılavuzu (Ceren Çam)
+
+Bu bölümde projenin API referans belgesi ve kullanıcılara yönelik kapsamlı kurulum-kullanım kılavuzu hazırlanmıştır. Tüm belgeler `docs/` klasörü altında düzenlenmiştir.
+
+## Oluşturulan Belgeler
+
+* **`docs/api-dokumantasyon.md`** → Tüm API endpoint'leri, istek/yanıt formatları, hata kodları ve örnek cURL komutları
+* **`docs/kullanici-kilavuzu.md`** → Kurulum, çalıştırma, kullanım ve sorun giderme adımları
+
+## API Dokümantasyonu İçeriği
+
+Mevcut sistemdeki üç temel endpoint belgelenmiştir:
+
+| Metot | Endpoint | Açıklama |
+|---|---|---|
+| `POST` | `/api/sensor-data/` | Sensör verisini kaydeder ve sulama kararı üretir |
+| `GET` | `/api/analysis/` | Son 100 ölçümün TensorFlow istatistik raporunu döndürür |
+| `GET` | `/admin/` | Yönetici paneli — tüm veriler ve kullanıcı yönetimi |
+
+Her endpoint için istek gövdesi (request body), örnek JSON yanıtları ve olası hata kodları (`400`, `401`, `404`, `500`) açıklanmıştır. Veri akış diyagramı da belgeye eklenmiştir.
+
+## Kullanıcı Kılavuzu İçeriği
+
+Kılavuz üç ana başlık altında düzenlenmiştir:
+
+### Kurulum
+
+* Python 3.10+ ve sanal ortam (venv) kurulumu
+* `pip install -r requirements.txt` ile bağımlılık yükleme
+* PostgreSQL veritabanı oluşturma ve tablo migrasyonu
+* Yönetici hesabı oluşturma
+
+### Kullanım
+
+* Django sunucusunu ve sensör simülatörünü başlatma
+* `http://localhost:8000/admin/` üzerinden yönetici paneline erişim
+* Sensör verilerini filtreleme ve izleme
+* Analiz raporunu görüntüleme
+
+### Sorun Giderme
+
+Aşağıdaki yaygın sorunlar için adım adım çözümler hazırlanmıştır:
+
+* Sunucu başlamıyor
+* Veritabanına bağlanılamıyor
+* Simülatör veri gönderemiyor
+* Bağımlılık kurulum hataları
+* Yönetici parolası sıfırlama
+
+## Sonuç
+
+Hazırlanan belgeler sayesinde projeyi daha önce hiç görmemiş bir kullanıcı sistemi sıfırdan kurup çalıştırabilir. API dokümantasyonu ise ileride sisteme entegre edilecek yeni cihaz veya modüller için referans kaynak niteliği taşımaktadır.

@@ -16,7 +16,8 @@ sonuc("Eksik alan",   False, sensor_verisini_dogrula({"device_id":"SENSOR_02","t
 sonuc("Aralik disi sicaklik (150)", False, sensor_verisini_dogrula({"device_id":"SENSOR_03","temperature":150.0,"humidity":70.0,"soil_moisture":35.0}))
 sonuc("Negatif nem (-5)", False, sensor_verisini_dogrula({"device_id":"SENSOR_04","temperature":22.0,"humidity":-5.0,"soil_moisture":40.0}))
 sonuc("Dusuk toprak nemi - uyari uretmeli", True, sensor_verisini_dogrula({"device_id":"SENSOR_05","temperature":30.0,"humidity":45.0,"soil_moisture":10.0}))
-sonuc("Yanlis tip (sicaklik metin)", False, sensor_verisini_dogrula({"device_id":"SENSOR_06","temperature":"sicak","humidity":60.0,"soil_moisture":35.0}))
+sonuc("Yuksek sicaklik (45) - uyari uretmeli", True, sensor_verisini_dogrula({"device_id":"SENSOR_06","temperature":45.0,"humidity":50.0,"soil_moisture":40.0}))
+sonuc("Yanlis tip (sicaklik metin)", False, sensor_verisini_dogrula({"device_id":"SENSOR_07","temperature":"sicak","humidity":60.0,"soil_moisture":35.0}))
 sonuc("Bos device_id", False, sensor_verisini_dogrula({"device_id":"","temperature":24.0,"humidity":55.0,"soil_moisture":40.0}))
 
 baslik("TEST 2 - Hava Durumu API Dogrulama")

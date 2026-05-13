@@ -411,7 +411,7 @@ Mobil uygulama, Django REST Framework üzerinden geliştirilen backend ile aşa�
 |---|---|---|
 | `/api/sensor-data/` | GET | Anlık sensör verilerini çeker |
 | `/api/analysis/` | GET | Son 100 verinin istatistiksel analizini getirir |
-| `/api/auth/login/` | POST | Kullanıcı girişi ve token alımı |
+| `/api/token/` | POST | Kullanıcı girişi ve token alımı (DRF `obtain_auth_token`) |
 
 ---
 

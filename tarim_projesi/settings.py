@@ -89,22 +89,72 @@ CORS_ALLOWED_ORIGINS = [
     'http://127.0.0.1:8000',
 ]
 
-# DÜZELTME 7: api.loglama_config import'u kaldırıldı
-# settings.py yüklenirken api modülü henüz tanınmıyor → ModuleNotFoundError
-# Loglama ayarları doğrudan burada tanımlandı
+# ──────────────────────────────────────────────────────────
+# LOGLAMA YAPILANDIRMASI (Ceren Çam — Hafta 5)
+# ──────────────────────────────────────────────────────────
+# api/loglama_config.py içindeki LOGLAMA_AYARLARI sözlüğü
+# buraya doğrudan kopyalandı. Import yapılırsa settings.py
+# yüklenirken `api` modülü henüz tanınmıyor → ModuleNotFoundError
+# olur (Hayat'ın 7. düzeltmesi). Bu yaklaşım her iki sorunu
+# birden çözer: hem detaylı loglama aktif, hem import hatası yok.
+# ──────────────────────────────────────────────────────────
+
+LOG_KLASORU = os.path.join(BASE_DIR, "api", "logs")
+os.makedirs(LOG_KLASORU, exist_ok=True)
+
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "ayrintili": {
+            "format": "[%(asctime)s] %(levelname)-8s %(name)s | %(funcName)s:%(lineno)d | %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+        },
+        "kisa": {
+            "format": "%(levelname)-8s %(name)s | %(message)s",
         },
     },
-    'root': {
-        'handlers': ['console'],
-        'level': 'INFO',
+    "handlers": {
+        "terminal": {
+            "class": "logging.StreamHandler",
+            "formatter": "kisa",
+            "level": "DEBUG",
+        },
+        "dosya_genel": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": os.path.join(LOG_KLASORU, "api_genel.log"),
+            "maxBytes": 5 * 1024 * 1024,
+            "backupCount": 3,
+            "encoding": "utf-8",
+            "formatter": "ayrintili",
+            "level": "INFO",
+        },
+        "dosya_hatalar": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": os.path.join(LOG_KLASORU, "api_hatalar.log"),
+            "maxBytes": 5 * 1024 * 1024,
+            "backupCount": 3,
+            "encoding": "utf-8",
+            "formatter": "ayrintili",
+            "level": "ERROR",
+        },
     },
-    
+    "loggers": {
+        "api": {
+            "handlers": ["terminal", "dosya_genel", "dosya_hatalar"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        "django": {
+            "handlers": ["terminal", "dosya_genel"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+    },
+    "root": {
+        "handlers": ["terminal"],
+        "level": "WARNING",
+    },
 }
 # GÜVENLİK AYARLARI
 SECURE_BROWSER_XSS_FILTER = True

@@ -33,25 +33,41 @@
                 </h5>
 
                 <form method="post">
-    {% csrf_token %}
+                    {% csrf_token %}
 
-    {% if hata %}
-    <div class="alert alert-danger">{{ hata }}</div>
-    {% endif %}
+                    {# Tekil hata mesajı (views.py'dan 'hata' parametresi geldiğinde) #}
+                    {% if hata %}
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-triangle"></i> {{ hata }}
+                    </div>
+                    {% endif %}
+
+                    {# Validators.py'dan dönen hata listesi (views.py'dan 'hatalar' parametresi geldiğinde) #}
+                    {% if hatalar %}
+                    <div class="alert alert-danger">
+                        <strong><i class="bi bi-exclamation-triangle"></i> Doğrulama Hataları:</strong>
+                        <ul class="mb-0 mt-2">
+                            {% for h in hatalar %}
+                            <li>{{ h }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Cihaz ID</label>
                         <input type="text" name="device_id" class="form-control"
-                               placeholder="Örn: sensor-01" required>
-                        <div class="form-text">Sensörün benzersiz kimlik numarası</div>
+                               placeholder="Örn: sensor-01" maxlength="50" required>
+                        <div class="form-text">Sensörün benzersiz kimlik numarası (en fazla 50 karakter)</div>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label fw-semibold">
                             <i class="bi bi-thermometer-half text-danger"></i> Sıcaklık (°C)
                         </label>
-                        <input type="number" name="temperature" step="0.1"
+                        <input type="number" name="temperature" step="0.1" min="-10" max="60"
                                class="form-control" placeholder="Örn: 24.5" required>
+                        <div class="form-text">Geçerli aralık: -10 °C ile 60 °C</div>
                     </div>
 
                     <div class="mb-3">
@@ -60,6 +76,7 @@
                         </label>
                         <input type="number" name="humidity" step="0.1" min="0" max="100"
                                class="form-control" placeholder="Örn: 65.0" required>
+                        <div class="form-text">Geçerli aralık: 0% ile 100%</div>
                     </div>
 
                     <div class="mb-4">

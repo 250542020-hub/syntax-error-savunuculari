@@ -1362,3 +1362,64 @@ Aşağıdaki yaygın sorunlar için adım adım çözümler hazırlanmıştır:
 ## Sonuç
 
 Hazırlanan belgeler sayesinde projeyi daha önce hiç görmemiş bir kullanıcı sistemi sıfırdan kurup çalıştırabilir. API dokümantasyonu ise ileride sisteme entegre edilecek yeni cihaz veya modüller için referans kaynak niteliği taşımaktadır.
+
+
+
+---
+
+## 📊 Görev 1 — IoT Sensör Veri Toplama Modülü Gereksinim Analizi(Hayat AY )
+
+### 1. Sensörler ve Toplanan Veriler
+
+Sistemde `models.py` ve `validators.py` dosyaları incelenerek aktif olarak kullanılan üç sensör parametresi tespit edildi.
+
+**Sıcaklık (`temperature`):** Django modelinde `FloatField` olarak tanımlanmış olup `-10.0 °C` ile `60.0 °C` arasındaki değerleri kabul etmektedir. `40.0 °C` üzerindeki değerlerde `"Sıcaklık aşırı yüksek"` uyarısı üretilmektedir. Fiziksel sensör olarak ±0.5 °C hassasiyetiyle DHT22, SHT31 veya DS18B20 kullanılması önerilmektedir.
+
+**Hava Nemi (`humidity`):** `0.0%` ile `100.0%` arasında `float` tipinde veri kabul etmektedir. Mevcut kodda kritik eşik tanımlanmamış olup `30%` altı kuru, `85%` üstü yoğun olarak uyarı eşiği belirlenmesi gerektiği tespit edildi. ±2% RH hassasiyetiyle DHT22 veya SHT31 önerilmektedir.
+
+**Toprak Nemi (`soil_moisture`):** `0.0%` ile `100.0%` arasında veri kabul etmektedir. `15.0%` altında `"Toprak nemi kritik seviyede düşük"` uyarısı üretilmektedir. `views.py` içindeki `sulama_karari_uret()` fonksiyonu üzerinden `30%` altında sulama başlatma, `30–70%` arasında ideal durum, `70%` üzerinde sulama durdurma kararı verilmektedir. Capacitive Soil Moisture v1.2 veya TEROS-12 sensörü önerilmektedir.
+
+Gelecek dönem için öncelik sırasına göre ışık (µmol/m²/s), pH (0–14), yağmur (mm/saat), CO2 (ppm) ve rüzgar (m/s) sensörlerinin sisteme eklenmesi planlandı.
+
+### 2. Veri Toplama Sıklığı
+
+Mevcut kodda veri toplama sıklığı hiçbir yerde tanımlanmamış olduğu tespit edildi. Bu eksikliği gidermek amacıyla dört farklı senaryo için sıklık değerleri belirlendi ve `collector_config.json` dosyasına aktarıldı.
+
+**Normal izleme:** Sıcaklık ve hava nemi 15 dakikada bir, toprak nemi 10 dakikada bir toplanmaktadır. Zamanlayıcı tabanlı bu senaryo verimli kaynak kullanımını hedeflemektedir.
+
+**Kritik eşik aşımı:** `validators.py` içindeki eşik değerlerinden herhangi biri aşıldığında tüm parametreler 1 dakikaya düşmektedir. Hızlı müdahale gerektiren durumlar için otomatik olarak tetiklenmektedir.
+
+**Sulama aktifken:** `sulama_karari_uret()` fonksiyonunun sulama başlatma kararı vermesi durumunda toprak nemi 2 dakikada bir, sıcaklık ve hava nemi 5 dakikada bir toplanmaktadır. Bu sayede sulama sürecinin etkisi anlık olarak takip edilmektedir.
+
+**İstatistiksel analiz:** `IstatistikselAnaliz` endpoint'i ve `TarimAnalizMotoru` için saatlik ortalama değerler kullanılmaktadır. `TarimAnalizMotoru` her parametre için ortalama, medyan, standart sapma ve veri adedi hesaplamaktadır.
+
+`SensorData` modelindeki `auto_now_add=True` alanı saniye hassasiyetinde çalışmaktadır. Yüksek frekanslı senaryolarda milisaniye hassasiyetine geçilmesi gerekebileceği not edildi. Ayrıca `IstatistikselAnaliz` endpoint'indeki `queryset[:100]` sabit limitinin zaman bazlı filtrelemeye (`?start_date=&end_date=`) dönüştürülmesi gerektiği tespit edildi.
+
+### 3. Veri Formatları
+
+API'ye gönderilecek verinin `device_id`, `temperature`, `humidity` ve `soil_moisture` alanlarını içeren JSON formatında olması gerekmektedir. `timestamp` alanı `auto_now_add=True` ile otomatik olarak oluşturulmaktadır.
+
+`validators.py` üzerinden belirlenen alan kısıtlamaları şu şekildedir: `device_id` en fazla 50 karakter uzunluğunda string, `temperature` `-10.0` ile `60.0` arasında float, `humidity` `0.0` ile `100.0` arasında float, `soil_moisture` `0.0` ile `100.0` arasında float tipinde olmalıdır. Tüm alanlar zorunludur.
+
+Başarılı veri iletiminde API `HTTP 201` durum koduyla `mesaj`, `karar`, `kayit_id` ve `uyarilar` alanlarını içeren bir yanıt döndürmektedir. Geçersiz veri gönderiminde `HTTP 400` durum koduyla `hata` ve `detaylar` alanları döndürülmektedir.
+
+`IstatistikselAnaliz` endpoint'i her sensör parametresi için `TarimAnalizMotoru` üzerinden hesaplanan `ortalama`, `medyan`, `standart_sapma` ve `veri_adedi` değerlerini döndürmektedir. `TarimAnalizMotoru` verileri TensorFlow Tensor formatına dönüştürerek GPU hızlandırması ve ileride geliştirilecek yapay zeka modelleriyle uyumluluk sağlamaktadır.
+
+### 4. Veri Güvenliği Gereksinimleri
+
+`SensorDataReceiver` ve `IstatistikselAnaliz` endpoint'lerinin kimlik doğrulaması olmadan erişilebilir durumda olduğu tespit edildi. API katmanında `device_id` bazlı `X-API-Key` header kimlik doğrulaması, taşıma katmanında HTTPS/TLS ve MQTT broker'da kullanıcı adı/şifre veya TLS sertifikası zorunlu hale getirilmesi gerektiği belirlendi. Orta vadeli gereksinim olarak DRF Throttle ile sensör başına 10 istek/dakika rate limiting ve kayıtsız cihazları engelleyecek device whitelist yapısı oluşturulması planlandı.
+
+`validators.py` incelemesinde doğrulama katmanının sağlıklı biçimde kurgulandığı görüldü. Zorunlu alan eksikliği, sayısal tip doğrulaması ve aralık dışı değer reddi uygulanmış durumdadır. Tüm doğrulama kararları `hatalar` ve `uyarilar` olmak üzere iki seviyeli geri bildirim yapısıyla `api.validators` logger'a aktarılmaktadır. Tek eksik olarak `humidity` kritik eşiğinin tanımlanmamış olduğu tespit edildi.
+
+Loglama altyapısı incelendiğinde `INFO`, `WARNING` ve `ERROR` seviyelerinin mevcut olduğu görüldü. Güvenlik ihlallerini kapsayan `CRITICAL` seviyesi ve `sensor_sil` işlemlerini kapsayan `AUDIT` seviyesinin eksik olduğu belirlendi.
+
+Veri saklama politikası olarak `device_id` ile konum ilişkisi kurulması durumunda KVKK kapsamına girebileceği not edildi. Ham verinin 1 yıl, agregat verinin 5 yıl saklanması, PostgreSQL bağlantısının SSL zorunlu yapılandırılması ve MQTT payload şifrelemesi için TLS kullanılması gerektiği belirlendi.
+
+### 5. Veri Toplama Temeli
+
+Analiz sonuçlarına dayanarak veri toplama sürecinin çalışabilir iskelet yapısı iki dosya halinde oluşturuldu.
+
+**`collector_config.json`:** MQTT bağlantı ayarları, API adresi ve anahtarı, belirlenen dört senaryo için veri toplama sıklıkları, üç sensör parametresinin tamamı için minimum, maksimum ve kritik eşik değerleri ile buffer boyutu, yeniden deneme süresi ve maksimum deneme sayısı bu dosyada merkezi olarak yönetilmektedir.
+
+**`sensor_collector.py`:** MQTT üzerinden gelen ham sensör verisi alınmakta, `ALAN_ADI_HARITASI` üzerinden alan adları API formatına dönüştürülmekte, `collector_config.json` içindeki eşik değerleriyle karşılaştırılarak senaryo belirlenmekte ve veri API'ye iletilmektedir. Bağlantı hatası durumunda veriler `deque` yapısındaki buffer'a alınmakta ve belirlenen aralıklarla yeniden gönderim denenmektedir. MQTT bağlantısı QoS 1 seviyesinde tutularak en az bir kez teslim garantisi sağlanmaktadır. Config dosyasında kimlik bilgileri tanımlandığında MQTT broker kimlik doğrulaması otomatik olarak devreye girmektedir.
+

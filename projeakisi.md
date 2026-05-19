@@ -924,11 +924,7 @@ Arayüz mobil ve bilgisayar uyumlu olacak şekilde tasarlanmıştır.
 
 ---
 
-# ✅ Sonuç
 
-Geliştirilen GUI tasarımı sayesinde kullanıcılar Akıllı Tarım Yönetim Sistemini kolay bir şekilde kullanabilecektir.
-
-Sade ve anlaşılır tasarım, kullanıcı deneyimini artırmakta ve sistemin verimli kullanılmasını sağlamaktadır.
 
 ---
 # 🧠 Yapay Zeka ve Veri Analizi Modülü (Ebubekir Yılmaz)

@@ -1229,14 +1229,6 @@ sensor_id INTEGER NOT NULL REFERENCES sensorler(id) ON DELETE CASCADE,
 
 ---
 
-## Sonuç
-
-Yapılan düzeltmeler sayesinde sistem artık doğru veritabanına bağlanmakta, bağlantı havuzu ile performanslı çalışmakta ve güvenlik açıkları giderilmiş durumdadır. Tüm değişiklikler `settings.py` ve `akilli_tarim_db.sql` dosyalarına uygulanmış ve GitHub deposuna yüklenmiştir.
-<<<<<<< HEAD
-=======
-
->>>>>>> 20a0c3a39581ee39153fef5bce63e7f204d23ab9
-
 ---
 
 # 🔒 Güvenlik Denetimi, UI/UX Yenilemesi (Ebubekir Yılmaz)

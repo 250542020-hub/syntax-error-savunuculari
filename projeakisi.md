@@ -1367,7 +1367,7 @@ Hazırlanan belgeler sayesinde projeyi daha önce hiç görmemiş bir kullanıc�
 
 ---
 
-## 📊 Görev 1 — IoT Sensör Veri Toplama Modülü Gereksinim Analizi(Hayat AY )
+## 📊 — IoT Sensör Veri Toplama Modülü Gereksinim Analizi(Hayat AY )
 
 ### 1. Sensörler ve Toplanan Veriler
 

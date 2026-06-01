@@ -1423,3 +1423,145 @@ Analiz sonuçlarına dayanarak veri toplama sürecinin çalışabilir iskelet ya
 
 **`sensor_collector.py`:** MQTT üzerinden gelen ham sensör verisi alınmakta, `ALAN_ADI_HARITASI` üzerinden alan adları API formatına dönüştürülmekte, `collector_config.json` içindeki eşik değerleriyle karşılaştırılarak senaryo belirlenmekte ve veri API'ye iletilmektedir. Bağlantı hatası durumunda veriler `deque` yapısındaki buffer'a alınmakta ve belirlenen aralıklarla yeniden gönderim denenmektedir. MQTT bağlantısı QoS 1 seviyesinde tutularak en az bir kez teslim garantisi sağlanmaktadır. Config dosyasında kimlik bilgileri tanımlandığında MQTT broker kimlik doğrulaması otomatik olarak devreye girmektedir.
 
+
+
+# 📊 Django Yönetim Panelinde Sensör Görselleştirme Modülü
+
+## 📌 Amaç
+
+Bu modül, Akıllı Tarım Yönetim Sistemi kapsamında PostgreSQL veritabanında saklanan sensör verilerinin Django tabanlı web yönetim panelinde grafiksel olarak görüntülenmesini sağlar. Kullanıcılar toprak nemi, sıcaklık ve hava durumu verilerini anlık veya geçmişe dönük olarak inceleyebilir. Veriler zaman serisi grafikler halinde sunularak tarımsal karar verme süreçlerinin desteklenmesi amaçlanmaktadır.
+
+---
+
+## 🛠️ Kullanılacak Teknolojiler
+
+* Django
+* Django REST Framework (DRF)
+* PostgreSQL
+* Chart.js
+* HTML
+* CSS
+* JavaScript
+
+---
+
+## 📊 Görselleştirilecek Veriler
+
+Sistem aşağıdaki sensör verilerini grafik halinde gösterecektir:
+
+* Toprak Nemi (%)
+* Sıcaklık (°C)
+* Hava Durumu Verileri
+* Sensör Ölçüm Tarihi ve Saati
+
+---
+
+## 🔄 Sistem Çalışma Akışı
+
+1. IoT sensörlerinden gelen veriler PostgreSQL veritabanına kaydedilir.
+2. Django REST API verileri JSON formatında kullanıcı arayüzüne sunar.
+3. Chart.js kütüphanesi API üzerinden gelen verileri alır.
+4. Veriler zaman serisi grafiklerine dönüştürülür.
+5. Kullanıcı grafikler üzerinden geçmiş ve güncel verileri inceleyebilir.
+6. Tarih aralığı filtreleri kullanılarak belirli dönemlere ait veriler sorgulanabilir.
+
+---
+
+## 🔗 API Endpointleri
+
+### Tüm Sensör Verileri
+
+```http
+GET /api/sensor-data/
+```
+
+### Belirli Sensöre Ait Veriler
+
+```http
+GET /api/sensor-data/?sensor=1
+```
+
+### Tarih Aralığına Göre Veriler
+
+```http
+GET /api/sensor-data/?start_date=2026-01-01&end_date=2026-01-31
+```
+
+### Sensör ve Tarih Filtreli Veriler
+
+```http
+GET /api/sensor-data/?sensor=1&start_date=2026-01-01&end_date=2026-01-31
+```
+
+---
+
+## 📈 Grafik Türleri
+
+### Toprak Nemi Grafiği
+
+* Grafik Türü: Çizgi Grafik (Line Chart)
+
+### Sıcaklık Grafiği
+
+* Grafik Türü: Çizgi Grafik (Line Chart)
+
+### Hava Durumu Grafiği
+
+* Grafik Türü: Çizgi Grafik (Line Chart)
+
+---
+
+## 🔍 Filtreleme Özellikleri
+
+Kullanıcı aşağıdaki filtreleri kullanabilecektir:
+
+* Sensör Seçimi
+* Başlangıç Tarihi
+* Bitiş Tarihi
+* Veri Türü Seçimi
+
+Bu filtreler sayesinde kullanıcı yalnızca istediği sensör ve tarih aralığındaki verileri görüntüleyebilir.
+
+---
+
+## 🖥️ Yönetim Paneli Tasarımı
+
+Yönetim panelinde aşağıdaki bileşenler bulunacaktır:
+
+* Sensör Seçim Kutusu
+* Tarih Aralığı Seçici
+* Toprak Nemi Grafiği
+* Sıcaklık Grafiği
+* Hava Durumu Grafiği
+* Veri Yenile Butonu
+* Grafik İndirme Seçeneği
+
+---
+
+## ⚡ Performans ve Optimizasyon
+
+Veri sorgularının hızlı çalışabilmesi için aşağıdaki optimizasyonlar uygulanacaktır:
+
+* Sensör ID alanında indeksleme
+* Tarih alanında indeksleme
+* Gereksiz veri tekrarlarının önlenmesi
+* API sorgularında filtreleme desteği
+
+Bu sayede büyük veri kümelerinde dahi grafikler hızlı şekilde oluşturulabilecektir.
+
+---
+
+## 🚀 Gelecekte Yapılabilecek Geliştirmeler
+
+* Gerçek zamanlı veri güncelleme desteği
+* Grafiklerin PDF olarak dışa aktarılması
+* Yapay zeka tahmin sonuçlarının grafiklere eklenmesi
+* Mobil uygulama entegrasyonu
+* Alarm ve bildirim sistemi
+
+---
+
+## ✅ Sonuç
+
+Bu modül sayesinde kullanıcılar sensörlerden elde edilen verileri grafiksel olarak görüntüleyebilecek, geçmiş verileri analiz edebilecek ve tarımsal faaliyetlerini daha verimli şekilde yönetebilecektir. Django REST API ve Chart.js entegrasyonu sayesinde veriler dinamik ve kullanıcı dostu bir arayüz üzerinden sunulacaktır.
+

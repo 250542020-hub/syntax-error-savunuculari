@@ -1565,3 +1565,97 @@ Bu sayede büyük veri kümelerinde dahi grafikler hızlı şekilde oluşturulab
 
 Bu modül sayesinde kullanıcılar sensörlerden elde edilen verileri grafiksel olarak görüntüleyebilecek, geçmiş verileri analiz edebilecek ve tarımsal faaliyetlerini daha verimli şekilde yönetebilecektir. Django REST API ve Chart.js entegrasyonu sayesinde veriler dinamik ve kullanıcı dostu bir arayüz üzerinden sunulacaktır.
 
+
+
+# 🔍 Kod Kalitesi İyileştirme ve Test Kapsamı (Hayat Ay)
+
+## Genel Bakış
+
+Bu hafta projenin genel kod kalitesi değerlendirilmiş, kod tekrarı azaltılmış, okunabilirlik artırılmış ve eksik test senaryoları tamamlanmıştır. İncelenen dosyalar: `api/views.py`, `api/validators.py`, `api/analysis.py`, `api/models.py`, `dashboard/views.py`.
+
+---
+
+## 1. Kod Kalitesi ve Okunabilirlik
+
+### api/views.py
+
+**Tespit edilen sorunlar:**
+
+- İki satır Python kodu olarak değil markdown linki olarak yazılmıştı. Uygulama bu noktalarda çöküyordu.
+- `validators.py` geliştirilmiş olmasına rağmen `views.py` içinde kullanılmıyordu. Sensör verisi doğrulanmadan veritabanına yazılıyordu.
+- Sulama kararı mantığı (`soil_moisture < 30`) hem `views.py` içinde hem de `validators.py` içinde ayrı ayrı tanımlanmıştı.
+- Gereksiz `.all()` kullanımı vardı.
+
+**Yapılan düzeltmeler:**
+
+- Bozuk markdown linkleri düzeltildi.
+- `sulama_karari_uret()` adında tek bir fonksiyon oluşturuldu, kod tekrarı giderildi.
+- `sensor_verisini_dogrula()` entegre edildi, geçersiz veriler artık veritabanına ulaşmadan reddediliyor.
+- Gereksiz `.all()` kaldırıldı.
+
+---
+
+### dashboard/views.py
+
+**Tespit edilen sorunlar:**
+
+- `timezone` ve `timedelta` import edilmiş ama hiçbir yerde kullanılmıyordu.
+- Filtreleme mantığı `dashboard()` fonksiyonu içine gömülmüştü, okunması zorlaşıyordu.
+- Grafik verisi oluşturma işlemi satır içine yazılmıştı.
+- `sensor_ekle` fonksiyonunda doğrulama yapılmıyordu, geçersiz değerler veritabanına yazılabiliyordu.
+
+**Yapılan düzeltmeler:**
+
+- Kullanılmayan importlar kaldırıldı.
+- Filtreleme mantığı `_filtrelenmis_veriler()` fonksiyonuna taşındı.
+- Grafik verisi `_grafik_verisi_olustur()` fonksiyonuna taşındı.
+- `sensor_ekle` fonksiyonuna `sensor_verisini_dogrula()` entegre edildi.
+
+---
+
+## 2. Test Kapsamı
+
+Projede daha önce yalnızca `test_dogrulama.py` dosyası mevcuttu. Bu dosya sadece `validators.py`'i test ediyordu ve Django test framework'ü kullanmıyordu, elle çalıştırılıyordu.
+
+Aşağıdaki modüller için hiç test bulunmuyordu:
+
+| Modül | Önceki Durum | Sonraki Durum |
+|-------|-------------|---------------|
+| `models.py` | ❌ Test yok | ✅ 4 test |
+| `analysis.py` | ❌ Test yok | ✅ 7 test |
+| `views.py` POST | ❌ Test yok | ✅ 7 test |
+| `views.py` GET | ❌ Test yok | ✅ 3 test |
+| `sulama_karari_uret()` | ❌ Test yok | ✅ 5 test |
+| `validators.py` | ✅ Elle çalıştırılan | ✅ Django TestCase'e taşındı |
+| `dashboard/views.py` | ❌ Test yok | ✅ 7 test |
+
+Toplam **40 test senaryosu** `api/tests.py` dosyasına eklendi.
+
+Testleri çalıştırmak için:
+```bash
+python manage.py test api
+```
+
+---
+
+## Özet Tablo
+
+| # | Sorun | Dosya | Önem | Durum |
+|---|-------|-------|------|-------|
+| 1 | Bozuk markdown linki — çalışmaz kod | api/views.py | 🔴 Kritik | Düzeltildi |
+| 2 | Sulama kararı iki yerde tanımlı | api/views.py | 🟠 Yüksek | Düzeltildi |
+| 3 | Doğrulama kullanılmıyor | api/views.py | 🟠 Yüksek | Düzeltildi |
+| 4 | Gereksiz .all() | api/views.py | 🟡 Orta | Düzeltildi |
+| 5 | Kullanılmayan importlar | dashboard/views.py | 🟡 Orta | Düzeltildi |
+| 6 | Filtreleme mantığı satır içine gömülmüş | dashboard/views.py | 🟡 Orta | Düzeltildi |
+| 7 | sensor_ekle doğrulama yapmıyor | dashboard/views.py | 🟠 Yüksek | Düzeltildi |
+| 8 | Model testleri yok | api/tests.py | 🟠 Yüksek | Eklendi |
+| 9 | Analiz motoru testleri yok | api/tests.py | 🟠 Yüksek | Eklendi |
+| 10 | API endpoint testleri yok | api/tests.py | 🟠 Yüksek | Eklendi |
+| 11 | Dashboard testleri yok | api/tests.py | 🟠 Yüksek | Eklendi |
+
+---
+
+## Sonuç
+
+Yapılan düzeltmeler sayesinde kod tekrarı azaltılmış, okunabilirlik artırılmış ve kritik hatalar giderilmiştir. Eklenen 40 test senaryosu ile projenin test kapsamı genişletilmiş ve sistem davranışları doğrulanabilir hale getirilmiştir.

@@ -11,31 +11,51 @@ SENSOR_ALAN_SINIRLARI = {
 SENSOR_ZORUNLU_ALANLAR = ["device_id", "temperature", "humidity", "soil_moisture"]
 
 
+# ──────────────────────────────────────────────────────────
+# ORTAK YARDIMCILAR
+# Sensor ve hava durumu dogrulamasinda ayni kontrol mantigi
+# tekrarlaniyordu; tek yere toplandi (kod tekrari azaltildi).
+# ──────────────────────────────────────────────────────────
+
+def _eksik_zorunlu_alanlar(veri: dict, zorunlu_alanlar: list) -> list:
+    """Veride bulunmayan zorunlu alanlarin listesini doner."""
+    return [alan for alan in zorunlu_alanlar if alan not in veri]
+
+
+def _aralik_hatasi(alan: str, deger, sinir: dict):
+    """
+    Bir alanin sayisal tip ve [min, max] araligi kontrolu.
+    Hata varsa aciklama metni, deger gecerliyse None doner.
+    """
+    if not isinstance(deger, (int, float)):
+        return f"'{alan}' alani sayisal olmali; gelen tip: {type(deger).__name__}"
+    if deger < sinir["min"] or deger > sinir["max"]:
+        return f"'{alan}' degeri ({deger}) gecerli aralik disinda [{sinir['min']} - {sinir['max']}]"
+    return None
+
+
 def sensor_verisini_dogrula(veri: dict) -> dict:
     hatalar = []
     uyarilar = []
 
-    for alan in SENSOR_ZORUNLU_ALANLAR:
-        if alan not in veri:
-            hatalar.append(f"Zorunlu alan eksik: '{alan}'")
-
-    if hatalar:
+    eksikler = _eksik_zorunlu_alanlar(veri, SENSOR_ZORUNLU_ALANLAR)
+    if eksikler:
+        hatalar = [f"Zorunlu alan eksik: '{alan}'" for alan in eksikler]
         logger.warning("Sensor verisi zorunlu alan eksikligi | device_id=%s | hatalar=%s",
                        veri.get("device_id", "BILINMIYOR"), hatalar)
         return {"gecerli": False, "hatalar": hatalar, "uyarilar": uyarilar}
 
     for alan, sinir in SENSOR_ALAN_SINIRLARI.items():
-        deger = veri[alan]
-        if not isinstance(deger, (int, float)):
-            hatalar.append(f"'{alan}' alani sayisal olmali; gelen tip: {type(deger).__name__}")
+        hata = _aralik_hatasi(alan, veri[alan], sinir)
+        if hata:
+            hatalar.append(hata)
             continue
-        if deger < sinir["min"] or deger > sinir["max"]:
-            hatalar.append(f"'{alan}' degeri ({deger}) gecerli aralik disinda [{sinir['min']} - {sinir['max']}]")
-        else:
-            if alan == "soil_moisture" and deger < 15.0:
-                uyarilar.append(f"Toprak nemi kritik seviyede dusuk: {deger}%")
-            if alan == "temperature" and deger > 40.0:
-                uyarilar.append(f"Sicaklik asiri yuksek: {deger} derece")
+        # Deger gecerli aralikta; kritik esik uyarilarini uret.
+        deger = veri[alan]
+        if alan == "soil_moisture" and deger < 15.0:
+            uyarilar.append(f"Toprak nemi kritik seviyede dusuk: {deger}%")
+        if alan == "temperature" and deger > 40.0:
+            uyarilar.append(f"Sicaklik asiri yuksek: {deger} derece")
 
     device_id = veri.get("device_id", "")
     if not isinstance(device_id, str) or len(device_id.strip()) == 0:
@@ -62,21 +82,16 @@ def hava_durumu_cevabini_dogrula(cevap: dict) -> dict:
     hatalar = []
     uyarilar = []
 
-    for alan in HAVA_DURUMU_ZORUNLU_ALANLAR:
-        if alan not in cevap:
-            hatalar.append(f"Hava durumu cevabinda zorunlu alan yok: '{alan}'")
-
-    if hatalar:
+    eksikler = _eksik_zorunlu_alanlar(cevap, HAVA_DURUMU_ZORUNLU_ALANLAR)
+    if eksikler:
+        hatalar = [f"Hava durumu cevabinda zorunlu alan yok: '{alan}'" for alan in eksikler]
         logger.warning("Hava durumu API cevabi eksik alan | hatalar=%s", hatalar)
         return {"gecerli": False, "hatalar": hatalar, "uyarilar": uyarilar}
 
     for alan, sinir in HAVA_DURUMU_SINIRLARI.items():
-        deger = cevap.get(alan)
-        if not isinstance(deger, (int, float)):
-            hatalar.append(f"'{alan}' sayisal olmali; gelen: {type(deger).__name__}")
-            continue
-        if deger < sinir["min"] or deger > sinir["max"]:
-            hatalar.append(f"'{alan}' degeri ({deger}) gecerli aralik disinda [{sinir['min']} - {sinir['max']}]")
+        hata = _aralik_hatasi(alan, cevap.get(alan), sinir)
+        if hata:
+            hatalar.append(hata)
 
     description = cevap.get("description", "")
     if not isinstance(description, str) or len(description.strip()) == 0:

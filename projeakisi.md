@@ -1214,6 +1214,84 @@ sensor_id INTEGER NOT NULL REFERENCES sensorler(id) ON DELETE CASCADE,
 
 ---
 
+### 9. Collector Thread-Safe Olmayan Bağlantı Havuzu Kullanıyordu
+
+`sensorcollector.py` çok thread'li çalışır (MQTT dinleme thread'i + `FlushScheduler` thread'i + kapanışta `force_flush`). Ancak `SimpleConnectionPool` kullanılıyordu; bu sınıf psycopg2 dokümantasyonunda yalnızca **tek thread** için tanımlıdır. Farklı thread'lerden gelen `getconn`/`putconn` çağrıları havuzu bozabilirdi.
+
+**Hatalı kod:**
+```python
+self._pool = pool.SimpleConnectionPool(minconn=1, maxconn=5, **self.config)
+```
+
+**Düzeltme:** Çok thread'li uygulamalar için tasarlanan `ThreadedConnectionPool`'a geçildi, havuz boyutları ortam değişkeninden ayarlanabilir yapıldı.
+```python
+self._pool = pool.ThreadedConnectionPool(self.minconn, self.maxconn, **self.config)
+```
+
+---
+
+### 10. Bağlantı Koptuğunda Yeniden Bağlanma (Reconnect) Yoktu
+
+`_connect()` ilk denemede `OperationalError` alırsa doğrudan `raise` edip uygulamayı sonlandırıyordu. Veritabanı açılışta hazır değilse veya çalışma sırasında (network kesintisi, PostgreSQL restart) düşerse sistem kendini toparlayamıyordu.
+
+**Düzeltme:** `_connect()` üstel geri çekilmeyle (exponential backoff) birkaç kez yeniden deniyor; ayrıca her yazma öncesi `_ensure_pool()` havuzun kapalı olup olmadığını kontrol edip gerekirse yeniden kuruyor.
+
+---
+
+### 11. Bozuk Bağlantı Havuza Geri Veriliyordu
+
+Yazma hatası durumunda `finally` bloğu bağlantıyı koşulsuz `putconn(conn)` ile havuza iade ediyordu. Kopmuş bir bağlantı havuza geri konunca bir sonraki `getconn()` ölü bağlantı döndürüyor ve hata zincirleniyordu. Ayrıca bağlantı kopmuşsa `rollback()`'in kendisi de exception fırlatabiliyordu.
+
+**Düzeltme:** Hata durumunda bağlantı `putconn(conn, close=True)` ile kapatılarak havuzdan çıkarılıyor; `rollback()` ayrı bir `try/except` içine alındı.
+
+---
+
+### 12. Havuz Tükenmesi (Pool Exhausted) Ele Alınmıyordu
+
+Tüm bağlantılar kullanımdayken `getconn()` çağrısı `PoolError("connection pool exhausted")` fırlatır. Bu durum yakalanmadığı için collector çökebiliyordu.
+
+**Düzeltme:** `getconn()` çağrısı `pool.PoolError` ile sarmalanıp loglanıyor.
+
+---
+
+### 13. Collector'da connect_timeout ve keepalive Eksikti
+
+`DB_CONFIG` içinde `connect_timeout` ve `keepalives` parametreleri tanımlı değildi (Django tarafında vardı). Erişilemeyen bir veritabanına `connect()` çağrısı süresiz bloklanabiliyordu.
+
+**Düzeltme:** `DB_CONFIG`'e `connect_timeout: 5` ve keepalive parametreleri eklendi.
+
+---
+
+### 14. Collector Yanlış Veritabanına Bağlanıyordu
+
+`DB_CONFIG` içinde veritabanı adı `tarim_db` olarak yazılmıştı; Django ise `akilli_tarim_db` kullanıyor. Var olmayan bir veritabanına bağlanmak `OperationalError`'a yol açıyordu. Ayrıca şifre koda gömülüydü.
+
+**Hatalı kod:**
+```python
+"database": "tarim_db",
+"password": "sifreniz",
+```
+
+**Düzeltme:** Veritabanı adı `akilli_tarim_db` ile hizalandı ve tüm bağlantı bilgileri ortam değişkenlerinden okunacak şekilde güncellendi.
+
+---
+
+### 15. API View'larında DB Bağlantı Hatası Yakalanmıyordu
+
+`IstatistikselAnaliz.get()` içinde hiç `try/except` yoktu; veritabanı bağlantısı düşerse HTTP 500 + stack trace dönüyordu. `SensorDataReceiver` ise DB bağlantı hatasını gerçek validasyon hatasıyla aynı kategoride (HTTP 400) değerlendiriyordu.
+
+**Düzeltme:** Her iki endpoint `OperationalError`/`InterfaceError` yakalayıp **HTTP 503 Service Unavailable** ile zarif bir mesaj döndürüyor.
+
+---
+
+### 16. Django Tarafında Gerçek Havuz Olmadığı Belgelenmemişti
+
+`CONN_MAX_AGE` bir bağlantı havuzu değil, **kalıcı bağlantı** (persistent connection) sağlar; psycopg2 ile Django'nun yerleşik havuzu yoktur. Bu sınır dokümante edilmemişti.
+
+**Düzeltme:** `settings.py`'de bu durum yorumla açıklandı; yüksek eş zamanlı yük için **PgBouncer** veya **psycopg3 + `OPTIONS={'pool': True}`** önerisi eklendi.
+
+---
+
 ## Özet Tablo
 
 | # | Hata | Dosya | Önem | Durum |
@@ -1226,6 +1304,14 @@ sensor_id INTEGER NOT NULL REFERENCES sensorler(id) ON DELETE CASCADE,
 | 6 | ALLOWED_HOSTS boş | settings.py | 🟠 Yüksek | Düzeltildi |
 | 7 | api.loglama_config import hatası | settings.py | 🔴 Kritik | Düzeltildi |
 | 8 | FOREIGN KEY eksik | akilli_tarim_db.sql | 🔴 Kritik | Düzeltildi |
+| 9 | Thread-safe olmayan havuz (`SimpleConnectionPool`) | sensorcollector.py | 🔴 Kritik | Düzeltildi |
+| 10 | Reconnect/retry mantığı yok | sensorcollector.py | 🔴 Kritik | Düzeltildi |
+| 11 | Bozuk bağlantı havuza geri veriliyor | sensorcollector.py | 🔴 Kritik | Düzeltildi |
+| 12 | Pool exhausted yakalanmıyor | sensorcollector.py | 🟠 Yüksek | Düzeltildi |
+| 13 | connect_timeout / keepalive eksik | sensorcollector.py | 🟠 Yüksek | Düzeltildi |
+| 14 | Yanlış DB adı + gömülü şifre | sensorcollector.py | 🟠 Yüksek | Düzeltildi |
+| 15 | View'da DB bağlantı hatası yakalanmıyor | api/views.py | 🟠 Yüksek | Düzeltildi |
+| 16 | Gerçek havuz olmadığı belgelenmemiş | settings.py | 🟢 Düşük | Düzeltildi |
 
 ---
 
@@ -1638,6 +1724,40 @@ python manage.py test api
 
 ---
 
+## 3. İkinci Tur — Kod Tekrarı, Bozuk Testlerin Onarımı ve Eksik Kapsam
+
+Önceki tur sonrası yapılan ikinci inceleme; kalan kod tekrarlarını, **çalışmayan testleri** ve eksik senaryoları kapsadı.
+
+### api/validators.py — kod tekrarı azaltıldı
+
+`sensor_verisini_dogrula()` ve `hava_durumu_cevabini_dogrula()` fonksiyonları, aynı "zorunlu alan + sayısal tip/aralık" kontrol mantığını ayrı ayrı tekrarlıyordu. Ortak mantık iki yardımcı fonksiyona çıkarıldı:
+
+- `_eksik_zorunlu_alanlar(veri, alanlar)` → eksik zorunlu alanların listesini döner.
+- `_aralik_hatasi(alan, deger, sinir)` → tip ve `[min, max]` aralık kontrolü; hata metni ya da `None` döner.
+
+Davranış birebir korundu; mevcut doğrulama testlerinin tamamı geçmeye devam ediyor.
+
+### api/views.py — tekrarlanan 503 yanıtı tek yere toplandı
+
+Veritabanı bağlantı hatasında dönen `HTTP 503` yanıtı iki endpoint'te birebir kopyalanmıştı. `_db_kullanilamiyor_yaniti()` yardımcı fonksiyonuna toplandı; her iki endpoint bunu çağırıyor.
+
+### api/tests.py — çalışmayan testler onarıldı (KRİTİK)
+
+Önceki turda eklenen testlerin bir kısmı aslında **hata veriyordu**:
+
+- `reverse('sensor-data')` ve `reverse('analiz')` çağrıları, `urls.py`'deki gerçek isimlerle (`sensor_data`, `istatistik_analiz`) uyuşmadığından `NoReverseMatch` fırlatıyordu. İsimler düzeltildi.
+- API testleri kimlik doğrulaması yapmıyordu; sonradan eklenen global `IsAuthenticated` nedeniyle `401` dönüyordu. `force_authenticate()` eklendi.
+- `DashboardViewTest` giriş yapmıyordu; `@login_required` nedeniyle `302` dönüyordu. `login()` eklendi.
+
+### Eklenen yeni test senaryoları
+
+- `genel_cevap_dogrula` için `401`, `403`, `404` durum kodları.
+- Hava durumu doğrulaması: aralık dışı sıcaklık + boş açıklama.
+- Sensör doğrulaması: sayısal olmayan tip, negatif nem, yüksek sıcaklık uyarısı.
+- **Veritabanı bağlantı hatası (503):** `OperationalError` mock'lanarak her iki endpoint'in 500 yerine 503 döndüğü doğrulandı (`DBHataYonetimiTest`).
+
+---
+
 ## Özet Tablo
 
 | # | Sorun | Dosya | Önem | Durum |
@@ -1653,9 +1773,14 @@ python manage.py test api
 | 9 | Analiz motoru testleri yok | api/tests.py | 🟠 Yüksek | Eklendi |
 | 10 | API endpoint testleri yok | api/tests.py | 🟠 Yüksek | Eklendi |
 | 11 | Dashboard testleri yok | api/tests.py | 🟠 Yüksek | Eklendi |
+| 12 | validators.py'de tekrarlanan kontrol mantığı | api/validators.py | 🟡 Orta | Düzeltildi |
+| 13 | Tekrarlanan 503 yanıt bloğu | api/views.py | 🟡 Orta | Düzeltildi |
+| 14 | Testlerde yanlış `reverse()` isimleri (NoReverseMatch) | api/tests.py | 🔴 Kritik | Düzeltildi |
+| 15 | API/Dashboard testlerinde auth/login eksik (401/302) | api/tests.py | 🔴 Kritik | Düzeltildi |
+| 16 | Eksik testler (401/403/404, hava aralığı, tip, 503) | api/tests.py | 🟠 Yüksek | Eklendi |
 
 ---
 
 ## Sonuç
 
-Yapılan düzeltmeler sayesinde kod tekrarı azaltılmış, okunabilirlik artırılmış ve kritik hatalar giderilmiştir. Eklenen 40 test senaryosu ile projenin test kapsamı genişletilmiş ve sistem davranışları doğrulanabilir hale getirilmiştir.
+İlk turda kod tekrarı azaltılmış, okunabilirlik artırılmış ve kritik hatalar giderilmişti. İkinci turda kalan kod tekrarları (validator yardımcıları, 503 yanıtı) toplanmış; daha da önemlisi, eklenmiş ancak **çalışmayan** testler (`NoReverseMatch`, eksik kimlik doğrulama) onarılmış ve 401/403/404, hava durumu aralığı, tip kontrolü ile veritabanı bağlantı hatası (503) için yeni senaryolar eklenmiştir. Böylece test paketi gerçekten çalışır ve sistem davranışlarını doğrular hale getirilmiştir.

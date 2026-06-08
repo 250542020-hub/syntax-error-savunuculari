@@ -1,10 +1,15 @@
+import logging
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions  # İzinler eklendi
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+from django.db import OperationalError, InterfaceError  # DB baglanti hatalari
 from .models import SensorData
 from .analysis import TarimAnalizMotoru
 from .validators import sensor_verisini_dogrula
+
+logger = logging.getLogger("api.views")
 
 # ─────────────────────────────────────────────
 # Sulama kararı tek bir yerde tanımlandı.
@@ -19,22 +24,38 @@ def sulama_karari_uret(soil_moisture: float) -> str:
     return "DURUM: Nem ideal. İşlem gerekmiyor. 🌾"
 
 
+def _db_kullanilamiyor_yaniti() -> Response:
+    """
+    DB baglanti hatasinda iki endpoint'in de dondurdugu standart 503 yaniti.
+    Daha once bu blok iki yerde birebir tekrar ediyordu.
+    """
+    return Response(
+        {"hata": "Veritabanına şu an ulaşılamıyor. Lütfen daha sonra tekrar deneyin."},
+        status=status.HTTP_503_SERVICE_UNAVAILABLE,
+    )
+
+
 class IstatistikselAnaliz(APIView):
     # Sadece giriş yapmış kullanıcılar verileri görebilir
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        queryset = SensorData.objects.order_by('-timestamp')[:100]
+        try:
+            queryset = SensorData.objects.order_by('-timestamp')[:100]
 
-        if not queryset.exists():
-            return Response(
-                {"hata": "Analiz için yeterli veri yok."},
-                status=status.HTTP_404_NOT_FOUND
-            )
+            if not queryset.exists():
+                return Response(
+                    {"hata": "Analiz için yeterli veri yok."},
+                    status=status.HTTP_404_NOT_FOUND
+                )
 
-        nem_verileri      = [obj.soil_moisture for obj in queryset]
-        sicaklik_verileri = [obj.temperature   for obj in queryset]
+            nem_verileri      = [obj.soil_moisture for obj in queryset]
+            sicaklik_verileri = [obj.temperature   for obj in queryset]
+        except (OperationalError, InterfaceError) as e:
+            # DB baglantisi dustu/ulasilamiyor → 500 + stack trace yerine 503.
+            logger.error("Analiz sirasinda DB baglanti hatasi: %s", e)
+            return _db_kullanilamiyor_yaniti()
 
         return Response({
             "toprak_nemi_analizi": TarimAnalizMotoru.analiz_et(nem_verileri),
@@ -73,6 +94,10 @@ class SensorDataReceiver(APIView):
                 "uyarilar": dogrulama["uyarilar"],
             }, status=status.HTTP_201_CREATED)
 
+        except (OperationalError, InterfaceError) as e:
+            # DB baglanti hatasi: bu istemci hatasi (400) degil, gecici sunucu durumu (503).
+            logger.error("Sensör verisi yazilirken DB baglanti hatasi: %s", e)
+            return _db_kullanilamiyor_yaniti()
         except Exception as e:
             # Generic hata mesaji - stack trace sizdirma riski yok
             return Response(

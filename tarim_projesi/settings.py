@@ -54,6 +54,18 @@ TEMPLATES = [
     },
 ]
 
+# ──────────────────────────────────────────────────────────
+# VERITABANI BAGLANTISI
+#
+# DIKKAT: Asagidaki ayar GERCEK bir baglanti havuzu (pool) DEGILDIR.
+#   - CONN_MAX_AGE   → her worker/thread baglantisini 60sn yeniden kullanir
+#                      (persistent connection), ama paylasimli bir havuz acmaz.
+#   - psycopg2 ile Django'nun yerlesik havuzu yoktur.
+# Yuksek es zamanli sensor yukunde GERCEK havuz icin iki secenek var:
+#   1) Onune PgBouncer koymak (onerilen, kod degisikligi gerekmez).
+#   2) psycopg3'e gecip OPTIONS={'pool': True} kullanmak (Django 5.1+).
+# Su an persistent-connection + health-check ile gecici cozum saglaniyor.
+# ──────────────────────────────────────────────────────────
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -62,10 +74,12 @@ DATABASES = {
         'PASSWORD': os.environ.get('DB_PASSWORD', ''),
         'HOST':     os.environ.get('DB_HOST',     '127.0.0.1'),
         'PORT':     os.environ.get('DB_PORT',     '5432'),
-        'CONN_MAX_AGE': 60,
+        # Baglanti, istekler arasinda yeniden kullanilir (her istekte yeni baglanti acmaz).
+        'CONN_MAX_AGE': int(os.environ.get('DB_CONN_MAX_AGE', 60)),
+        # Yeniden kullanilan baglanti olmus mu diye kontrol eder; olmusse otomatik yeniler.
         'CONN_HEALTH_CHECKS': True,
         'OPTIONS': {
-            'connect_timeout': 5,
+            'connect_timeout': 5,    # Erisilemeyen DB'de asili kalmayi onler
             'keepalives':          1,
             'keepalives_idle':    30,
             'keepalives_interval': 5,

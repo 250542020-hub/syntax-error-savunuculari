@@ -1,10 +1,15 @@
+import logging
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions  # İzinler eklendi
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
+from django.db import OperationalError, InterfaceError  # DB baglanti hatalari
 from .models import SensorData
 from .analysis import TarimAnalizMotoru
 from .validators import sensor_verisini_dogrula
+
+logger = logging.getLogger("api.views")
 
 # ─────────────────────────────────────────────
 # Sulama kararı tek bir yerde tanımlandı.
@@ -25,16 +30,24 @@ class IstatistikselAnaliz(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        queryset = SensorData.objects.order_by('-timestamp')[:100]
+        try:
+            queryset = SensorData.objects.order_by('-timestamp')[:100]
 
-        if not queryset.exists():
+            if not queryset.exists():
+                return Response(
+                    {"hata": "Analiz için yeterli veri yok."},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            nem_verileri      = [obj.soil_moisture for obj in queryset]
+            sicaklik_verileri = [obj.temperature   for obj in queryset]
+        except (OperationalError, InterfaceError) as e:
+            # DB baglantisi dustu/ulasilamiyor → 500 + stack trace yerine 503.
+            logger.error("Analiz sirasinda DB baglanti hatasi: %s", e)
             return Response(
-                {"hata": "Analiz için yeterli veri yok."},
-                status=status.HTTP_404_NOT_FOUND
+                {"hata": "Veritabanına şu an ulaşılamıyor. Lütfen daha sonra tekrar deneyin."},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE
             )
-
-        nem_verileri      = [obj.soil_moisture for obj in queryset]
-        sicaklik_verileri = [obj.temperature   for obj in queryset]
 
         return Response({
             "toprak_nemi_analizi": TarimAnalizMotoru.analiz_et(nem_verileri),
@@ -73,9 +86,17 @@ class SensorDataReceiver(APIView):
                 "uyarilar": dogrulama["uyarilar"],
             }, status=status.HTTP_201_CREATED)
 
+        except (OperationalError, InterfaceError) as e:
+            # DB baglanti hatasi: bu istemci hatasi (400) degil, gecici sunucu durumu (503).
+            logger.error("Sensör verisi yazilirken DB baglanti hatasi: %s", e)
+            return Response(
+                {"hata": "Veritabanına şu an ulaşılamıyor. Lütfen daha sonra tekrar deneyin."},
+                status=status.HTTP_503_SERVICE_UNAVAILABLE
+            )
         except Exception as e:
             # Generic hata mesaji - stack trace sizdirma riski yok
             return Response(
                 {"hata": "Veri formatı hatalı veya eksik."},
                 status=status.HTTP_400_BAD_REQUEST
             )
+            

@@ -6,8 +6,12 @@ Kapsam: views.py, analysis.py, models.py, validators.py
     python manage.py test api
 """
 
+from unittest import mock
+
 from django.test import TestCase
 from django.urls import reverse
+from django.contrib.auth.models import User
+from django.db import OperationalError
 from rest_framework.test import APIClient
 from rest_framework import status
 from .models import SensorData
@@ -109,7 +113,11 @@ class SensorDataReceiverTest(TestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.url = reverse('sensor-data')
+        # API artik IsAuthenticated gerektiriyor; testte kimlik dogrulamasi sart.
+        self.user = User.objects.create_user(username='api_tester', password='testpass123')
+        self.client.force_authenticate(user=self.user)
+        # urls.py'deki isim 'sensor_data' (tire degil alt cizgi) — onceki 'sensor-data' NoReverseMatch veriyordu.
+        self.url = reverse('sensor_data')
         self.gecerli_veri = {
             "device_id":    "SENSOR_01",
             "temperature":  25.5,
@@ -154,7 +162,10 @@ class IstatistikselAnalizTest(TestCase):
 
     def setUp(self):
         self.client = APIClient()
-        self.url = reverse('analiz')
+        self.user = User.objects.create_user(username='analiz_tester', password='testpass123')
+        self.client.force_authenticate(user=self.user)
+        # urls.py'deki isim 'istatistik_analiz' — onceki 'analiz' NoReverseMatch veriyordu.
+        self.url = reverse('istatistik_analiz')
 
     def test_veri_yokken_404(self):
         response = self.client.get(self.url)
@@ -217,6 +228,28 @@ class SensorValidatorTest(TestCase):
         self.assertTrue(s["gecerli"])
         self.assertTrue(len(s["uyarilar"]) > 0)
 
+    def test_yuksek_sicaklik_uyari(self):
+        s = sensor_verisini_dogrula({
+            "device_id": "S1", "temperature": 45.0,
+            "humidity": 55.0, "soil_moisture": 45.0
+        })
+        self.assertTrue(s["gecerli"])
+        self.assertTrue(any("Sicaklik" in u for u in s["uyarilar"]))
+
+    def test_sayisal_olmayan_sicaklik(self):
+        s = sensor_verisini_dogrula({
+            "device_id": "S1", "temperature": "sicak",
+            "humidity": 55.0, "soil_moisture": 45.0
+        })
+        self.assertFalse(s["gecerli"])
+
+    def test_negatif_nem(self):
+        s = sensor_verisini_dogrula({
+            "device_id": "S1", "temperature": 25.0,
+            "humidity": -5.0, "soil_moisture": 45.0
+        })
+        self.assertFalse(s["gecerli"])
+
 
 class HavaDurumuValidatorTest(TestCase):
 
@@ -230,6 +263,20 @@ class HavaDurumuValidatorTest(TestCase):
     def test_eksik_sehir(self):
         s = hava_durumu_cevabini_dogrula({
             "temperature": 22.0, "humidity": 60.0, "description": "Açık"
+        })
+        self.assertFalse(s["gecerli"])
+
+    def test_aralik_disi_sicaklik(self):
+        s = hava_durumu_cevabini_dogrula({
+            "city": "Ankara", "temperature": 90.0,
+            "humidity": 40.0, "description": "Güneşli"
+        })
+        self.assertFalse(s["gecerli"])
+
+    def test_bos_aciklama(self):
+        s = hava_durumu_cevabini_dogrula({
+            "city": "Ankara", "temperature": 22.0,
+            "humidity": 40.0, "description": ""
         })
         self.assertFalse(s["gecerli"])
 
@@ -250,6 +297,15 @@ class HTTPDogrulamaTest(TestCase):
         self.assertTrue(s["gecerli"])
         self.assertTrue(len(s["uyarilar"]) > 0)
 
+    def test_401_gecersiz(self):
+        self.assertFalse(genel_cevap_dogrula({}, 401)["gecerli"])
+
+    def test_403_gecersiz(self):
+        self.assertFalse(genel_cevap_dogrula({}, 403)["gecerli"])
+
+    def test_404_gecersiz(self):
+        self.assertFalse(genel_cevap_dogrula({}, 404)["gecerli"])
+
 
 # ══════════════════════════════════════════════════
 # 6. DASHBOARD VIEW TESTLERİ
@@ -261,6 +317,9 @@ class DashboardViewTest(TestCase):
 
     def setUp(self):
         self.client = Client()
+        # Dashboard view'lari @login_required; giris yapmadan 302 doner.
+        self.user = User.objects.create_user(username='dash_tester', password='testpass123')
+        self.client.login(username='dash_tester', password='testpass123')
         SensorData.objects.create(
             device_id="SENSOR_01",
             temperature=25.0,
@@ -306,3 +365,31 @@ class DashboardViewTest(TestCase):
     def test_sensor_sil_post(self):
         self.client.post(reverse('sensor_sil', args=['SENSOR_01']))
         self.assertEqual(SensorData.objects.filter(device_id='SENSOR_01').count(), 0)
+
+
+# ══════════════════════════════════════════════════
+# 7. VERİTABANI BAĞLANTI HATASI (503) TESTLERİ
+#    DB düştüğünde endpoint'ler 500 yerine 503 dönmeli.
+# ══════════════════════════════════════════════════
+class DBHataYonetimiTest(TestCase):
+
+    def setUp(self):
+        self.client = APIClient()
+        self.user = User.objects.create_user(username='db_err_tester', password='testpass123')
+        self.client.force_authenticate(user=self.user)
+
+    def test_sensor_post_db_hatasinda_503(self):
+        veri = {
+            "device_id": "S1", "temperature": 25.0,
+            "humidity": 55.0, "soil_moisture": 40.0,
+        }
+        with mock.patch.object(SensorData.objects, 'create',
+                               side_effect=OperationalError("baglanti yok")):
+            response = self.client.post(reverse('sensor_data'), veri, format='json')
+        self.assertEqual(response.status_code, status.HTTP_503_SERVICE_UNAVAILABLE)
+
+    def test_analiz_get_db_hatasinda_503(self):
+        with mock.patch.object(SensorData.objects, 'order_by',
+                               side_effect=OperationalError("baglanti yok")):
+            response = self.client.get(reverse('istatistik_analiz'))
+        self.assertEqual(response.status_code, status.HTTP_503_SERVICE_UNAVAILABLE)

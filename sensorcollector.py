@@ -1,3 +1,4 @@
+import os
 import sys
 import json
 import time
@@ -25,12 +26,26 @@ MQTT_CONFIG = {
 }
 
 DB_CONFIG = {
-    "host":     "localhost",
-    "port":     5432,
-    "database": "tarim_db",   # ← PostgreSQL DB adınız
-    "user":     "postgres",
-    "password": "sifreniz",   # ← PostgreSQL şifreniz
+    "host":     os.environ.get("DB_HOST", "localhost"),
+    "port":     int(os.environ.get("DB_PORT", 5432)),
+    # Django ile AYNI veritabanı (akilli_tarim_db). Daha önce "tarim_db" yazılıydı,
+    # var olmayan bir DB'ye baglanmak OperationalError'a yol aciyordu.
+    "database": os.environ.get("DB_NAME", "akilli_tarim_db"),
+    "user":     os.environ.get("DB_USER", "postgres"),
+    # Sifre artik koda gomulu degil; ortam degiskeninden okunur.
+    "password": os.environ.get("DB_PASSWORD", ""),
+    # Baglanti hatalarina karsi: asili kalmayi onler + kopuk baglantiyi erken yakalar.
+    "connect_timeout":     5,
+    "keepalives":          1,
+    "keepalives_idle":     30,
+    "keepalives_interval": 5,
+    "keepalives_count":    5,
 }
+
+# Havuz boyutlari ve yeniden baglanma denemesi ortam degiskeninden ayarlanabilir.
+DB_POOL_MIN          = int(os.environ.get("DB_POOL_MIN", 1))
+DB_POOL_MAX          = int(os.environ.get("DB_POOL_MAX", 5))
+DB_RECONNECT_RETRIES = int(os.environ.get("DB_RECONNECT_RETRIES", 5))
 
 FLUSH_INTERVAL_SECONDS = 300   # Her 5 dakikada bir veritabanına yaz
 SULAMA_ESIGI = 30.0            # %30 altında sulama uyarısı
@@ -65,18 +80,45 @@ logger = logging.getLogger(__name__)
 
 class DatabaseManager:
 
-    def __init__(self, config: dict):
-        self.config = config
-        self._pool = None
+    def __init__(self, config: dict, minconn: int = DB_POOL_MIN, maxconn: int = DB_POOL_MAX):
+        self.config  = config
+        self.minconn = minconn
+        self.maxconn = maxconn
+        self._pool   = None
+        # Havuz yeniden kurulurken iki thread'in ayni anda baglanmasini engeller.
+        self._lock   = threading.Lock()
         self._connect()
 
-    def _connect(self):
-        try:
-            self._pool = pool.SimpleConnectionPool(minconn=1, maxconn=5, **self.config)
-            logger.info(" Veritabanı bağlantısı kuruldu.")
-        except OperationalError as e:
-            logger.error(f" Veritabanına bağlanılamadı: {e}")
-            raise
+    def _connect(self, retries: int = DB_RECONNECT_RETRIES):
+        """
+        Baglanti havuzunu kurar. Basarisiz olursa ustel geri cekilmeyle (exponential
+        backoff) yeniden dener — DB acilista hazir degilse uygulama hemen olmesin.
+
+        NOT: SimpleConnectionPool yerine ThreadedConnectionPool kullaniliyor; bu modul
+        cok thread'li (MQTT loop + FlushScheduler + kapanista force_flush).
+        """
+        gecikme = 1
+        for deneme in range(1, retries + 1):
+            try:
+                self._pool = pool.ThreadedConnectionPool(
+                    self.minconn, self.maxconn, **self.config
+                )
+                logger.info(" Veritabanı bağlantı havuzu kuruldu (min=%d, max=%d).",
+                            self.minconn, self.maxconn)
+                return
+            except OperationalError as e:
+                logger.error(" Veritabanına bağlanılamadı (deneme %d/%d): %s",
+                             deneme, retries, e)
+                if deneme == retries:
+                    raise
+                time.sleep(gecikme)
+                gecikme = min(gecikme * 2, 30)   # ustel geri cekilme, tavan 30 sn
+
+    def _ensure_pool(self):
+        """Havuz hic kurulmamis ya da kapanmissa (runtime'da DB dustuyse) yeniden kurar."""
+        if self._pool is None or self._pool.closed:
+            logger.warning(" Havuz kapali/yok — yeniden bağlanılıyor...")
+            self._connect()
 
     def bulk_insert(self, records: list) -> int:
         """Toprak nemi kayıtlarını toplu olarak veritabanına yazar."""
@@ -89,22 +131,42 @@ class DatabaseManager:
             VALUES
                 (%(sensor_id)s, %(toprak_nemi)s, %(kayit_zamani)s)
         """
-        conn = self._pool.getconn()
+
+        with self._lock:
+            self._ensure_pool()
+            try:
+                conn = self._pool.getconn()
+            except pool.PoolError as e:
+                # Tum baglantilar kullanimda → havuz tukendi.
+                logger.error(" Bağlantı havuzu tükendi: %s", e)
+                raise
+
+        baglanti_bozuk = False
         try:
             with conn.cursor() as cur:
                 cur.executemany(insert_sql, records)
             conn.commit()
-            logger.info(f" {len(records)} ölçüm veritabanına yazıldı.")
+            logger.info(" %d ölçüm veritabanına yazıldı.", len(records))
             return len(records)
         except Exception as e:
-            conn.rollback()
-            logger.error(f" Veritabanı yazma hatası: {e}")
+            baglanti_bozuk = True
+            logger.error(" Veritabanı yazma hatası: %s", e)
+            try:
+                conn.rollback()
+            except Exception as rb:
+                # Baglanti tamamen kopmussa rollback de patlar; yutuyoruz.
+                logger.warning(" Rollback başarısız (bağlantı kopmuş olabilir): %s", rb)
             raise
         finally:
-            self._pool.putconn(conn)
+            # Bozuk baglantiyi havuza GERI KOYMA, kapat (close=True). Aksi halde
+            # bir sonraki getconn() olu baglanti dondurur ve hata zincirlenir.
+            try:
+                self._pool.putconn(conn, close=baglanti_bozuk)
+            except pool.PoolError as e:
+                logger.warning(" Bağlantı havuza iade edilemedi: %s", e)
 
     def close(self):
-        if self._pool:
+        if self._pool and not self._pool.closed:
             self._pool.closeall()
             logger.info(" Veritabanı bağlantıları kapatıldı.")
 

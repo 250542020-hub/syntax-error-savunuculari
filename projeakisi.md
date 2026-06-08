@@ -1653,7 +1653,7 @@ Bu modül sayesinde kullanıcılar sensörlerden elde edilen verileri grafiksel 
 
 
 
-# 🔍 Kod Kalitesi İyileştirme ve Test Kapsamı (Hayat Ay)
+# 🔍 Kod Kalitesi İyileştirme ve Test Kapsamı (Hayat AY)
 
 ## Genel Bakış
 

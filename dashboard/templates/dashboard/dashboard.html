@@ -31,6 +31,12 @@
             <i class="bi bi-plus-circle"></i> Veri Ekle
         </a>
     </div>
+    <form method="post" action="{% url 'logout' %}" class="d-inline ms-2">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-light btn-sm">
+                <i class="bi bi-box-arrow-right"></i> Çıkış
+            </button>
+        </form>
 </nav>
 
 <div class="container-fluid py-4 px-4">

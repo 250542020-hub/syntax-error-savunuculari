@@ -21,6 +21,12 @@
     <a href="{% url 'dashboard' %}" class="btn btn-outline-light btn-sm">
         <i class="bi bi-arrow-left"></i> Dashboard'a Dön
     </a>
+    <form method="post" action="{% url 'logout' %}" class="d-inline ms-2">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-light btn-sm">
+            <i class="bi bi-box-arrow-right"></i> Çıkış
+        </button>
+    </form>
 </nav>
 
 <div class="container py-4">

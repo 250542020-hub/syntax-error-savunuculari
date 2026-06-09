@@ -140,15 +140,23 @@
                     {% for veri in veriler %}
                     <tr>
                         <td><span class="badge bg-secondary">{{ veri.device_id }}</span></td>
-                        <td>{{ veri.temperature|floatformat:1 }}</td>
+                        <td>
+    {% if veri.temperature > 40 %}
+        <span class="text-danger fw-bold">{{ veri.temperature|floatformat:1 }} 🌡️</span>
+    {% else %}
+        {{ veri.temperature|floatformat:1 }}
+    {% endif %}
+</td>
                         <td>{{ veri.humidity|floatformat:1 }}</td>
                         <td>
-                            {% if veri.soil_moisture < 30 %}
-                                <span class="text-danger fw-bold">{{ veri.soil_moisture|floatformat:1 }} ⚠️</span>
-                            {% else %}
-                                <span class="text-success">{{ veri.soil_moisture|floatformat:1 }}</span>
-                            {% endif %}
-                        </td>
+    {% if veri.soil_moisture < 30 %}
+        <span class="badge bg-danger">⚠️ Sulama Gerekli</span>
+    {% elif veri.soil_moisture > 70 %}
+        <span class="badge bg-warning text-dark">🛑 Aşırı Doygun</span>
+    {% else %}
+        <span class="badge bg-success">🌾 Normal</span>
+    {% endif %}
+</td>
                         <td class="text-muted small">{{ veri.timestamp|date:"d.m.Y H:i" }}</td>
                         <td>
                             {% if veri.soil_moisture < 30 %}

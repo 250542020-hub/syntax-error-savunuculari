@@ -2,6 +2,7 @@ __pycache__/
 *.pyc
 *.pyo
 .vscode/
+*.log
 api/logs/*.log
 db.sqlite3
 .env

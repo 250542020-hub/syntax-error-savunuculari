@@ -1,8 +1,8 @@
-paho-mqtt==1.6.1
-psycopg2-binary==2.9.9
-django
-djangorestframework
-django-cors-headers
-requests
-tensorflow
-numpy
+__pycache__/
+*.pyc
+*.pyo
+.vscode/
+*.log
+api/logs/*.log
+db.sqlite3
+.env
